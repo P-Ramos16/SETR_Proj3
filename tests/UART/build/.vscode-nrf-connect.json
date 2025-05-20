@@ -1,0 +1,19 @@
+{
+  "toolchainPath": "/home/pramos/ncs/toolchains/2be090971e",
+  "sdkPath": "/home/pramos/ncs/v2.6.0",
+  "board": "nrf52840dk_nrf52840",
+  "boardDir": "/home/pramos/ncs/v2.6.0/zephyr/boards/arm/nrf52840dk_nrf52840",
+  "boardDirs": [
+    "/home/pramos/ncs/v2.6.0/zephyr/boards/arm/nrf52840dk_nrf52840"
+  ],
+  "optimizations": "none",
+  "cmakeArgs": [],
+  "confFiles": [
+    "prj.conf"
+  ],
+  "buildDirectory": "build",
+  "kconfigFragments": [],
+  "snippets": [],
+  "dtcOverlays": [],
+  "extraDtcOverlays": []
+}
