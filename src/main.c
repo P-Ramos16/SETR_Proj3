@@ -3,6 +3,20 @@
 #include <zephyr/devicetree.h>
 #include "rtdb.h"
 
+/**
+ * @file main.c
+ * @brief Módulo principal do sistema de controlo de temperatura.
+ *
+ * Inicializa os LEDs e arranca a tarefa `led_update_task`, que atualiza os LEDs com base nos valores
+ * armazenados na base de dados em tempo real (RTDB). Esta tarefa reflete o estado do sistema,
+ * indicando se está ligado, se a temperatura está normal, ou se há desvios acima ou abaixo do desejado.
+ *
+ * Também chama a função `buttons_init()` para configurar os botões físicos.
+ *
+ * A lógica do sistema está distribuída entre múltiplas tarefas e protegida por mecanismos de sincronização.
+ */
+
+
 /* LEDs */
 #define LED1_NODE DT_ALIAS(led0)
 #define LED2_NODE DT_ALIAS(led1)

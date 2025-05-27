@@ -3,6 +3,19 @@
 #include <zephyr/devicetree.h>
 #include "rtdb.h"
 
+/**
+ * @file buttons.c
+ * @brief Gestão dos botões físicos do sistema.
+ *
+ * Configura os botões BTN1, BTN2 e BTN4 para operar por interrupção. Cada botão invoca um callback:
+ * - BTN1: Liga/desliga o sistema.
+ * - BTN2: Aumenta a temperatura desejada.
+ * - BTN4: Diminui a temperatura desejada.
+ *
+ * Cada ação manipula a base de dados em tempo real (RTDB), assegurando a sincronização entre tarefas.
+ */
+
+
 /* GPIO config for buttons */
 #define BTN1_NODE DT_ALIAS(sw0)
 #define BTN2_NODE DT_ALIAS(sw1)

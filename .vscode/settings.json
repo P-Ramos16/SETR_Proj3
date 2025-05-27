@@ -59,5 +59,8 @@
   "nrf-connect.applications": [
     "${workspaceFolder}",
     "${workspaceFolder}/tests/UART"
-  ]
+  ],
+  "files.associations": {
+    "UART.C": "cpp"
+  }
 }
