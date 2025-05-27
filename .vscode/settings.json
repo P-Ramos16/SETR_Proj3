@@ -59,5 +59,11 @@
   "nrf-connect.applications": [
     "${workspaceFolder}",
     "${workspaceFolder}/tests/UART"
-  ]
+  ],
+  "files.associations": {
+    "*.pl": "prolog",
+    "rtdb.h": "c",
+    "mutex": "c",
+    "shared_mutex": "c"
+  }
 }
