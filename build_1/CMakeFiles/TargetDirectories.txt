@@ -161,6 +161,9 @@
 /home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/drivers/gpio/CMakeFiles/rebuild_cache.dir
 /home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/drivers/gpio/CMakeFiles/edit_cache.dir
 /home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/drivers/gpio/CMakeFiles/drivers__gpio.dir
+/home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/drivers/i2c/CMakeFiles/rebuild_cache.dir
+/home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/drivers/i2c/CMakeFiles/edit_cache.dir
+/home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/drivers/i2c/CMakeFiles/drivers__i2c.dir
 /home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/drivers/pinctrl/CMakeFiles/rebuild_cache.dir
 /home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/drivers/pinctrl/CMakeFiles/edit_cache.dir
 /home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/drivers/pinctrl/CMakeFiles/drivers__pinctrl.dir

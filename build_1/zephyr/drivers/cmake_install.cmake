@@ -84,6 +84,11 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
+  include("/home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/drivers/i2c/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
   include("/home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/drivers/pinctrl/cmake_install.cmake")
 endif()
 

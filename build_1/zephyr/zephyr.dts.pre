@@ -1192,4 +1192,14 @@ zephyr_udc0: &usbd {
  status = "okay";
 };
 # 0 "<command-line>" 2
+# 1 "/home/pramos/Documents/Univ/SETR_Proj3/nrf52840dk_nrf52840.overlay" 1
+# 13 "/home/pramos/Documents/Univ/SETR_Proj3/nrf52840dk_nrf52840.overlay"
+&i2c0 {
+    tc74sensor: tc74sensor@48{
+        compatible = "i2c-device";
+        reg = < 0x48 >;
+        label = "TC74SENSOR";
+    };
+};
+# 0 "<command-line>" 2
 # 1 "/home/pramos/ncs/v2.6.0/zephyr/misc/empty_file.c"
