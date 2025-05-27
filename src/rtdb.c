@@ -1,5 +1,19 @@
 #include "rtdb.h"
 
+/**
+ * @file rtdb.c
+ * @brief Real-Time Database (RTDB) para sincronização entre tarefas.
+ *
+ * Armazena variáveis partilhadas do sistema como:
+ * - Estado ON/OFF do sistema
+ * - Temperatura desejada
+ * - Temperatura atual (medida)
+ *
+ * Todos os acessos são protegidos por `k_mutex`, garantindo integridade em ambiente multitarefa.
+ * Fornece funções `get` e `set` para abstrair o acesso concorrente aos dados.
+ */
+
+
 static struct {
     bool system_on;
     int desired_temp;

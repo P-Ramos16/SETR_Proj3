@@ -4,6 +4,17 @@
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/sys/printk.h>
 
+/**
+ * @file mainBK.c
+ * @brief Versão standalone do sistema de controlo de temperatura.
+ *
+ * Inclui diretamente o controlo dos LEDs e dos botões, bem como a leitura da temperatura do sensor TC74
+ * via I2C. Este ficheiro representa uma versão inicial e funcional do sistema sem modularização.
+ *
+ * Útil para testes ou validação isolada dos periféricos (botões, LEDs, sensor).
+ */
+
+
 /*  Button and LED nodes  */
 #define BTN1_NODE DT_ALIAS(sw0)
 #define BTN2_NODE DT_ALIAS(sw1)
