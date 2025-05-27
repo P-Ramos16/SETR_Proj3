@@ -31,6 +31,10 @@ static bool systemOn = false;
 static int desiredTemp = 20; //  Start at 20°C
 static int currentTemp = 20; //  TODO: replace with sensor
 
+/* TC74 I2C sensor */
+#define TC74_NODE DT_NODELABEL(tc74sensor)
+static const struct i2c_dt_spec temp_sensor = I2C_DT_SPEC_GET(TC74_NODE);
+
 /* Update all LEDs based on system and temperature state */
 void update_leds(void) {
     
@@ -73,6 +77,10 @@ void btn4_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t p
 }
 
 int main(void) {
+
+    int ret;
+    uint8_t temp;
+
     gpio_pin_configure_dt(&led1, GPIO_OUTPUT_INACTIVE);
     gpio_pin_configure_dt(&led2, GPIO_OUTPUT_INACTIVE);
     gpio_pin_configure_dt(&led3, GPIO_OUTPUT_INACTIVE);
@@ -97,12 +105,38 @@ int main(void) {
     printk("System initialized with desired temp = 20°C\n");
 
 
-    while (1) {
+    /* Check if sensor is ready */
+    if (!device_is_ready(temp_sensor.bus)) {
+        printk("I2C device not ready!\n");
+        return -1;
+    }
+
+    /* Set sensor to RTR mode (safe practice) */
+    uint8_t cmd = 0x00;
+    ret = i2c_write_dt(&temp_sensor, &cmd, 1);
+    if (ret != 0) {
+        printk("Error sending RTR command to sensor\n");
+        return -1;
+    }
+
+        while (1) {
+        /* Read temperature from sensor */
+        ret = i2c_read_dt(&temp_sensor, &temp, sizeof(temp));
+        if (ret == 0) {
+            currentTemp = temp;
+            printk("Current temperature: %d °C\n", currentTemp);
+        } else {
+            printk("Failed to read temperature\n");
+        }
+
+        update_leds();
         k_sleep(K_SECONDS(5));
         // Simulate temp changes here, e.g.:
         // currentTemp += 1;
         // update_leds();
     }
+
+
 
     return 0;
 }
