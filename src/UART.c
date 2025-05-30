@@ -74,13 +74,42 @@ static void process_uart_frame(const char *frame)
     }
 }
 
-static int calculate_checksum(char cmd, const char *data)
-{
-    int sum = cmd;
-    for (int i = 0; data[i] != '\0'; i++)
-        sum += data[i];
-    return sum % 256;
+#include <stddef.h>
+#include <stdint.h>
+
+/**
+ * Calcula checksum somando todos os bytes do buffer (0 a nbytes-1)
+ * e retorna o valor módulo 256 (8 bits).
+ */
+int calcChecksum(const unsigned char *buf, int nbytes) {
+    unsigned int checksum = 0;
+
+    for (int i = 0; i < nbytes; i++) {
+        checksum += buf[i];
+    }
+
+    return (int)(checksum % 256);
 }
+
+/**
+ * Calcula checksum específico para os comandos do projeto:
+ * soma o byte do comando + todos os bytes do array data.
+ * 
+ * @param cmd O byte do comando (ex: 'C', 'M', 'S', etc)
+ * @param data Apontador para o array de dados (argumentos)
+ * @param data_len Número de bytes no array data
+ * @return checksum calculado (0-255)
+ */
+int calcCommandChecksum(char cmd, const unsigned char *data, int data_len) {
+    unsigned int sum = (unsigned char)cmd;  // soma o byte do comando
+
+    for (int i = 0; i < data_len; i++) {
+        sum += data[i];
+    }
+
+    return (int)(sum % 256);
+}
+
 
 static void send_ack(void)
 {
