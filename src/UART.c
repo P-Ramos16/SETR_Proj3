@@ -13,11 +13,12 @@ static void send_error(char code);
 static void send_temperature_response(int temp);
 static int calculate_checksum(char cmd, const char *data);
 
-/**
- * Processa uma string de comando UART no formato: #CMDDATA###!
- */
+
+// Processa uma string de comando UART no formato: #CMD DATA CS!
+
 static void process_uart_frame(const char *frame)
-{
+{   
+    // Verificar se o comando começa com # e termina com 
     if (frame[0] != '#' || frame[strlen(frame) - 1] != '!') {
         send_error('f');  // framing error
         return;
@@ -33,34 +34,43 @@ static void process_uart_frame(const char *frame)
         return;
     }
 
+    // Copia os dados para data
     strncpy(data, &frame[2], data_len);
     data[data_len] = '\0';
 
+    // Extrai o checksum e converte num número inteiro
     strncpy(cs_str, &frame[2 + data_len], 3);
     cs_str[3] = '\0';
     int received_cs = atoi(cs_str);
 
+    // Verifica checksum
     int computed_cs = calculate_checksum(cmd, data);
     if (received_cs != computed_cs) {
         send_error('s'); // checksum error
         return;
     }
 
+    // Processa o comando (cmd)
     switch (cmd) {
+
+        // obtem temperatura atual, #Cyyy! 
         case 'C': {
             int temp = rtdb_get_current_temp();
             send_temperature_response(temp);
             break;
         }
+
+        // define temperatura maxima, #Mxxxyyy
         case 'M': {
             int max_temp = atoi(data); // Assumes 3 digits
             // TODO: adicionar max_temp na RTDB se quiseres controlar
             send_ack();
             break;
         }
+
+        // Configura parâmetros do controlador
         case 'S': {
             // Exemplo: S100050025 => Kp=100, Ti=50, Td=25
-            // Aqui só imprimimos. Podes guardar na RTDB.
             int kp = atoi(&data[0]);
             int ti = atoi(&data[3]);
             int td = atoi(&data[6]);
@@ -74,64 +84,37 @@ static void process_uart_frame(const char *frame)
     }
 }
 
-#include <stddef.h>
-#include <stdint.h>
-
-/**
- * Calcula checksum somando todos os bytes do buffer (0 a nbytes-1)
- * e retorna o valor módulo 256 (8 bits).
- */
-int calcChecksum(const unsigned char *buf, int nbytes) {
-    unsigned int checksum = 0;
-
-    for (int i = 0; i < nbytes; i++) {
-        checksum += buf[i];
-    }
-
-    return (int)(checksum % 256);
-}
-
-/**
- * Calcula checksum específico para os comandos do projeto:
- * soma o byte do comando + todos os bytes do array data.
- * 
- * @param cmd O byte do comando (ex: 'C', 'M', 'S', etc)
- * @param data Apontador para o array de dados (argumentos)
- * @param data_len Número de bytes no array data
- * @return checksum calculado (0-255)
- */
-int calcCommandChecksum(char cmd, const unsigned char *data, int data_len) {
-    unsigned int sum = (unsigned char)cmd;  // soma o byte do comando
-
-    for (int i = 0; i < data_len; i++) {
+// Calcula o checksum, cs = cmd + data
+static int calculate_checksum(char cmd, const char *data)
+{
+    int sum = cmd;
+    for (int i = 0; data[i] != '\0'; i++)
         sum += data[i];
-    }
-
-    return (int)(sum % 256);
+    return sum % 256;
 }
 
-
+// Enviar um acknowledgment para indicar que um comando foi processado com sucesso.
 static void send_ack(void)
 {
     int cs = ('E' + 'o') % 256;
     printk("#Eo%03d!\n", cs);
 }
 
+// Enviar um erro com o código especificado
 static void send_error(char code)
 {
     int cs = ('E' + code) % 256;
     printk("#E%c%03d!\n", code, cs);
 }
 
+// Enviar a temperatura atual como resposta ao comando #Cyyy!
 static void send_temperature_response(int temp)
 {
     int cs = ('c' + (temp / 100 % 10) + (temp / 10 % 10) + (temp % 10)) % 256;
     printk("#c%03d%03d!\n", temp, cs);
 }
 
-/**
- * Task UART: lê comandos em ASCII via console e processa frames
- */
+// Task UART: lê comandos em ASCII via console e processa frames
 void uart_task(void)
 {
     char buffer[64];
