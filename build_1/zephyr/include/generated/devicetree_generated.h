@@ -13504,7 +13504,7 @@
 /* Macros for properties that are special in the specification: */
 #define DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48_REG_NUM 1
 #define DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48_REG_IDX_0_EXISTS 1
-#define DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48_REG_IDX_0_VAL_ADDRESS 72 /* 0x48 */
+#define DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48_REG_IDX_0_VAL_ADDRESS 77 /* 0x4d */
 #define DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48_RANGES_NUM 0
 #define DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48_FOREACH_RANGE(fn) 
 #define DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48_IRQ_NUM 0
@@ -13527,8 +13527,8 @@
 #define DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48_P_compatible_FOREACH_PROP_ELEM_SEP_VARGS(fn, sep, ...) fn(DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48, compatible, 0, __VA_ARGS__)
 #define DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48_P_compatible_LEN 1
 #define DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48_P_compatible_EXISTS 1
-#define DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48_P_reg {72 /* 0x48 */}
-#define DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48_P_reg_IDX_0 72
+#define DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48_P_reg {77 /* 0x4d */}
+#define DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48_P_reg_IDX_0 77
 #define DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48_P_reg_IDX_0_EXISTS 1
 #define DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48_P_reg_EXISTS 1
 #define DT_N_S_soc_S_i2c_40003000_S_tc74sensor_48_P_label "TC74SENSOR"

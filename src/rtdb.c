@@ -26,8 +26,8 @@ static struct {
 
 void rtdb_init(void) {
     db.system_on = false;
-    db.desired_temp = 20;
-    db.current_temp = 20;
+    db.desired_temp = 28;
+    db.current_temp = 28;
     k_mutex_init(&db.lockSysOn);
     k_mutex_init(&db.lockDesTemp);
     k_mutex_init(&db.lockCurrTemp);
