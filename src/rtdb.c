@@ -18,9 +18,11 @@ static struct {
     bool system_on;
     int desired_temp;
     int current_temp;
+    bool heat_on;
     struct k_mutex lockSysOn;
     struct k_mutex lockDesTemp;
     struct k_mutex lockCurrTemp;
+    struct k_mutex lockHeatOn;
     //  TODO: talk advantages of having one lock for each (multiple acesses to rtdb)
 } db;
 
@@ -70,4 +72,17 @@ int rtdb_get_current_temp(void) {
     int temp = db.current_temp;
     k_mutex_unlock(&db.lockCurrTemp);
     return temp;
+}
+
+void rtdb_set_heat_on(bool on) {
+    k_mutex_lock(&db.lockHeatOn, K_FOREVER);
+    db.heat_on = on;
+    k_mutex_unlock(&db.lockHeatOn);
+}
+
+int rtdb_get_heat_on(void) {
+    k_mutex_lock(&db.lockHeatOn, K_FOREVER);
+    int on = db.heat_on;
+    k_mutex_unlock(&db.lockHeatOn);
+    return on;
 }

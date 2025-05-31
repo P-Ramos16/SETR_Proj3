@@ -33,6 +33,7 @@
 		mcuboot-led0 = &led0;
 		watchdog0 = &wdt0;
 		spi-flash0 = &mx25r64;
+		fetpin = &fetpin;
 	};
 	soc {
 		#address-cells = < 0x1 >;
@@ -748,6 +749,10 @@
 		led3: led_3 {
 			gpios = < &gpio0 0x10 0x1 >;
 			label = "Green LED 3";
+		};
+		fetpin: fet-pin {
+			gpios = < &gpio0 0x2 0x0 >;
+			label = "FET Pin";
 		};
 	};
 	pwmleds {

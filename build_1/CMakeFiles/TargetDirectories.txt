@@ -133,6 +133,8 @@
 /home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/subsys/tracing/CMakeFiles/edit_cache.dir
 /home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/subsys/usb/CMakeFiles/rebuild_cache.dir
 /home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/subsys/usb/CMakeFiles/edit_cache.dir
+/home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/subsys/console/CMakeFiles/rebuild_cache.dir
+/home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/subsys/console/CMakeFiles/edit_cache.dir
 /home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/drivers/CMakeFiles/rebuild_cache.dir
 /home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/drivers/CMakeFiles/edit_cache.dir
 /home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/drivers/disk/CMakeFiles/rebuild_cache.dir

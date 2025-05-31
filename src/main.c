@@ -50,9 +50,16 @@ static const struct i2c_dt_spec dev_i2c = I2C_DT_SPEC_GET(I2C0_NID);
 K_TIMER_DEFINE(temp_read_thread_timer, NULL, NULL);
 
 
+/* ---------- Heater (or LED) FET Control ---------- */
+#define FET_NODE DT_ALIAS(fetpin)
+static const struct gpio_dt_spec fet = GPIO_DT_SPEC_GET(FET_NODE, gpios);
+
+
 /* ---------- Semaphores ---------- */
 /*  - For executing the PID controller on the new value after a sensor read  */
 struct k_sem sensor_to_controller_sem = Z_SEM_INITIALIZER(sensor_to_controller_sem, 0, 1);
+/*  - For executing the heat control based on the on/off value from the PID  */
+struct k_sem controller_to_heater_sem = Z_SEM_INITIALIZER(controller_to_heater_sem, 0, 1);
 
 
 
@@ -173,6 +180,7 @@ void pid_controller_task(void) {
             if (heater_state != 0) {
                 heater_state = 0;
                 printk("System off, heater off\n\r");
+                gpio_pin_set_dt(&fet, 0);
             }
             continue;
         }
@@ -185,13 +193,58 @@ void pid_controller_task(void) {
 
         // Conversion
         heater_state = (output > 0.0f) ? 1 : 0;
+
+        rtdb_set_heat_on(heater_state);
+
+        gpio_pin_set_dt(&fet, heater_state);
+        
+        printk("PID decided heater state: %d (Current: %d°C, Desired: %d°C)\n\r", 
+               heater_state, (int)current_temp, (int)desired_temp);
+
+        //  Tell the heater control to start working with this new value
+        k_sem_give(&controller_to_heater_sem);
+    }
+}
+K_THREAD_DEFINE(pid_task_id, 1024, pid_controller_task, NULL, NULL, NULL, 5, 0, 0);
+
+
+
+void heat_control_task(void) {
+    // Initialize PID
+    int last_heat_state = 0;
+
+    while (1) {
+        // Wait for new sensor value
+        k_sem_take(&controller_to_heater_sem, K_FOREVER);
+
+        // Only control if system is on
+        if (!rtdb_get_system_on()) {
+            if (heater_state != 0) {
+                heater_state = 0;
+                printk("System off, heater off\n\r");
+                gpio_pin_set_dt(&fet, 0);
+            }
+            continue;
+        }
+
+        // Read current and desired temperatures from RTDB
+        float current_temp = (float)rtdb_get_current_temp();
+        float desired_temp = (float)rtdb_get_desired_temp();
+
+        float output = pid_calculate(desired_temp, current_temp, dt, &last_error, &integral);
+
+        // Conversion
+        heater_state = (output > 0.0f) ? 1 : 0;
+
+        rtdb_set_heat_on(heater_state);
+
+        gpio_pin_set_dt(&fet, heater_state);
         
         printk("PID decided heater state: %d (Current: %d°C, Desired: %d°C)\n\r", 
                heater_state, (int)current_temp, (int)desired_temp);
     }
 }
-K_THREAD_DEFINE(pid_task_id, 1024, pid_controller_task, NULL, NULL, NULL, 5, 0, 0);
-
+K_THREAD_DEFINE(heat_task_id, 1024, heat_control_task, NULL, NULL, NULL, 5, 0, 0);
 
 
 int main(void) {
@@ -200,6 +253,9 @@ int main(void) {
     gpio_pin_configure_dt(&led1, GPIO_OUTPUT_INACTIVE);
     gpio_pin_configure_dt(&led2, GPIO_OUTPUT_INACTIVE);
     gpio_pin_configure_dt(&led3, GPIO_OUTPUT_INACTIVE);
+    // Setup Heater FET
+    gpio_pin_configure_dt(&fet, GPIO_OUTPUT_INACTIVE);
+        
 
     rtdb_init();
     buttons_init();

@@ -1201,5 +1201,17 @@ zephyr_udc0: &usbd {
         label = "TC74SENSOR";
     };
 };
+/ {
+    leds {
+        fetpin: fet-pin {
+            gpios = <&gpio0 2 0>;
+            label = "FET Pin";
+        };
+    };
+
+    aliases {
+        fetpin = &fetpin;
+    };
+};
 # 0 "<command-line>" 2
 # 1 "/home/pramos/ncs/v2.6.0/zephyr/misc/empty_file.c"

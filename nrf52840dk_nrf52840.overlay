@@ -17,3 +17,15 @@
         label = "TC74SENSOR";
     };
 };
+/ {
+    leds {
+        fetpin: fet-pin {
+            gpios = <&gpio0 2 0>;
+            label = "FET Pin";
+        };
+    };
+
+    aliases {
+        fetpin = &fetpin;
+    };
+};
