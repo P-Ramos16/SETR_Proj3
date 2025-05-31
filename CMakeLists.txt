@@ -7,5 +7,5 @@ project(Proj_3)
 target_sources(app PRIVATE
   src/main.c
   src/buttons.c
-  src/rtdb.c
+  src/modules/rtdb.c
   src/modules/cmdproc.c)

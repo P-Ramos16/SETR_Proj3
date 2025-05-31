@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "rtdb.h"
+#include "modules/rtdb.h"
 #include "buttons.h"
 #include "modules/cmdproc.h"
 
@@ -179,9 +179,10 @@ K_THREAD_DEFINE(temp_read_task_id, 1024, read_temperature_task, NULL, NULL, NULL
 
 float pid_calculate(float setpoint, float measured, float dt, 
                     float *last_error, float *integral) {
-    const float Kp = 2.0f;
-    const float Ki = 0.1f;
-    const float Kd = 0.05f;
+
+    float Kp, Ki, Kd;
+    //  Get the current PID parameters
+    rtdb_get_PID_params(&Kp, &Ki, &Kd);
 
     float error = setpoint - measured;
 
@@ -276,7 +277,7 @@ K_THREAD_DEFINE(heat_task_id, 1024, heat_control_task, NULL, NULL, NULL, 5, 0, 0
 
 int uart_init(void) {
     int err=0; /* Generic error variable */
-    uint8_t welcome_mesg[] = "\n\rUART COM: Hello user! Here is the list of possible commands:\n -> M: Set max temperature\n -> C: Get current temperature\n -> S: Set PID parameters\n\n"; 
+    uint8_t welcome_mesg[] = "\n\rUART COM: Hello user! Here is the list of possible commands:\n -> M (#M+30219!): Set desired temperature\n -> D (#D068!): Get desired temperature\n -> C (#C067!): Get current temperature\n -> S (#Sp1.23135!): Set PID parameters\n\n"; 
 
     /* Check if uart device is open */
     if (!device_is_ready(uart_dev)) {
@@ -401,10 +402,11 @@ int uart_command_task(void) {
 	unsigned char ans[256];
 
     while (1) {
+		resetRxBuffer();
+		resetTxBuffer();
         // Wait for new complete message
         k_sem_take(&uart_full_message_sem, K_FOREVER);
 
-        sprintf(rep_mesg,"Final message: %s\n\r",rx_chars);    
         cmdProcessor();     
         getTxBuffer(ans, &len);
         printk("Response: ");    
@@ -413,7 +415,7 @@ int uart_command_task(void) {
             printf("%c", ans[i]);
         }
         printk("\n");
-        
+
         err = uart_tx(uart_dev, rep_mesg, strlen(rep_mesg), SYS_FOREVER_MS);
         if (err) {
             printk("uart_tx() error. Error code:%d\n\r",err);

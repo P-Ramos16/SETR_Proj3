@@ -19,10 +19,14 @@ static struct {
     int desired_temp;
     int current_temp;
     bool heat_on;
+    float kp;
+    float ki;
+    float kd;
     struct k_mutex lockSysOn;
     struct k_mutex lockDesTemp;
     struct k_mutex lockCurrTemp;
     struct k_mutex lockHeatOn;
+    struct k_mutex lockPIDparams;
     //  TODO: talk advantages of having one lock for each (multiple acesses to rtdb)
 } db;
 
@@ -30,9 +34,15 @@ void rtdb_init(void) {
     db.system_on = false;
     db.desired_temp = 28;
     db.current_temp = 28;
+    db.heat_on = false;
+    db.kp = 2.0f;
+    db.ki = 0.1f;
+    db.kd = 0.05f;
     k_mutex_init(&db.lockSysOn);
     k_mutex_init(&db.lockDesTemp);
     k_mutex_init(&db.lockCurrTemp);
+    k_mutex_init(&db.lockHeatOn);
+    k_mutex_init(&db.lockPIDparams);
 }
 
 void rtdb_set_system_on(bool on) {
@@ -85,4 +95,20 @@ bool rtdb_get_heat_on(void) {
     bool on = db.heat_on;
     k_mutex_unlock(&db.lockHeatOn);
     return on;
+}
+
+void rtdb_set_PID_params(float p, float i, float d) {
+    k_mutex_lock(&db.lockPIDparams, K_FOREVER);
+    db.kp = p;
+    db.ki = i;
+    db.kd = d;
+    k_mutex_unlock(&db.lockPIDparams);
+}
+
+void rtdb_get_PID_params(float *p, float *i, float *d) {
+    k_mutex_lock(&db.lockPIDparams, K_FOREVER);
+    *p = db.kp;
+    *i = db.ki;
+    *d = db.kd;
+    k_mutex_unlock(&db.lockPIDparams);
 }

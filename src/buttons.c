@@ -1,7 +1,7 @@
 #include <zephyr/kernel.h>
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/devicetree.h>
-#include "rtdb.h"
+#include "modules/rtdb.h"
 
 /**
  * @file buttons.c
