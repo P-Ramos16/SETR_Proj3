@@ -103,9 +103,8 @@ struct k_sem uart_full_message_sem = Z_SEM_INITIALIZER(uart_full_message_sem, 0,
 
 
 /* ---------- Other Usefull Vars ---------- */
-bool verboseMode = false
 
-;
+
 
 void led_update_task(void) {
     k_timer_start(&led_thread_timer, K_MSEC(led_thread_period), K_MSEC(led_thread_period));
@@ -162,6 +161,8 @@ int read_temperature_task(void) {
         uint64_t time_ms = k_uptime_get();
         uint32_t time_s = time_ms / 1000;
         uint32_t time_ms_remainder = time_ms % 1000;
+
+        bool verboseMode = rtdb_get_verbose();
 
         if (verboseMode) {
             printk("Read temperature: %d at time %u.%03u s\n\r", temp, time_s, time_ms_remainder);
@@ -224,6 +225,8 @@ void pid_controller_task(void) {
         // Conversion
         rtdb_set_heat_on((output > 0.0f) && rtdb_get_system_on());
 
+        bool verboseMode = rtdb_get_verbose();
+
         if (verboseMode) {
             printk("PID decided heater state: %s (Current: %d°C, Desired: %d°C)\n\r", 
                 (output > 0.0f) ? "ON" : "OFF", (int)current_temp, (int)desired_temp);
@@ -245,6 +248,8 @@ void heat_control_task(void) {
     while (1) {
         // Wait for new PID on/off value
         k_sem_take(&controller_to_heater_sem, K_FOREVER);
+
+        bool verboseMode = rtdb_get_verbose();
 
         // Only control if system is on
         if (!rtdb_get_system_on()) {
@@ -277,7 +282,7 @@ K_THREAD_DEFINE(heat_task_id, 1024, heat_control_task, NULL, NULL, NULL, 5, 0, 0
 
 int uart_init(void) {
     int err=0; /* Generic error variable */
-    uint8_t welcome_mesg[] = "\n\rUART COM: Hello user! Here is the list of possible commands:\n -> M (#M+30219!): Set desired temperature\n -> D (#D068!): Get desired temperature\n -> C (#C067!): Get current temperature\n -> S (#Sp1.23135!): Set PID parameters\n\n"; 
+    uint8_t welcome_mesg[] = "\n\rUART COM: Hello user! Here is the list of possible commands:\n -> M (#M+30219!):   Set desired temperature\n -> D (#D068!):      Get desired temperature\n -> C (#C067!):      Get current temperature\n -> S (#Sp1.23135!): Set PID parameters\n -> V (#V086!):      Toggle verbose mode\n\r\n\r"; 
 
     /* Check if uart device is open */
     if (!device_is_ready(uart_dev)) {
@@ -409,12 +414,12 @@ int uart_command_task(void) {
 
         cmdProcessor();     
         getTxBuffer(ans, &len);
-        printk("Response: ");    
+        printk("Response: ");
         
         for (int i = 0; i < len; i++) {
             printf("%c", ans[i]);
         }
-        printk("\n");
+        printk("\n\r");
 
         err = uart_tx(uart_dev, rep_mesg, strlen(rep_mesg), SYS_FOREVER_MS);
         if (err) {

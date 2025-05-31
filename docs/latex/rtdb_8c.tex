@@ -1,0 +1,217 @@
+\doxysection{src/modules/rtdb.c File Reference}
+\hypertarget{rtdb_8c}{}\label{rtdb_8c}\index{src/modules/rtdb.c@{src/modules/rtdb.c}}
+
+
+Real-\/\+Time Database (RTDB) para sincronização entre tarefas.  
+
+
+{\ttfamily \#include "{}rtdb.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{rtdb_8c_ad9ce7c499fa34b9212598f2f2c7b6cbe}{rtdb\+\_\+init}} (void)
+\item 
+void \mbox{\hyperlink{rtdb_8c_ad3ca78c2547c5cb3f0c7c466da06932b}{rtdb\+\_\+set\+\_\+system\+\_\+on}} (bool on)
+\item 
+bool \mbox{\hyperlink{rtdb_8c_a28fc1e297fbe83c05b3fbd8a7f4aba7e}{rtdb\+\_\+get\+\_\+system\+\_\+on}} (void)
+\item 
+void \mbox{\hyperlink{rtdb_8c_a9bc5ce220a411ead2cb881c9fcd20e5e}{rtdb\+\_\+set\+\_\+desired\+\_\+temp}} (int temp)
+\item 
+int \mbox{\hyperlink{rtdb_8c_ac56acb70cbc0408ebfe98c640955aafd}{rtdb\+\_\+get\+\_\+desired\+\_\+temp}} (void)
+\item 
+void \mbox{\hyperlink{rtdb_8c_a028157e05bc41d41f861ae223d7ed5a6}{rtdb\+\_\+set\+\_\+current\+\_\+temp}} (int temp)
+\item 
+int \mbox{\hyperlink{rtdb_8c_a7fa7f8050f54285108748d0cb42668f9}{rtdb\+\_\+get\+\_\+current\+\_\+temp}} (void)
+\item 
+void \mbox{\hyperlink{rtdb_8c_a3c6caa23aaee3719899567e7958a6bbb}{rtdb\+\_\+set\+\_\+heat\+\_\+on}} (bool on)
+\item 
+bool \mbox{\hyperlink{rtdb_8c_a71b6aefd1db5f12266368691534a4c11}{rtdb\+\_\+get\+\_\+heat\+\_\+on}} (void)
+\item 
+void \mbox{\hyperlink{rtdb_8c_a3a5d1e40fa297d830a4ea3a5c0320e04}{rtdb\+\_\+set\+\_\+\+PID\+\_\+params}} (float p, float i, float d)
+\item 
+void \mbox{\hyperlink{rtdb_8c_ab3009eaffe2b3f6d0a0c2eae227c5383}{rtdb\+\_\+get\+\_\+\+PID\+\_\+params}} (float \texorpdfstring{$\ast$}{*}p, float \texorpdfstring{$\ast$}{*}i, float \texorpdfstring{$\ast$}{*}d)
+\item 
+void \mbox{\hyperlink{rtdb_8c_abf882ae91fc888fd6058837feb624e90}{rtdb\+\_\+set\+\_\+verbose}} (bool on)
+\item 
+bool \mbox{\hyperlink{rtdb_8c_afb9cf17453edcc6acc56b99a7e966b2a}{rtdb\+\_\+get\+\_\+verbose}} (void)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Real-\/\+Time Database (RTDB) para sincronização entre tarefas. 
+
+Armazena variáveis partilhadas do sistema como\+:
+\begin{DoxyItemize}
+\item Estado ON/\+OFF do sistema
+\item Temperatura desejada
+\item Temperatura atual (medida)
+\end{DoxyItemize}
+
+Todos os acessos são protegidos por {\ttfamily k\+\_\+mutex}, garantindo integridade em ambiente multitarefa. Fornece funções {\ttfamily get} e {\ttfamily set} para abstrair o acesso concorrente aos dados. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{rtdb_8c_a7fa7f8050f54285108748d0cb42668f9}\index{rtdb.c@{rtdb.c}!rtdb\_get\_current\_temp@{rtdb\_get\_current\_temp}}
+\index{rtdb\_get\_current\_temp@{rtdb\_get\_current\_temp}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{rtdb\_get\_current\_temp()}{rtdb\_get\_current\_temp()}}
+{\footnotesize\ttfamily \label{rtdb_8c_a7fa7f8050f54285108748d0cb42668f9} 
+int rtdb\+\_\+get\+\_\+current\+\_\+temp (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{rtdb_8c_ac56acb70cbc0408ebfe98c640955aafd}\index{rtdb.c@{rtdb.c}!rtdb\_get\_desired\_temp@{rtdb\_get\_desired\_temp}}
+\index{rtdb\_get\_desired\_temp@{rtdb\_get\_desired\_temp}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{rtdb\_get\_desired\_temp()}{rtdb\_get\_desired\_temp()}}
+{\footnotesize\ttfamily \label{rtdb_8c_ac56acb70cbc0408ebfe98c640955aafd} 
+int rtdb\+\_\+get\+\_\+desired\+\_\+temp (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{rtdb_8c_a71b6aefd1db5f12266368691534a4c11}\index{rtdb.c@{rtdb.c}!rtdb\_get\_heat\_on@{rtdb\_get\_heat\_on}}
+\index{rtdb\_get\_heat\_on@{rtdb\_get\_heat\_on}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{rtdb\_get\_heat\_on()}{rtdb\_get\_heat\_on()}}
+{\footnotesize\ttfamily \label{rtdb_8c_a71b6aefd1db5f12266368691534a4c11} 
+bool rtdb\+\_\+get\+\_\+heat\+\_\+on (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{rtdb_8c_ab3009eaffe2b3f6d0a0c2eae227c5383}\index{rtdb.c@{rtdb.c}!rtdb\_get\_PID\_params@{rtdb\_get\_PID\_params}}
+\index{rtdb\_get\_PID\_params@{rtdb\_get\_PID\_params}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{rtdb\_get\_PID\_params()}{rtdb\_get\_PID\_params()}}
+{\footnotesize\ttfamily \label{rtdb_8c_ab3009eaffe2b3f6d0a0c2eae227c5383} 
+void rtdb\+\_\+get\+\_\+\+PID\+\_\+params (\begin{DoxyParamCaption}\item[{float \texorpdfstring{$\ast$}{*}}]{p}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{i}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{d}{}\end{DoxyParamCaption})}
+
+\Hypertarget{rtdb_8c_a28fc1e297fbe83c05b3fbd8a7f4aba7e}\index{rtdb.c@{rtdb.c}!rtdb\_get\_system\_on@{rtdb\_get\_system\_on}}
+\index{rtdb\_get\_system\_on@{rtdb\_get\_system\_on}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{rtdb\_get\_system\_on()}{rtdb\_get\_system\_on()}}
+{\footnotesize\ttfamily \label{rtdb_8c_a28fc1e297fbe83c05b3fbd8a7f4aba7e} 
+bool rtdb\+\_\+get\+\_\+system\+\_\+on (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{rtdb_8c_afb9cf17453edcc6acc56b99a7e966b2a}\index{rtdb.c@{rtdb.c}!rtdb\_get\_verbose@{rtdb\_get\_verbose}}
+\index{rtdb\_get\_verbose@{rtdb\_get\_verbose}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{rtdb\_get\_verbose()}{rtdb\_get\_verbose()}}
+{\footnotesize\ttfamily \label{rtdb_8c_afb9cf17453edcc6acc56b99a7e966b2a} 
+bool rtdb\+\_\+get\+\_\+verbose (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{rtdb_8c_ad9ce7c499fa34b9212598f2f2c7b6cbe}\index{rtdb.c@{rtdb.c}!rtdb\_init@{rtdb\_init}}
+\index{rtdb\_init@{rtdb\_init}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{rtdb\_init()}{rtdb\_init()}}
+{\footnotesize\ttfamily \label{rtdb_8c_ad9ce7c499fa34b9212598f2f2c7b6cbe} 
+void rtdb\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{rtdb_8c_a028157e05bc41d41f861ae223d7ed5a6}\index{rtdb.c@{rtdb.c}!rtdb\_set\_current\_temp@{rtdb\_set\_current\_temp}}
+\index{rtdb\_set\_current\_temp@{rtdb\_set\_current\_temp}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{rtdb\_set\_current\_temp()}{rtdb\_set\_current\_temp()}}
+{\footnotesize\ttfamily \label{rtdb_8c_a028157e05bc41d41f861ae223d7ed5a6} 
+void rtdb\+\_\+set\+\_\+current\+\_\+temp (\begin{DoxyParamCaption}\item[{int}]{temp}{}\end{DoxyParamCaption})}
+
+\Hypertarget{rtdb_8c_a9bc5ce220a411ead2cb881c9fcd20e5e}\index{rtdb.c@{rtdb.c}!rtdb\_set\_desired\_temp@{rtdb\_set\_desired\_temp}}
+\index{rtdb\_set\_desired\_temp@{rtdb\_set\_desired\_temp}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{rtdb\_set\_desired\_temp()}{rtdb\_set\_desired\_temp()}}
+{\footnotesize\ttfamily \label{rtdb_8c_a9bc5ce220a411ead2cb881c9fcd20e5e} 
+void rtdb\+\_\+set\+\_\+desired\+\_\+temp (\begin{DoxyParamCaption}\item[{int}]{temp}{}\end{DoxyParamCaption})}
+
+\Hypertarget{rtdb_8c_a3c6caa23aaee3719899567e7958a6bbb}\index{rtdb.c@{rtdb.c}!rtdb\_set\_heat\_on@{rtdb\_set\_heat\_on}}
+\index{rtdb\_set\_heat\_on@{rtdb\_set\_heat\_on}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{rtdb\_set\_heat\_on()}{rtdb\_set\_heat\_on()}}
+{\footnotesize\ttfamily \label{rtdb_8c_a3c6caa23aaee3719899567e7958a6bbb} 
+void rtdb\+\_\+set\+\_\+heat\+\_\+on (\begin{DoxyParamCaption}\item[{bool}]{on}{}\end{DoxyParamCaption})}
+
+\Hypertarget{rtdb_8c_a3a5d1e40fa297d830a4ea3a5c0320e04}\index{rtdb.c@{rtdb.c}!rtdb\_set\_PID\_params@{rtdb\_set\_PID\_params}}
+\index{rtdb\_set\_PID\_params@{rtdb\_set\_PID\_params}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{rtdb\_set\_PID\_params()}{rtdb\_set\_PID\_params()}}
+{\footnotesize\ttfamily \label{rtdb_8c_a3a5d1e40fa297d830a4ea3a5c0320e04} 
+void rtdb\+\_\+set\+\_\+\+PID\+\_\+params (\begin{DoxyParamCaption}\item[{float}]{p}{, }\item[{float}]{i}{, }\item[{float}]{d}{}\end{DoxyParamCaption})}
+
+\Hypertarget{rtdb_8c_ad3ca78c2547c5cb3f0c7c466da06932b}\index{rtdb.c@{rtdb.c}!rtdb\_set\_system\_on@{rtdb\_set\_system\_on}}
+\index{rtdb\_set\_system\_on@{rtdb\_set\_system\_on}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{rtdb\_set\_system\_on()}{rtdb\_set\_system\_on()}}
+{\footnotesize\ttfamily \label{rtdb_8c_ad3ca78c2547c5cb3f0c7c466da06932b} 
+void rtdb\+\_\+set\+\_\+system\+\_\+on (\begin{DoxyParamCaption}\item[{bool}]{on}{}\end{DoxyParamCaption})}
+
+\Hypertarget{rtdb_8c_abf882ae91fc888fd6058837feb624e90}\index{rtdb.c@{rtdb.c}!rtdb\_set\_verbose@{rtdb\_set\_verbose}}
+\index{rtdb\_set\_verbose@{rtdb\_set\_verbose}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{rtdb\_set\_verbose()}{rtdb\_set\_verbose()}}
+{\footnotesize\ttfamily \label{rtdb_8c_abf882ae91fc888fd6058837feb624e90} 
+void rtdb\+\_\+set\+\_\+verbose (\begin{DoxyParamCaption}\item[{bool}]{on}{}\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{rtdb_8c_a9305c9986464f98aa70af3e70a3ca5e4}\index{rtdb.c@{rtdb.c}!current\_temp@{current\_temp}}
+\index{current\_temp@{current\_temp}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{current\_temp}{current\_temp}}
+{\footnotesize\ttfamily \label{rtdb_8c_a9305c9986464f98aa70af3e70a3ca5e4} 
+int current\+\_\+temp}
+
+\Hypertarget{rtdb_8c_aebe5360f981c4c7571f5449ac57f9d94}\index{rtdb.c@{rtdb.c}!desired\_temp@{desired\_temp}}
+\index{desired\_temp@{desired\_temp}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{desired\_temp}{desired\_temp}}
+{\footnotesize\ttfamily \label{rtdb_8c_aebe5360f981c4c7571f5449ac57f9d94} 
+int desired\+\_\+temp}
+
+\Hypertarget{rtdb_8c_a3a780bf7de95f94a51663907deadb427}\index{rtdb.c@{rtdb.c}!heat\_on@{heat\_on}}
+\index{heat\_on@{heat\_on}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{heat\_on}{heat\_on}}
+{\footnotesize\ttfamily \label{rtdb_8c_a3a780bf7de95f94a51663907deadb427} 
+bool heat\+\_\+on}
+
+\Hypertarget{rtdb_8c_ae7a5c6018507bb1361fcca170e069b9c}\index{rtdb.c@{rtdb.c}!kd@{kd}}
+\index{kd@{kd}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{kd}{kd}}
+{\footnotesize\ttfamily \label{rtdb_8c_ae7a5c6018507bb1361fcca170e069b9c} 
+float kd}
+
+\Hypertarget{rtdb_8c_a050993b7ca6c97e62c1020017f716b91}\index{rtdb.c@{rtdb.c}!ki@{ki}}
+\index{ki@{ki}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{ki}{ki}}
+{\footnotesize\ttfamily \label{rtdb_8c_a050993b7ca6c97e62c1020017f716b91} 
+float ki}
+
+\Hypertarget{rtdb_8c_a1f7add0f84d583bc2eceb290d6c4cc06}\index{rtdb.c@{rtdb.c}!kp@{kp}}
+\index{kp@{kp}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{kp}{kp}}
+{\footnotesize\ttfamily \label{rtdb_8c_a1f7add0f84d583bc2eceb290d6c4cc06} 
+float kp}
+
+\Hypertarget{rtdb_8c_a2f407f0ff18c39d815f954bd5cd95568}\index{rtdb.c@{rtdb.c}!lockCurrTemp@{lockCurrTemp}}
+\index{lockCurrTemp@{lockCurrTemp}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{lockCurrTemp}{lockCurrTemp}}
+{\footnotesize\ttfamily \label{rtdb_8c_a2f407f0ff18c39d815f954bd5cd95568} 
+struct k\+\_\+mutex lock\+Curr\+Temp}
+
+\Hypertarget{rtdb_8c_a3326e779b29839fed750a4000b0719a5}\index{rtdb.c@{rtdb.c}!lockDesTemp@{lockDesTemp}}
+\index{lockDesTemp@{lockDesTemp}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{lockDesTemp}{lockDesTemp}}
+{\footnotesize\ttfamily \label{rtdb_8c_a3326e779b29839fed750a4000b0719a5} 
+struct k\+\_\+mutex lock\+Des\+Temp}
+
+\Hypertarget{rtdb_8c_ae9e3158307802d1f26c450ce0f92d66d}\index{rtdb.c@{rtdb.c}!lockHeatOn@{lockHeatOn}}
+\index{lockHeatOn@{lockHeatOn}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{lockHeatOn}{lockHeatOn}}
+{\footnotesize\ttfamily \label{rtdb_8c_ae9e3158307802d1f26c450ce0f92d66d} 
+struct k\+\_\+mutex lock\+Heat\+On}
+
+\Hypertarget{rtdb_8c_a6be84f938cb46ed5d69c84390bcc6332}\index{rtdb.c@{rtdb.c}!lockPIDparams@{lockPIDparams}}
+\index{lockPIDparams@{lockPIDparams}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{lockPIDparams}{lockPIDparams}}
+{\footnotesize\ttfamily \label{rtdb_8c_a6be84f938cb46ed5d69c84390bcc6332} 
+struct k\+\_\+mutex lock\+PIDparams}
+
+\Hypertarget{rtdb_8c_aed5b573b3a1ad6b2172c7473f57cf31d}\index{rtdb.c@{rtdb.c}!lockSysOn@{lockSysOn}}
+\index{lockSysOn@{lockSysOn}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{lockSysOn}{lockSysOn}}
+{\footnotesize\ttfamily \label{rtdb_8c_aed5b573b3a1ad6b2172c7473f57cf31d} 
+struct k\+\_\+mutex lock\+Sys\+On}
+
+\Hypertarget{rtdb_8c_a4920fecc7e649739854dd3c368ddbfe4}\index{rtdb.c@{rtdb.c}!lockVerbose@{lockVerbose}}
+\index{lockVerbose@{lockVerbose}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{lockVerbose}{lockVerbose}}
+{\footnotesize\ttfamily \label{rtdb_8c_a4920fecc7e649739854dd3c368ddbfe4} 
+struct k\+\_\+mutex lock\+Verbose}
+
+\Hypertarget{rtdb_8c_ab455c3ff475779a20a41e3a2c7dd96ba}\index{rtdb.c@{rtdb.c}!system\_on@{system\_on}}
+\index{system\_on@{system\_on}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{system\_on}{system\_on}}
+{\footnotesize\ttfamily \label{rtdb_8c_ab455c3ff475779a20a41e3a2c7dd96ba} 
+bool system\+\_\+on}
+
+\Hypertarget{rtdb_8c_ab3f078684998b83967d507d0f453f454}\index{rtdb.c@{rtdb.c}!verbose@{verbose}}
+\index{verbose@{verbose}!rtdb.c@{rtdb.c}}
+\doxysubsubsection{\texorpdfstring{verbose}{verbose}}
+{\footnotesize\ttfamily \label{rtdb_8c_ab3f078684998b83967d507d0f453f454} 
+bool verbose}
+

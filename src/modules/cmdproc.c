@@ -18,8 +18,6 @@ static unsigned char txBufLen = 0;
 /* Function implementation */
 int cmdProcessor(void) {
     int i;
-    unsigned char sid;
-
 
     char sensorStr[12];
     unsigned char checksumBuffer[256];
@@ -55,7 +53,7 @@ int cmdProcessor(void) {
             case 'C':
                 if(UARTRxBuffer[i+5] != EOF_SYM) {
                     //  Send bad framing ACK
-                    send_ack(1);
+                    send_ack((int)1);
                     return -4;
                 }
 
@@ -176,23 +174,8 @@ int cmdProcessor(void) {
 
                 rtdb_set_desired_temp(intendedTemperature);
 
-
-
-                //  TODO: send good received message
-                checksumBuffer[chksumIdx++] = 'f';
-                checksumBuffer[chksumIdx++] = 'd';
-                checksumBuffer[chksumIdx++] = 't';
-                checksumBuffer[chksumIdx++] = 'q';
-                checksumBuffer[chksumIdx++] = sid;
-                // Enviar a  resposta
-                txChar('#');
-                for (int k = 0; k < chksumIdx; k++) {
-                    txChar(checksumBuffer[k]);
-                }
-                txChar(checksumStr[0]);
-                txChar(checksumStr[1]);
-                txChar(checksumStr[2]);
-                txChar('!');
+                //  Send good ACK
+                send_ack(0);
 
                 rxBufLen = 0;  // clean buffer
                 return 0;
@@ -237,6 +220,29 @@ int cmdProcessor(void) {
                         rtdb_set_PID_params(Kp, Ki, newVal);
                 }
 
+
+                //  Send good ACK
+                send_ack(0);
+
+                rxBufLen = 0;  // clean buffer
+                return 0;
+
+            //  Sets PID parameters as #Vyyy!
+            case 'V':
+                if(UARTRxBuffer[i+5] != EOF_SYM) {
+                    //  Send bad framing ACK
+                    send_ack(1);
+                    return -4;
+                }
+
+                // Checksum de entrada: apenas sobre CMD ('M') + DATA ('px.xix.xxdx.xx')
+                if(calcChecksum(&(UARTRxBuffer[i+1]), rxBufLen - 5) != msgCheckSum) {
+                    //  Send bad checksum ACK
+                    send_ack(2);
+                    return -3;
+                }
+
+                rtdb_set_verbose(!rtdb_get_verbose());
 
                 //  Send good ACK
                 send_ack(0);
@@ -319,7 +325,7 @@ int getTxBufferSize(void){
 
 // Enviar ACK com checksum correto
 void send_ack(int type) {
-    unsigned char checksumBuffer[32];
+    unsigned char checksumBuffer[2];
     int checksum = 0;
     char checksumStr[5];
 
@@ -336,6 +342,7 @@ void send_ack(int type) {
             checksumBuffer[1] = 's';
             break;
         case 3:
+        default:
             checksumBuffer[1] = 'i';
             break;
     }

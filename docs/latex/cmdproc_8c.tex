@@ -1,0 +1,173 @@
+\doxysection{src/modules/cmdproc.c File Reference}
+\hypertarget{cmdproc_8c}{}\label{cmdproc_8c}\index{src/modules/cmdproc.c@{src/modules/cmdproc.c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include "{}cmdproc.\+h"{}}\newline
+{\ttfamily \#include "{}rtdb.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{cmdproc_8c_afbdfe0465dfd34a5f244fe41fa27c12a}{cmd\+Processor}} (void)
+\begin{DoxyCompactList}\small\item\em Processes received commands and generates responses. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{cmdproc_8c_a2a0e03d8d8ff0f0459f7623ffd6d39b1}{calc\+Checksum}} (unsigned char \texorpdfstring{$\ast$}{*}buf, int nbytes)
+\begin{DoxyCompactList}\small\item\em Calculates a checksum for a given data buffer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{cmdproc_8c_a67ae8a79a708a3c5471668bddbd16400}{rx\+Char}} (unsigned char car)
+\begin{DoxyCompactList}\small\item\em Receives a character and stores it in the receive buffer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{cmdproc_8c_abdb4363f0662688850bbcdfb59ce4566}{tx\+Char}} (unsigned char car)
+\begin{DoxyCompactList}\small\item\em Transmits a character and stores it in the transmit buffer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{cmdproc_8c_a918f38a7eecdd03671d28a3a07f94856}{reset\+Rx\+Buffer}} (void)
+\begin{DoxyCompactList}\small\item\em Resets the UART receive buffer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{cmdproc_8c_abd91ad9b5887f4769f45823899583bab}{reset\+Tx\+Buffer}} (void)
+\begin{DoxyCompactList}\small\item\em Resets the UART transmit buffer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{cmdproc_8c_a8beeddde9a644610c72724be856db6dd}{get\+Tx\+Buffer}} (unsigned char \texorpdfstring{$\ast$}{*}buf, int \texorpdfstring{$\ast$}{*}len)
+\begin{DoxyCompactList}\small\item\em Gets the current size of the UART transmit buffer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{cmdproc_8c_a257f53fb5eb850ccbf3ac26a614b152e}{get\+Rx\+Buffer\+Size}} (void)
+\begin{DoxyCompactList}\small\item\em Gets the current size of the UART receive buffer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{cmdproc_8c_a2397dd1c9b60734d3afa3f3a48d47822}{get\+Tx\+Buffer\+Size}} (void)
+\begin{DoxyCompactList}\small\item\em Gets the current size of the UART transmit buffer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{cmdproc_8c_ab2f4aac88c91f6afd0d002d16ccff36f}{send\+\_\+ack}} (int type)
+\begin{DoxyCompactList}\small\item\em Respond with one of four predetermined ack messages. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{cmdproc_8c_a2a0e03d8d8ff0f0459f7623ffd6d39b1}\index{cmdproc.c@{cmdproc.c}!calcChecksum@{calcChecksum}}
+\index{calcChecksum@{calcChecksum}!cmdproc.c@{cmdproc.c}}
+\doxysubsubsection{\texorpdfstring{calcChecksum()}{calcChecksum()}}
+{\footnotesize\ttfamily \label{cmdproc_8c_a2a0e03d8d8ff0f0459f7623ffd6d39b1} 
+int calc\+Checksum (\begin{DoxyParamCaption}\item[{unsigned char \texorpdfstring{$\ast$}{*}}]{buf}{, }\item[{int}]{nbytes}{}\end{DoxyParamCaption})}
+
+
+
+Calculates a checksum for a given data buffer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & Pointer to data buffer \\
+\hline
+{\em nbytes} & Number of bytes to process \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Computed checksum value 
+\end{DoxyReturn}
+\Hypertarget{cmdproc_8c_afbdfe0465dfd34a5f244fe41fa27c12a}\index{cmdproc.c@{cmdproc.c}!cmdProcessor@{cmdProcessor}}
+\index{cmdProcessor@{cmdProcessor}!cmdproc.c@{cmdproc.c}}
+\doxysubsubsection{\texorpdfstring{cmdProcessor()}{cmdProcessor()}}
+{\footnotesize\ttfamily \label{cmdproc_8c_afbdfe0465dfd34a5f244fe41fa27c12a} 
+int cmd\+Processor (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Processes received commands and generates responses. 
+
+\begin{DoxyReturn}{Returns}
+Status code (0 on success, negative on failure) 
+\end{DoxyReturn}
+\Hypertarget{cmdproc_8c_a257f53fb5eb850ccbf3ac26a614b152e}\index{cmdproc.c@{cmdproc.c}!getRxBufferSize@{getRxBufferSize}}
+\index{getRxBufferSize@{getRxBufferSize}!cmdproc.c@{cmdproc.c}}
+\doxysubsubsection{\texorpdfstring{getRxBufferSize()}{getRxBufferSize()}}
+{\footnotesize\ttfamily \label{cmdproc_8c_a257f53fb5eb850ccbf3ac26a614b152e} 
+int get\+Rx\+Buffer\+Size (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the current size of the UART receive buffer. 
+
+\begin{DoxyReturn}{Returns}
+Number of bytes in the receive buffer 
+\end{DoxyReturn}
+\Hypertarget{cmdproc_8c_a8beeddde9a644610c72724be856db6dd}\index{cmdproc.c@{cmdproc.c}!getTxBuffer@{getTxBuffer}}
+\index{getTxBuffer@{getTxBuffer}!cmdproc.c@{cmdproc.c}}
+\doxysubsubsection{\texorpdfstring{getTxBuffer()}{getTxBuffer()}}
+{\footnotesize\ttfamily \label{cmdproc_8c_a8beeddde9a644610c72724be856db6dd} 
+void get\+Tx\+Buffer (\begin{DoxyParamCaption}\item[{unsigned char \texorpdfstring{$\ast$}{*}}]{buf}{, }\item[{int \texorpdfstring{$\ast$}{*}}]{len}{}\end{DoxyParamCaption})}
+
+
+
+Gets the current size of the UART transmit buffer. 
+
+\begin{DoxyReturn}{Returns}
+Number of bytes in the transmit buffer 
+\end{DoxyReturn}
+\Hypertarget{cmdproc_8c_a2397dd1c9b60734d3afa3f3a48d47822}\index{cmdproc.c@{cmdproc.c}!getTxBufferSize@{getTxBufferSize}}
+\index{getTxBufferSize@{getTxBufferSize}!cmdproc.c@{cmdproc.c}}
+\doxysubsubsection{\texorpdfstring{getTxBufferSize()}{getTxBufferSize()}}
+{\footnotesize\ttfamily \label{cmdproc_8c_a2397dd1c9b60734d3afa3f3a48d47822} 
+int get\+Tx\+Buffer\+Size (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Gets the current size of the UART transmit buffer. 
+
+\begin{DoxyReturn}{Returns}
+Number of bytes in the transmit buffer 
+\end{DoxyReturn}
+\Hypertarget{cmdproc_8c_a918f38a7eecdd03671d28a3a07f94856}\index{cmdproc.c@{cmdproc.c}!resetRxBuffer@{resetRxBuffer}}
+\index{resetRxBuffer@{resetRxBuffer}!cmdproc.c@{cmdproc.c}}
+\doxysubsubsection{\texorpdfstring{resetRxBuffer()}{resetRxBuffer()}}
+{\footnotesize\ttfamily \label{cmdproc_8c_a918f38a7eecdd03671d28a3a07f94856} 
+void reset\+Rx\+Buffer (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Resets the UART receive buffer. 
+
+\Hypertarget{cmdproc_8c_abd91ad9b5887f4769f45823899583bab}\index{cmdproc.c@{cmdproc.c}!resetTxBuffer@{resetTxBuffer}}
+\index{resetTxBuffer@{resetTxBuffer}!cmdproc.c@{cmdproc.c}}
+\doxysubsubsection{\texorpdfstring{resetTxBuffer()}{resetTxBuffer()}}
+{\footnotesize\ttfamily \label{cmdproc_8c_abd91ad9b5887f4769f45823899583bab} 
+void reset\+Tx\+Buffer (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Resets the UART transmit buffer. 
+
+\Hypertarget{cmdproc_8c_a67ae8a79a708a3c5471668bddbd16400}\index{cmdproc.c@{cmdproc.c}!rxChar@{rxChar}}
+\index{rxChar@{rxChar}!cmdproc.c@{cmdproc.c}}
+\doxysubsubsection{\texorpdfstring{rxChar()}{rxChar()}}
+{\footnotesize\ttfamily \label{cmdproc_8c_a67ae8a79a708a3c5471668bddbd16400} 
+int rx\+Char (\begin{DoxyParamCaption}\item[{unsigned char}]{car}{}\end{DoxyParamCaption})}
+
+
+
+Receives a character and stores it in the receive buffer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em car} & Character to receive \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, -\/1 if buffer is full 
+\end{DoxyReturn}
+\Hypertarget{cmdproc_8c_ab2f4aac88c91f6afd0d002d16ccff36f}\index{cmdproc.c@{cmdproc.c}!send\_ack@{send\_ack}}
+\index{send\_ack@{send\_ack}!cmdproc.c@{cmdproc.c}}
+\doxysubsubsection{\texorpdfstring{send\_ack()}{send\_ack()}}
+{\footnotesize\ttfamily \label{cmdproc_8c_ab2f4aac88c91f6afd0d002d16ccff36f} 
+void send\+\_\+ack (\begin{DoxyParamCaption}\item[{int}]{type}{}\end{DoxyParamCaption})}
+
+
+
+Respond with one of four predetermined ack messages. 
+
+\Hypertarget{cmdproc_8c_abdb4363f0662688850bbcdfb59ce4566}\index{cmdproc.c@{cmdproc.c}!txChar@{txChar}}
+\index{txChar@{txChar}!cmdproc.c@{cmdproc.c}}
+\doxysubsubsection{\texorpdfstring{txChar()}{txChar()}}
+{\footnotesize\ttfamily \label{cmdproc_8c_abdb4363f0662688850bbcdfb59ce4566} 
+int tx\+Char (\begin{DoxyParamCaption}\item[{unsigned char}]{car}{}\end{DoxyParamCaption})}
+
+
+
+Transmits a character and stores it in the transmit buffer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em car} & Character to transmit \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 on success, -\/1 if buffer is full 
+\end{DoxyReturn}

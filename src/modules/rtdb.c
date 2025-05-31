@@ -22,11 +22,13 @@ static struct {
     float kp;
     float ki;
     float kd;
+    bool verbose;
     struct k_mutex lockSysOn;
     struct k_mutex lockDesTemp;
     struct k_mutex lockCurrTemp;
     struct k_mutex lockHeatOn;
     struct k_mutex lockPIDparams;
+    struct k_mutex lockVerbose;
     //  TODO: talk advantages of having one lock for each (multiple acesses to rtdb)
 } db;
 
@@ -111,4 +113,17 @@ void rtdb_get_PID_params(float *p, float *i, float *d) {
     *i = db.ki;
     *d = db.kd;
     k_mutex_unlock(&db.lockPIDparams);
+}
+
+void rtdb_set_verbose(bool on) {
+    k_mutex_lock(&db.lockVerbose, K_FOREVER);
+    db.verbose = on;
+    k_mutex_unlock(&db.lockVerbose);
+}
+
+bool rtdb_get_verbose(void) {
+    k_mutex_lock(&db.lockVerbose, K_FOREVER);
+    bool on = db.verbose;
+    k_mutex_unlock(&db.lockVerbose);
+    return on;
 }

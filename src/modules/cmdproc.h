@@ -160,4 +160,14 @@ int getRxBufferSize(void);
  * @return Number of bytes in the transmit buffer
  */
 int getTxBufferSize(void);
+
+/* ************************************************ */
+/*  Sends predetermined messages                    */
+/* ************************************************ */
+/**
+ * @brief Respond with one of four predetermined ack messages.
+ */
+void send_ack(int type);
+
+
 #endif

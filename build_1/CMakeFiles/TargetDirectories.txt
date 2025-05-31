@@ -332,3 +332,5 @@
 /home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/cmake/reports/CMakeFiles/ram_report.dir
 /home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/cmake/reports/CMakeFiles/footprint.dir
 /home/pramos/Documents/Univ/SETR_Proj3/build_1/zephyr/cmake/reports/CMakeFiles/edit_cache.dir
+/home/pramos/Documents/Univ/SETR_Proj3/build_1/src/modules/CMakeFiles/rebuild_cache.dir
+/home/pramos/Documents/Univ/SETR_Proj3/build_1/src/modules/CMakeFiles/edit_cache.dir

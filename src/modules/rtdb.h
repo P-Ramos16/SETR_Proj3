@@ -20,4 +20,7 @@ bool rtdb_get_heat_on(void);
 void rtdb_set_PID_params(float kp, float ki, float kd);
 void rtdb_get_PID_params(float *p, float *i, float *d);
 
+void rtdb_set_verbose(bool on);
+bool rtdb_get_verbose(void);
+
 #endif
