@@ -80,9 +80,9 @@ void rtdb_set_heat_on(bool on) {
     k_mutex_unlock(&db.lockHeatOn);
 }
 
-int rtdb_get_heat_on(void) {
+bool rtdb_get_heat_on(void) {
     k_mutex_lock(&db.lockHeatOn, K_FOREVER);
-    int on = db.heat_on;
+    bool on = db.heat_on;
     k_mutex_unlock(&db.lockHeatOn);
     return on;
 }

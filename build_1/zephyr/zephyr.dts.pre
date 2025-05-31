@@ -1197,7 +1197,7 @@ zephyr_udc0: &usbd {
 &i2c0 {
     tc74sensor: tc74sensor@48{
         compatible = "i2c-device";
-        reg = < 0x4d >;
+        reg = < 0x4D >;
         label = "TC74SENSOR";
     };
 };

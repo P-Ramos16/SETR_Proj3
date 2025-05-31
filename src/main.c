@@ -1,12 +1,21 @@
 #include <zephyr/kernel.h>
-#include <zephyr/drivers/gpio.h>
+#include <zephyr/device.h>
 #include <zephyr/devicetree.h>
-#include <zephyr/drivers/i2c.h> /* Required for  I2C */
+#include <zephyr/drivers/gpio.h>
+#include <zephyr/drivers/i2c.h>   /* Required for  I2C */
+#include <zephyr/drivers/uart.h>  /* for UART API*/
+#include <zephyr/sys/printk.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "rtdb.h"
 #include "buttons.h"
+#include "modules/cmdproc.h"
 
 #define SUCCESS 0
-#define ERR_FATAL -1   /* If I2C fails ...*/
+#define ERR_FATAL -1
 
 /**
  * @file main.c
@@ -29,7 +38,7 @@
 #define LED2_NODE DT_ALIAS(led2)
 #define LED3_NODE DT_ALIAS(led3)
 /*  - Thread Properties  */
-#define led_thread_period 1000
+#define led_thread_period 500
 K_TIMER_DEFINE(led_thread_timer, NULL, NULL);
 /*  - Specs  */
 static const struct gpio_dt_spec led0 = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
@@ -51,8 +60,37 @@ K_TIMER_DEFINE(temp_read_thread_timer, NULL, NULL);
 
 
 /* ---------- Heater (or LED) FET Control ---------- */
+/*  - Definition  */
 #define FET_NODE DT_ALIAS(fetpin)
+/*  - Specs  */
 static const struct gpio_dt_spec fet = GPIO_DT_SPEC_GET(FET_NODE, gpios);
+
+
+/* ---------- UART Reader ---------- */
+/*  - Device Setup  */
+#define UART_NODE DT_NODELABEL(uart0)   /* UART0 node ID*/
+/*  - Buffer Properties  */
+#define RXBUF_SIZE 60
+#define TXBUF_SIZE 60
+#define MSG_BUF_SIZE 100 
+#define RX_TIMEOUT 1000   /* Inactivity period after the instant when last char was received that triggers an rx event (in us) */
+/*  - UART Config  */
+const struct uart_config uart_cfg = {
+		.baudrate = 115200,
+		.parity = UART_CFG_PARITY_NONE,
+		.stop_bits = UART_CFG_STOP_BITS_1,
+		.data_bits = UART_CFG_DATA_BITS_8,
+		.flow_ctrl = UART_CFG_FLOW_CTRL_NONE
+};
+const struct device *uart_dev = DEVICE_DT_GET(UART_NODE);
+static uint8_t rx_buf[RXBUF_SIZE];      /* RX buffer, to store received data */
+static uint8_t rx_chars[RXBUF_SIZE];    /* chars actually received  */
+volatile int uart_rxbuf_nchar=0;        /* Number of chars currently on the rx buffer */
+/*  - Callback Setup  */
+static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data);
+/*  - Thread Properties  */
+#define uart_thread_period 100
+K_TIMER_DEFINE(uart_thread_timer, NULL, NULL);
 
 
 /* ---------- Semaphores ---------- */
@@ -60,8 +98,14 @@ static const struct gpio_dt_spec fet = GPIO_DT_SPEC_GET(FET_NODE, gpios);
 struct k_sem sensor_to_controller_sem = Z_SEM_INITIALIZER(sensor_to_controller_sem, 0, 1);
 /*  - For executing the heat control based on the on/off value from the PID  */
 struct k_sem controller_to_heater_sem = Z_SEM_INITIALIZER(controller_to_heater_sem, 0, 1);
+/*  - For executing the command processor when a complete message is received  */
+struct k_sem uart_full_message_sem = Z_SEM_INITIALIZER(uart_full_message_sem, 0, 1);
 
 
+/* ---------- Other Usefull Vars ---------- */
+bool verboseMode = false
+
+;
 
 void led_update_task(void) {
     k_timer_start(&led_thread_timer, K_MSEC(led_thread_period), K_MSEC(led_thread_period));
@@ -101,15 +145,10 @@ int read_temperature_task(void) {
     if (!device_is_ready(dev_i2c.bus)) {
 	    printk("I2C bus %s is not ready!\n\r",dev_i2c.bus->name);
 	    return ERR_FATAL;
-    } else {
-        printk("I2C bus %s, device address %x ready\n\r",dev_i2c.bus->name, dev_i2c.addr);
-    } 
+    }
 
     /* Write (command RTR) to set the read address to temperature */
     ret = i2c_write_dt(&dev_i2c, TC74_CMD_RTR, 1);
-    if(ret != 0){
-        printk("Failed to write to I2C device at address %x, register %x \n\r", dev_i2c.addr ,TC74_CMD_RTR);
-    }
 
     while (1) {
         /*  Wait for timer event  */
@@ -124,7 +163,9 @@ int read_temperature_task(void) {
         uint32_t time_s = time_ms / 1000;
         uint32_t time_ms_remainder = time_ms % 1000;
 
-        printk("Read temperature: %d at time %u.%03u s\n\r", temp, time_s, time_ms_remainder);
+        if (verboseMode) {
+            printk("Read temperature: %d at time %u.%03u s\n\r", temp, time_s, time_ms_remainder);
+        }
 
         //  Tell the PID controller to start working with this new value
         k_sem_give(&sensor_to_controller_sem);
@@ -164,8 +205,6 @@ float pid_calculate(float setpoint, float measured, float dt,
 
 void pid_controller_task(void) {
     // Initialize PID
-    int heater_state = 0;
-
     float integral = 0.0f;
     float last_error = 0.0f;
     
@@ -175,16 +214,6 @@ void pid_controller_task(void) {
         // Wait for new sensor value
         k_sem_take(&sensor_to_controller_sem, K_FOREVER);
 
-        // Only control if system is on
-        if (!rtdb_get_system_on()) {
-            if (heater_state != 0) {
-                heater_state = 0;
-                printk("System off, heater off\n\r");
-                gpio_pin_set_dt(&fet, 0);
-            }
-            continue;
-        }
-
         // Read current and desired temperatures from RTDB
         float current_temp = (float)rtdb_get_current_temp();
         float desired_temp = (float)rtdb_get_desired_temp();
@@ -192,14 +221,12 @@ void pid_controller_task(void) {
         float output = pid_calculate(desired_temp, current_temp, dt, &last_error, &integral);
 
         // Conversion
-        heater_state = (output > 0.0f) ? 1 : 0;
+        rtdb_set_heat_on((output > 0.0f) && rtdb_get_system_on());
 
-        rtdb_set_heat_on(heater_state);
-
-        gpio_pin_set_dt(&fet, heater_state);
-        
-        printk("PID decided heater state: %d (Current: %d°C, Desired: %d°C)\n\r", 
-               heater_state, (int)current_temp, (int)desired_temp);
+        if (verboseMode) {
+            printk("PID decided heater state: %s (Current: %d°C, Desired: %d°C)\n\r", 
+                (output > 0.0f) ? "ON" : "OFF", (int)current_temp, (int)desired_temp);
+        }
 
         //  Tell the heater control to start working with this new value
         k_sem_give(&controller_to_heater_sem);
@@ -211,41 +238,190 @@ K_THREAD_DEFINE(pid_task_id, 1024, pid_controller_task, NULL, NULL, NULL, 5, 0, 
 
 void heat_control_task(void) {
     // Initialize PID
-    int last_heat_state = 0;
+    bool last_heat_state = false;
+    bool heater_state = false;
 
     while (1) {
-        // Wait for new sensor value
+        // Wait for new PID on/off value
         k_sem_take(&controller_to_heater_sem, K_FOREVER);
 
         // Only control if system is on
         if (!rtdb_get_system_on()) {
-            if (heater_state != 0) {
-                heater_state = 0;
-                printk("System off, heater off\n\r");
+            if (last_heat_state) {
+                heater_state = false;
                 gpio_pin_set_dt(&fet, 0);
+
+                if (verboseMode) {
+                    printk("System off, heater off\n\r");
+                }
             }
             continue;
         }
-
-        // Read current and desired temperatures from RTDB
-        float current_temp = (float)rtdb_get_current_temp();
-        float desired_temp = (float)rtdb_get_desired_temp();
-
-        float output = pid_calculate(desired_temp, current_temp, dt, &last_error, &integral);
-
         // Conversion
-        heater_state = (output > 0.0f) ? 1 : 0;
+        heater_state = rtdb_get_heat_on();
 
-        rtdb_set_heat_on(heater_state);
+        if (last_heat_state != heater_state){
+            gpio_pin_set_dt(&fet, heater_state);
+            if (verboseMode) {
+                printk("Heater turned: %d\n\r", heater_state);
+            }
+        }
 
-        gpio_pin_set_dt(&fet, heater_state);
-        
-        printk("PID decided heater state: %d (Current: %d°C, Desired: %d°C)\n\r", 
-               heater_state, (int)current_temp, (int)desired_temp);
+        last_heat_state = heater_state;
     }
 }
 K_THREAD_DEFINE(heat_task_id, 1024, heat_control_task, NULL, NULL, NULL, 5, 0, 0);
 
+
+
+int uart_init(void) {
+    int err=0; /* Generic error variable */
+    uint8_t welcome_mesg[] = "\n\rUART COM: Hello user! Here is the list of possible commands:\n -> M: Set max temperature\n -> C: Get current temperature\n -> S: Set PID parameters\n\n"; 
+
+    /* Check if uart device is open */
+    if (!device_is_ready(uart_dev)) {
+        printk("device_is_ready(uart) returned error! Aborting! \n\r");
+        return ERR_FATAL;
+    }
+
+    /* Configure UART */
+    err = uart_configure(uart_dev, &uart_cfg);
+    if (err == -ENOSYS) { /* If invalid configuration */
+        printk("uart_configure() error. Invalid configuration\n\r");
+        return ERR_FATAL; 
+    }
+
+    /* Register callback */
+    err = uart_callback_set(uart_dev, uart_cb, NULL);
+    if (err) {
+        printk("uart_callback_set() error. Error code:%d\n\r",err);
+        return ERR_FATAL;
+    }
+		
+    /* Enable data reception */
+    err =  uart_rx_enable(uart_dev ,rx_buf,sizeof(rx_buf),RX_TIMEOUT);
+    if (err) {
+        printk("uart_rx_enable() error. Error code:%d\n\r",err);
+        return ERR_FATAL;
+    }
+
+    /* Send a welcome message */ 
+    printk("%s", welcome_mesg);
+
+    return SUCCESS;
+}
+
+bool startingMessage = false;
+
+static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data) {
+    int err;
+    
+    switch (evt->type) {
+	
+        case UART_TX_DONE:
+            break;
+
+    	case UART_TX_ABORTED:
+	    	printk("UART_TX_ABORTED event \n\r");
+		    break;
+		
+	    case UART_RX_RDY:
+            // Process each received character
+            for (int i = 0; i < evt->data.rx.len; i++) {
+                uint8_t c = rx_buf[evt->data.rx.offset + i];
+                
+                // Start of new message
+                if (c == '#') {
+                    startingMessage = true;
+                    uart_rxbuf_nchar = 0;  // Reset buffer index
+                    rx_chars[uart_rxbuf_nchar++] = c;  // Store the start character
+                    rxChar(c);
+                    printk("%c", c);
+                } 
+                // In the middle of another message
+                else if (startingMessage) {
+                    // Only store if we're in a message
+                    if (uart_rxbuf_nchar < (RXBUF_SIZE - 1)) {
+                        rx_chars[uart_rxbuf_nchar++] = c;
+                        rxChar(c);
+                    } 
+                    else {
+                        // Buffer overflow - discard message
+                        printk("Message too long, discarding\n");
+                        startingMessage = false;
+                    }
+                    
+                    printk("%c", c);
+
+                    // Check for end character
+                    if (c == '!') {
+                        printk("\n");
+                        rx_chars[uart_rxbuf_nchar] = '\0';  // Null-terminate
+                        k_sem_give(&uart_full_message_sem);  // Notify processor
+                        startingMessage = false;
+                    }
+                }
+            }
+
+		    break;
+
+	    case UART_RX_BUF_REQUEST:
+            printk("\n\rMessage too long, discarding\n");
+            startingMessage = false;
+		    break;
+
+	    case UART_RX_BUF_RELEASED:
+		    break;
+		
+	    case UART_RX_DISABLED: 
+            /* When the RX_BUFF becomes full RX is disabled automaticaly.  */
+            /* It must be re-enabled manually for continuous reception */
+		    err =  uart_rx_enable(uart_dev ,rx_buf,sizeof(rx_buf),RX_TIMEOUT);
+            if (err) {
+                printk("uart_rx_enable() error. Error code:%d\n\r",err);
+                exit(ERR_FATAL);                
+            }
+		    break;
+
+	    case UART_RX_STOPPED:
+		    printk("UART_RX_STOPPED event \n\r");
+		    break;
+		
+	    default:
+            printk("UART: unknown event \n\r");
+		    break;
+    }
+
+}
+
+int uart_command_task(void) {
+    int err;
+    uint8_t rep_mesg[MSG_BUF_SIZE];
+	int len;
+	unsigned char ans[256];
+
+    while (1) {
+        // Wait for new complete message
+        k_sem_take(&uart_full_message_sem, K_FOREVER);
+
+        sprintf(rep_mesg,"Final message: %s\n\r",rx_chars);    
+        cmdProcessor();     
+        getTxBuffer(ans, &len);
+        printk("Response: ");    
+        
+        for (int i = 0; i < len; i++) {
+            printf("%c", ans[i]);
+        }
+        printk("\n");
+        
+        err = uart_tx(uart_dev, rep_mesg, strlen(rep_mesg), SYS_FOREVER_MS);
+        if (err) {
+            printk("uart_tx() error. Error code:%d\n\r",err);
+            return ERR_FATAL;
+        }
+    }
+}
+K_THREAD_DEFINE(uart_command_id, 1024, uart_command_task, NULL, NULL, NULL, 5, 0, 0);
 
 int main(void) {
     //  Setup LEDs
@@ -257,8 +433,13 @@ int main(void) {
     gpio_pin_configure_dt(&fet, GPIO_OUTPUT_INACTIVE);
         
 
+    uart_init();
     rtdb_init();
     buttons_init();
+
+	/* Init UART RX and TX buffers */
+	resetTxBuffer();
+	resetRxBuffer();
 
     return SUCCESS;
 }

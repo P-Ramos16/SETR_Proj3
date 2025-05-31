@@ -42,7 +42,7 @@
 /* Dynamic configuration option, available if CONFIG_UART_USE_RUNTIME_CONFIGURE is ser (it is by defualt)*/
 /* For static UART configuration it is recommended to use the devicetree editor (Actions tab) */
 const struct uart_config uart_cfg = {
-		.baudrate = ~,
+		.baudrate = 115200,
 		.parity = UART_CFG_PARITY_NONE,
 		.stop_bits = UART_CFG_STOP_BITS_1,
 		.data_bits = UART_CFG_DATA_BITS_8,
@@ -112,8 +112,8 @@ int main(void) {
         if(uart_rxbuf_nchar > 0) {
             rx_chars[uart_rxbuf_nchar] = 0; /* Terminate the string */
             uart_rxbuf_nchar = 0;           /* Reset counter */
-
-            sprintf(rep_mesg,"You typed [%s]\n\r",rx_chars);            
+ 
+            sprintf(rep_mesg,"You typed [%s]\n\r",rx_chars);           
             
             err = uart_tx(uart_dev, rep_mesg, strlen(rep_mesg), SYS_FOREVER_MS);
             if (err) {

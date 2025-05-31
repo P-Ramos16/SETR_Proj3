@@ -229,7 +229,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=basic_01_blinkDemo
+CMAKE_PROJECT_NAME:STATIC=Proj_3
 
 //Value Computed by CMake
 CMAKE_PROJECT_VERSION:STATIC=3.5.99
@@ -359,6 +359,15 @@ Picolibc_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
 Picolibc_SOURCE_DIR:STATIC=/home/pramos/ncs/v2.6.0/modules/lib/picolibc
+
+//Value Computed by CMake
+Proj_3_BINARY_DIR:STATIC=/home/pramos/Documents/Univ/SETR_Proj3/build_1
+
+//Value Computed by CMake
+Proj_3_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+Proj_3_SOURCE_DIR:STATIC=/home/pramos/Documents/Univ/SETR_Proj3
 
 //Path to a CMSIS-SVD file
 SOC_SVD_FILE:FILEPATH=/home/pramos/ncs/v2.6.0/modules/hal/nordic/nrfx/mdk/nrf52840.svd
@@ -527,7 +536,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=135
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=134
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
