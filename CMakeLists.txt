@@ -7,7 +7,6 @@ project(Proj_3)
 #  Add source files from main directory
 target_sources(app PRIVATE
     src/main.c
-    src/buttons.c
 )
 
 #  Add include directories

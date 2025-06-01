@@ -11,7 +11,7 @@
 #include <string.h>
 
 #include "modules/rtdb.h"
-#include "buttons.h"
+#include "modules/buttons.h"
 #include "modules/cmdproc.h"
 
 #define SUCCESS 0
@@ -365,6 +365,8 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
                         rx_chars[uart_rxbuf_nchar] = '\0';  // Null-terminate
                         k_sem_give(&uart_full_message_sem);  // Notify processor
                         startingMessage = false;
+                        uart_rxbuf_nchar = 0;
+                        memset(rx_buf, 0, sizeof(rx_buf));
                     }
                 }
             }
@@ -372,8 +374,10 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
 		    break;
 
 	    case UART_RX_BUF_REQUEST:
-            printk("\n\rMessage too long, discarding\n");
+            printk("\n\rERR: Message too long, discarding\n");
             startingMessage = false;
+            uart_rxbuf_nchar = 0;
+            memset(rx_buf, 0, sizeof(rx_buf));
 		    break;
 
 	    case UART_RX_BUF_RELEASED:
@@ -414,13 +418,10 @@ int uart_command_task(void) {
 
         cmdProcessor();     
         getTxBuffer(ans, &len);
-        printk("Response: ");
-        
-        for (int i = 0; i < len; i++) {
-            printf("%c", ans[i]);
-        }
-        printk("\n\r");
+        ans[len] = 0; /* Terminate the string */
 
+        sprintf(rep_mesg,"Response: %s\n\r",ans);            
+        
         err = uart_tx(uart_dev, rep_mesg, strlen(rep_mesg), SYS_FOREVER_MS);
         if (err) {
             printk("uart_tx() error. Error code:%d\n\r",err);

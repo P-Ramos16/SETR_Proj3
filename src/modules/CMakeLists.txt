@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
-
 #  Add module source files
 target_sources(app PRIVATE
     cmdproc.c
     rtdb.c
+    buttons.c
 )
 
 #  Add module-specific include directories if needed

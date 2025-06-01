@@ -163,12 +163,12 @@ int cmdProcessor(void) {
 
                 // Ler o valor recebido
                 char setTempStr[2] = {0}; // Buffer for 2 digits
-                setTempStr[0] = UARTRxBuffer[i+4];
-                setTempStr[1] = UARTRxBuffer[i+5];
+                setTempStr[0] = UARTRxBuffer[i+3];
+                setTempStr[1] = UARTRxBuffer[i+4];
 
                 int intendedTemperature = atoi(setTempStr);
 
-                if (UARTRxBuffer[i+3] == '-') {
+                if (UARTRxBuffer[i+2] == '-') {
                     intendedTemperature = -intendedTemperature;
                 }
 
