@@ -5,31 +5,31 @@
 \begin{DoxyCompactItemize}
 \item 
 void \mbox{\hyperlink{rtdb_8h_ad9ce7c499fa34b9212598f2f2c7b6cbe}{rtdb\+\_\+init}} (void)
-\item 
+\begin{DoxyCompactList}\small\item\em Initialize the RTDB. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{rtdb_8h_ad3ca78c2547c5cb3f0c7c466da06932b}{rtdb\+\_\+set\+\_\+system\+\_\+on}} (bool on)
-\item 
+\begin{DoxyCompactList}\small\item\em Set system on/off state. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{rtdb_8h_a28fc1e297fbe83c05b3fbd8a7f4aba7e}{rtdb\+\_\+get\+\_\+system\+\_\+on}} (void)
-\item 
+\begin{DoxyCompactList}\small\item\em Get system on/off state. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{rtdb_8h_a9bc5ce220a411ead2cb881c9fcd20e5e}{rtdb\+\_\+set\+\_\+desired\+\_\+temp}} (int temp)
-\item 
+\begin{DoxyCompactList}\small\item\em Set desired temperature. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{rtdb_8h_ac56acb70cbc0408ebfe98c640955aafd}{rtdb\+\_\+get\+\_\+desired\+\_\+temp}} (void)
-\item 
+\begin{DoxyCompactList}\small\item\em Get desired temperature. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{rtdb_8h_a028157e05bc41d41f861ae223d7ed5a6}{rtdb\+\_\+set\+\_\+current\+\_\+temp}} (int temp)
-\item 
+\begin{DoxyCompactList}\small\item\em Set current temperature. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{rtdb_8h_a7fa7f8050f54285108748d0cb42668f9}{rtdb\+\_\+get\+\_\+current\+\_\+temp}} (void)
-\item 
+\begin{DoxyCompactList}\small\item\em Get current temperature. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{rtdb_8h_a3c6caa23aaee3719899567e7958a6bbb}{rtdb\+\_\+set\+\_\+heat\+\_\+on}} (bool on)
-\item 
+\begin{DoxyCompactList}\small\item\em Set heat on/off state. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{rtdb_8h_a71b6aefd1db5f12266368691534a4c11}{rtdb\+\_\+get\+\_\+heat\+\_\+on}} (void)
-\item 
+\begin{DoxyCompactList}\small\item\em Get heat on/off state. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{rtdb_8h_a7071c0fb809709be64ad22fde2f13ffa}{rtdb\+\_\+set\+\_\+\+PID\+\_\+params}} (float \mbox{\hyperlink{rtdb_8c_a1f7add0f84d583bc2eceb290d6c4cc06}{kp}}, float \mbox{\hyperlink{rtdb_8c_a050993b7ca6c97e62c1020017f716b91}{ki}}, float \mbox{\hyperlink{rtdb_8c_ae7a5c6018507bb1361fcca170e069b9c}{kd}})
-\item 
+\begin{DoxyCompactList}\small\item\em Set PID parameters. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{rtdb_8h_ab3009eaffe2b3f6d0a0c2eae227c5383}{rtdb\+\_\+get\+\_\+\+PID\+\_\+params}} (float \texorpdfstring{$\ast$}{*}p, float \texorpdfstring{$\ast$}{*}i, float \texorpdfstring{$\ast$}{*}d)
-\item 
+\begin{DoxyCompactList}\small\item\em Get PID parameters. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{rtdb_8h_abf882ae91fc888fd6058837feb624e90}{rtdb\+\_\+set\+\_\+verbose}} (bool on)
-\item 
+\begin{DoxyCompactList}\small\item\em Set verbose mode on/off. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{rtdb_8h_afb9cf17453edcc6acc56b99a7e966b2a}{rtdb\+\_\+get\+\_\+verbose}} (void)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Get verbose mode state. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Function Documentation}
@@ -39,41 +39,93 @@ bool \mbox{\hyperlink{rtdb_8h_afb9cf17453edcc6acc56b99a7e966b2a}{rtdb\+\_\+get\+
 {\footnotesize\ttfamily \label{rtdb_8h_a7fa7f8050f54285108748d0cb42668f9} 
 int rtdb\+\_\+get\+\_\+current\+\_\+temp (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
 
+
+
+Get current temperature. 
+
+\begin{DoxyReturn}{Returns}
+Current temperature in °C. 
+\end{DoxyReturn}
 \Hypertarget{rtdb_8h_ac56acb70cbc0408ebfe98c640955aafd}\index{rtdb.h@{rtdb.h}!rtdb\_get\_desired\_temp@{rtdb\_get\_desired\_temp}}
 \index{rtdb\_get\_desired\_temp@{rtdb\_get\_desired\_temp}!rtdb.h@{rtdb.h}}
 \doxysubsubsection{\texorpdfstring{rtdb\_get\_desired\_temp()}{rtdb\_get\_desired\_temp()}}
 {\footnotesize\ttfamily \label{rtdb_8h_ac56acb70cbc0408ebfe98c640955aafd} 
 int rtdb\+\_\+get\+\_\+desired\+\_\+temp (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
 
+
+
+Get desired temperature. 
+
+\begin{DoxyReturn}{Returns}
+Desired temperature in °C. 
+\end{DoxyReturn}
 \Hypertarget{rtdb_8h_a71b6aefd1db5f12266368691534a4c11}\index{rtdb.h@{rtdb.h}!rtdb\_get\_heat\_on@{rtdb\_get\_heat\_on}}
 \index{rtdb\_get\_heat\_on@{rtdb\_get\_heat\_on}!rtdb.h@{rtdb.h}}
 \doxysubsubsection{\texorpdfstring{rtdb\_get\_heat\_on()}{rtdb\_get\_heat\_on()}}
 {\footnotesize\ttfamily \label{rtdb_8h_a71b6aefd1db5f12266368691534a4c11} 
 bool rtdb\+\_\+get\+\_\+heat\+\_\+on (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
 
+
+
+Get heat on/off state. 
+
+\begin{DoxyReturn}{Returns}
+true if heater is on, false otherwise. 
+\end{DoxyReturn}
 \Hypertarget{rtdb_8h_ab3009eaffe2b3f6d0a0c2eae227c5383}\index{rtdb.h@{rtdb.h}!rtdb\_get\_PID\_params@{rtdb\_get\_PID\_params}}
 \index{rtdb\_get\_PID\_params@{rtdb\_get\_PID\_params}!rtdb.h@{rtdb.h}}
 \doxysubsubsection{\texorpdfstring{rtdb\_get\_PID\_params()}{rtdb\_get\_PID\_params()}}
 {\footnotesize\ttfamily \label{rtdb_8h_ab3009eaffe2b3f6d0a0c2eae227c5383} 
 void rtdb\+\_\+get\+\_\+\+PID\+\_\+params (\begin{DoxyParamCaption}\item[{float \texorpdfstring{$\ast$}{*}}]{p}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{i}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{d}{}\end{DoxyParamCaption})}
 
+
+
+Get PID parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & Pointer to receive proportional gain. \\
+\hline
+{\em i} & Pointer to receive integral gain. \\
+\hline
+{\em d} & Pointer to receive derivative gain. \\
+\hline
+\end{DoxyParams}
 \Hypertarget{rtdb_8h_a28fc1e297fbe83c05b3fbd8a7f4aba7e}\index{rtdb.h@{rtdb.h}!rtdb\_get\_system\_on@{rtdb\_get\_system\_on}}
 \index{rtdb\_get\_system\_on@{rtdb\_get\_system\_on}!rtdb.h@{rtdb.h}}
 \doxysubsubsection{\texorpdfstring{rtdb\_get\_system\_on()}{rtdb\_get\_system\_on()}}
 {\footnotesize\ttfamily \label{rtdb_8h_a28fc1e297fbe83c05b3fbd8a7f4aba7e} 
 bool rtdb\+\_\+get\+\_\+system\+\_\+on (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
 
+
+
+Get system on/off state. 
+
+\begin{DoxyReturn}{Returns}
+true if system is on, false otherwise. 
+\end{DoxyReturn}
 \Hypertarget{rtdb_8h_afb9cf17453edcc6acc56b99a7e966b2a}\index{rtdb.h@{rtdb.h}!rtdb\_get\_verbose@{rtdb\_get\_verbose}}
 \index{rtdb\_get\_verbose@{rtdb\_get\_verbose}!rtdb.h@{rtdb.h}}
 \doxysubsubsection{\texorpdfstring{rtdb\_get\_verbose()}{rtdb\_get\_verbose()}}
 {\footnotesize\ttfamily \label{rtdb_8h_afb9cf17453edcc6acc56b99a7e966b2a} 
 bool rtdb\+\_\+get\+\_\+verbose (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
 
+
+
+Get verbose mode state. 
+
+\begin{DoxyReturn}{Returns}
+true if verbose mode is on, false otherwise. 
+\end{DoxyReturn}
 \Hypertarget{rtdb_8h_ad9ce7c499fa34b9212598f2f2c7b6cbe}\index{rtdb.h@{rtdb.h}!rtdb\_init@{rtdb\_init}}
 \index{rtdb\_init@{rtdb\_init}!rtdb.h@{rtdb.h}}
 \doxysubsubsection{\texorpdfstring{rtdb\_init()}{rtdb\_init()}}
 {\footnotesize\ttfamily \label{rtdb_8h_ad9ce7c499fa34b9212598f2f2c7b6cbe} 
 void rtdb\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Initialize the RTDB. 
 
 \Hypertarget{rtdb_8h_a028157e05bc41d41f861ae223d7ed5a6}\index{rtdb.h@{rtdb.h}!rtdb\_set\_current\_temp@{rtdb\_set\_current\_temp}}
 \index{rtdb\_set\_current\_temp@{rtdb\_set\_current\_temp}!rtdb.h@{rtdb.h}}
@@ -81,33 +133,91 @@ void rtdb\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCapt
 {\footnotesize\ttfamily \label{rtdb_8h_a028157e05bc41d41f861ae223d7ed5a6} 
 void rtdb\+\_\+set\+\_\+current\+\_\+temp (\begin{DoxyParamCaption}\item[{int}]{temp}{}\end{DoxyParamCaption})}
 
+
+
+Set current temperature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em temp} & Current temperature in °C. \\
+\hline
+\end{DoxyParams}
 \Hypertarget{rtdb_8h_a9bc5ce220a411ead2cb881c9fcd20e5e}\index{rtdb.h@{rtdb.h}!rtdb\_set\_desired\_temp@{rtdb\_set\_desired\_temp}}
 \index{rtdb\_set\_desired\_temp@{rtdb\_set\_desired\_temp}!rtdb.h@{rtdb.h}}
 \doxysubsubsection{\texorpdfstring{rtdb\_set\_desired\_temp()}{rtdb\_set\_desired\_temp()}}
 {\footnotesize\ttfamily \label{rtdb_8h_a9bc5ce220a411ead2cb881c9fcd20e5e} 
 void rtdb\+\_\+set\+\_\+desired\+\_\+temp (\begin{DoxyParamCaption}\item[{int}]{temp}{}\end{DoxyParamCaption})}
 
+
+
+Set desired temperature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em temp} & Desired temperature in °C. \\
+\hline
+\end{DoxyParams}
 \Hypertarget{rtdb_8h_a3c6caa23aaee3719899567e7958a6bbb}\index{rtdb.h@{rtdb.h}!rtdb\_set\_heat\_on@{rtdb\_set\_heat\_on}}
 \index{rtdb\_set\_heat\_on@{rtdb\_set\_heat\_on}!rtdb.h@{rtdb.h}}
 \doxysubsubsection{\texorpdfstring{rtdb\_set\_heat\_on()}{rtdb\_set\_heat\_on()}}
 {\footnotesize\ttfamily \label{rtdb_8h_a3c6caa23aaee3719899567e7958a6bbb} 
 void rtdb\+\_\+set\+\_\+heat\+\_\+on (\begin{DoxyParamCaption}\item[{bool}]{on}{}\end{DoxyParamCaption})}
 
+
+
+Set heat on/off state. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em on} & true to turn heater on, false to turn it off. \\
+\hline
+\end{DoxyParams}
 \Hypertarget{rtdb_8h_a7071c0fb809709be64ad22fde2f13ffa}\index{rtdb.h@{rtdb.h}!rtdb\_set\_PID\_params@{rtdb\_set\_PID\_params}}
 \index{rtdb\_set\_PID\_params@{rtdb\_set\_PID\_params}!rtdb.h@{rtdb.h}}
 \doxysubsubsection{\texorpdfstring{rtdb\_set\_PID\_params()}{rtdb\_set\_PID\_params()}}
 {\footnotesize\ttfamily \label{rtdb_8h_a7071c0fb809709be64ad22fde2f13ffa} 
-void rtdb\+\_\+set\+\_\+\+PID\+\_\+params (\begin{DoxyParamCaption}\item[{float}]{kp}{, }\item[{float}]{ki}{, }\item[{float}]{kd}{}\end{DoxyParamCaption})}
+void rtdb\+\_\+set\+\_\+\+PID\+\_\+params (\begin{DoxyParamCaption}\item[{float}]{p}{, }\item[{float}]{i}{, }\item[{float}]{d}{}\end{DoxyParamCaption})}
 
+
+
+Set PID parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & Proportional gain. \\
+\hline
+{\em i} & Integral gain. \\
+\hline
+{\em d} & Derivative gain. \\
+\hline
+\end{DoxyParams}
 \Hypertarget{rtdb_8h_ad3ca78c2547c5cb3f0c7c466da06932b}\index{rtdb.h@{rtdb.h}!rtdb\_set\_system\_on@{rtdb\_set\_system\_on}}
 \index{rtdb\_set\_system\_on@{rtdb\_set\_system\_on}!rtdb.h@{rtdb.h}}
 \doxysubsubsection{\texorpdfstring{rtdb\_set\_system\_on()}{rtdb\_set\_system\_on()}}
 {\footnotesize\ttfamily \label{rtdb_8h_ad3ca78c2547c5cb3f0c7c466da06932b} 
 void rtdb\+\_\+set\+\_\+system\+\_\+on (\begin{DoxyParamCaption}\item[{bool}]{on}{}\end{DoxyParamCaption})}
 
+
+
+Set system on/off state. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em on} & true to turn system on, false to turn it off. \\
+\hline
+\end{DoxyParams}
 \Hypertarget{rtdb_8h_abf882ae91fc888fd6058837feb624e90}\index{rtdb.h@{rtdb.h}!rtdb\_set\_verbose@{rtdb\_set\_verbose}}
 \index{rtdb\_set\_verbose@{rtdb\_set\_verbose}!rtdb.h@{rtdb.h}}
 \doxysubsubsection{\texorpdfstring{rtdb\_set\_verbose()}{rtdb\_set\_verbose()}}
 {\footnotesize\ttfamily \label{rtdb_8h_abf882ae91fc888fd6058837feb624e90} 
 void rtdb\+\_\+set\+\_\+verbose (\begin{DoxyParamCaption}\item[{bool}]{on}{}\end{DoxyParamCaption})}
 
+
+
+Set verbose mode on/off. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em on} & true to enable verbose mode, false to disable. \\
+\hline
+\end{DoxyParams}

@@ -24,93 +24,32 @@
 \DoxyCodeLine{00030\ \textcolor{comment}{/*\ Some\ defines\ */}}
 \DoxyCodeLine{00031\ \textcolor{comment}{/*\ Other\ defines\ should\ be\ return\ codes\ of\ the\ functions\ */}}
 \DoxyCodeLine{00032\ \textcolor{comment}{/*\ E.g.\ \#define\ CMD\_EMPTY\_STRING\ -\/1\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#define\ UART\_RX\_SIZE\ 20\ \ \ \ \ }\textcolor{comment}{/*\ Maximum\ size\ of\ the\ RX\ buffer\ */}\textcolor{preprocessor}{\ }}
-\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ UART\_TX\_SIZE\ 20\ \ \ \ \ }\textcolor{comment}{/*\ Maximum\ size\ of\ the\ TX\ buffer\ */}\textcolor{preprocessor}{\ }}
-\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ SOF\_SYM\ '\#'\ \ \ \ \ \ \ \ \ }\textcolor{comment}{/*\ Start\ of\ Frame\ Symbol\ */}\textcolor{preprocessor}{}}
-\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ EOF\_SYM\ '!'\ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{/*\ End\ of\ Frame\ Symbol\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#define\ UART\_RX\_SIZE\ 20\ \ \ \ \ }\textcolor{preprocessor}{\ }}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ UART\_TX\_SIZE\ 20\ \ \ \ \ }\textcolor{preprocessor}{\ }}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ SOF\_SYM\ '\#'\ \ \ \ \ \ \ \ \ }\textcolor{preprocessor}{}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ EOF\_SYM\ '!'\ \ \ \ \ \ \ \ \ }\textcolor{preprocessor}{}}
 \DoxyCodeLine{00037\ }
-\DoxyCodeLine{00038\ \textcolor{comment}{/*\ Function\ prototypes\ */}}
-\DoxyCodeLine{00039\ }
-\DoxyCodeLine{00040\ \textcolor{comment}{/*\ ************************************************************\ */}}
-\DoxyCodeLine{00041\ \textcolor{comment}{/*\ Processes\ the\ chars\ in\ the\ RX\ buffer\ looking\ for\ commands\ \ \ \ */}}
-\DoxyCodeLine{00042\ \textcolor{comment}{/*\ Returns:\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00043\ \textcolor{comment}{/*\ \ \ \ \ \ \ 0:\ if\ a\ valid\ command\ was\ found\ and\ executed\ \ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00044\ \textcolor{comment}{/*\ \ \ \ \ \ -\/1:\ if\ empty\ string\ or\ incomplete\ command\ found\ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00045\ \textcolor{comment}{/*\ \ \ \ \ \ -\/2:\ if\ an\ invalid\ command\ was\ found\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00046\ \textcolor{comment}{/*\ \ \ \ \ \ -\/3:\ if\ a\ CS\ error\ is\ detected\ (command\ not\ executed)\ \ \ \ */}}
-\DoxyCodeLine{00047\ \textcolor{comment}{/*\ \ \ \ \ \ -\/4:\ if\ string\ format\ is\ wrong\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00048\ \textcolor{comment}{/*\ ************************************************************\ */}}
-\DoxyCodeLine{00053\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{cmdproc_8h_afbdfe0465dfd34a5f244fe41fa27c12a}{cmdProcessor}}(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{00054\ }
-\DoxyCodeLine{00055\ \textcolor{comment}{/*\ ********************************\ */}}
-\DoxyCodeLine{00056\ \textcolor{comment}{/*\ Adds\ a\ char\ to\ the\ RX\ buffer\ \ \ \ \ */}}
-\DoxyCodeLine{00057\ \textcolor{comment}{/*\ I.e.,\ the\ reception\ of\ commands\ \ */}}
-\DoxyCodeLine{00058\ \textcolor{comment}{/*\ Returns:\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00059\ \textcolor{comment}{/*\ \ \ \ \ \ \ 0:\ if\ success\ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00060\ \textcolor{comment}{/*\ \ \ \ \ \ -\/1:\ if\ buffer\ full\ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00061\ \textcolor{comment}{/*\ ********************************\ */}}
-\DoxyCodeLine{00067\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{cmdproc_8h_a67ae8a79a708a3c5471668bddbd16400}{rxChar}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ car);}
-\DoxyCodeLine{00068\ }
-\DoxyCodeLine{00069\ \textcolor{comment}{/*\ ************************************\ */}}
-\DoxyCodeLine{00070\ \textcolor{comment}{/*\ Adds\ a\ char\ to\ the\ TX\ buffer\ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00071\ \textcolor{comment}{/*\ I.e.,\ the\ tranmsisison\ of\ answers\ \ \ \ */}}
-\DoxyCodeLine{00072\ \textcolor{comment}{/*\ Returns:\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00073\ \textcolor{comment}{/*\ \ \ \ \ \ \ 0:\ if\ success\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00074\ \textcolor{comment}{/*\ \ \ \ \ \ -\/1:\ if\ buffer\ full\ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00075\ \textcolor{comment}{/*\ ************************************\ */}}
-\DoxyCodeLine{00081\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{cmdproc_8h_abdb4363f0662688850bbcdfb59ce4566}{txChar}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ car);}
+\DoxyCodeLine{00055\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{cmdproc_8h_afbdfe0465dfd34a5f244fe41fa27c12a}{cmdProcessor}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00063\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{cmdproc_8h_a67ae8a79a708a3c5471668bddbd16400}{rxChar}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ car);}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00071\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{cmdproc_8h_abdb4363f0662688850bbcdfb59ce4566}{txChar}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ car);}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00076\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cmdproc_8h_a918f38a7eecdd03671d28a3a07f94856}{resetRxBuffer}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00081\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cmdproc_8h_abd91ad9b5887f4769f45823899583bab}{resetTxBuffer}}(\textcolor{keywordtype}{void});}
 \DoxyCodeLine{00082\ }
-\DoxyCodeLine{00083\ \textcolor{comment}{/*\ *************************\ */}}
-\DoxyCodeLine{00084\ \textcolor{comment}{/*\ Resets\ the\ RX\ buffer\ \ \ \ \ \ */}\ \ }
-\DoxyCodeLine{00085\ \textcolor{comment}{/*\ *************************\ */}}
-\DoxyCodeLine{00089\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cmdproc_8h_a918f38a7eecdd03671d28a3a07f94856}{resetRxBuffer}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00089\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cmdproc_8h_a8beeddde9a644610c72724be856db6dd}{getTxBuffer}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ *\ buf,\ \textcolor{keywordtype}{int}\ *\ len);}
 \DoxyCodeLine{00090\ }
-\DoxyCodeLine{00091\ \textcolor{comment}{/*\ *************************\ */}}
-\DoxyCodeLine{00092\ \textcolor{comment}{/*\ Resets\ the\ TX\ buffer\ \ \ \ \ \ */}\ \ }
-\DoxyCodeLine{00093\ \textcolor{comment}{/*\ *************************\ */}}
-\DoxyCodeLine{00097\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cmdproc_8h_abd91ad9b5887f4769f45823899583bab}{resetTxBuffer}}(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{00098\ }
-\DoxyCodeLine{00099\ \textcolor{comment}{/*\ ************************************************\ */}}
-\DoxyCodeLine{00100\ \textcolor{comment}{/*\ Return\ the\ data\ that\ would\ be\ sent\ by\ the\ sensor\ */}\ \ }
-\DoxyCodeLine{00101\ \textcolor{comment}{/*\ ************************************************\ */}}
-\DoxyCodeLine{00106\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cmdproc_8h_a8beeddde9a644610c72724be856db6dd}{getTxBuffer}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ *\ buf,\ \textcolor{keywordtype}{int}\ *\ len);}
-\DoxyCodeLine{00107\ }
-\DoxyCodeLine{00108\ \textcolor{comment}{/*\ ************************************************\ */}}
-\DoxyCodeLine{00109\ \textcolor{comment}{/*\ Computes\ the\ checksum\ of\ a\ given\ number\ of\ chars\ */}}
-\DoxyCodeLine{00110\ \textcolor{comment}{/*\ ************************************************\ */}\ }
-\DoxyCodeLine{00117\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{cmdproc_8h_a2a0e03d8d8ff0f0459f7623ffd6d39b1}{calcChecksum}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ *\ buf,\ \textcolor{keywordtype}{int}\ nbytes);}
-\DoxyCodeLine{00118\ }
-\DoxyCodeLine{00119\ \textcolor{comment}{/*\ ************************************************\ */}}
-\DoxyCodeLine{00120\ \textcolor{comment}{/*\ Simula\ a\ leitura\ de\ temperatura\ do\ sensor\ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00121\ \textcolor{comment}{/*\ ************************************************\ */}}
-\DoxyCodeLine{00126\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{cmdproc_8h_ae6665ae6de1e573ec1d5bb72e0ea5d04}{readTempSensor}}(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{00127\ }
-\DoxyCodeLine{00128\ \textcolor{comment}{/*\ ************************************************\ */}}
-\DoxyCodeLine{00129\ \textcolor{comment}{/*\ Simula\ a\ leitura\ da\ humidade\ do\ sensor\ \ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00130\ \textcolor{comment}{/*\ ************************************************\ */}}
-\DoxyCodeLine{00135\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{cmdproc_8h_ad1bdb4081f1dc05be19f7d1b9a7307b6}{readHumidSensor}}(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{00136\ }
-\DoxyCodeLine{00137\ \textcolor{comment}{/*\ ************************************************\ */}}
-\DoxyCodeLine{00138\ \textcolor{comment}{/*\ Simula\ a\ leitura\ de\ CO2\ do\ sensor\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00139\ \textcolor{comment}{/*\ ************************************************\ */}}
-\DoxyCodeLine{00144\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{cmdproc_8h_a31e38459fe1478dcb9eaaecd26058616}{readCO2Sensor}}(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{00145\ }
-\DoxyCodeLine{00146\ \textcolor{comment}{/*\ ************************************************\ */}}
-\DoxyCodeLine{00147\ \textcolor{comment}{/*\ Devolve\ size\ do\ buffer\ rx\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00148\ \textcolor{comment}{/*\ ************************************************\ */}}
-\DoxyCodeLine{00153\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{cmdproc_8h_a257f53fb5eb850ccbf3ac26a614b152e}{getRxBufferSize}}(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{00154\ }
-\DoxyCodeLine{00155\ \textcolor{comment}{/*\ ************************************************\ */}}
-\DoxyCodeLine{00156\ \textcolor{comment}{/*\ Devolve\ size\ do\ buffer\ tx\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00157\ \textcolor{comment}{/*\ ************************************************\ */}}
-\DoxyCodeLine{00162\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{cmdproc_8h_a2397dd1c9b60734d3afa3f3a48d47822}{getTxBufferSize}}(\textcolor{keywordtype}{void});}
-\DoxyCodeLine{00163\ }
-\DoxyCodeLine{00164\ \textcolor{comment}{/*\ ************************************************\ */}}
-\DoxyCodeLine{00165\ \textcolor{comment}{/*\ \ Sends\ predetermined\ messages\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
-\DoxyCodeLine{00166\ \textcolor{comment}{/*\ ************************************************\ */}}
-\DoxyCodeLine{00170\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cmdproc_8h_ab2f4aac88c91f6afd0d002d16ccff36f}{send\_ack}}(\textcolor{keywordtype}{int}\ type);}
-\DoxyCodeLine{00171\ }
-\DoxyCodeLine{00172\ }
-\DoxyCodeLine{00173\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00098\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{cmdproc_8h_a2a0e03d8d8ff0f0459f7623ffd6d39b1}{calcChecksum}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ *\ buf,\ \textcolor{keywordtype}{int}\ nbytes);}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00105\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{cmdproc_8h_a257f53fb5eb850ccbf3ac26a614b152e}{getRxBufferSize}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00112\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{cmdproc_8h_a2397dd1c9b60734d3afa3f3a48d47822}{getTxBufferSize}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00123\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cmdproc_8h_ab2f4aac88c91f6afd0d002d16ccff36f}{send\_ack}}(\textcolor{keywordtype}{int}\ type);}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#endif}}
 
 \end{DoxyCode}

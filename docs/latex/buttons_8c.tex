@@ -1,5 +1,5 @@
-\doxysection{src/buttons.c File Reference}
-\hypertarget{buttons_8c}{}\label{buttons_8c}\index{src/buttons.c@{src/buttons.c}}
+\doxysection{src/modules/buttons.c File Reference}
+\hypertarget{buttons_8c}{}\label{buttons_8c}\index{src/modules/buttons.c@{src/modules/buttons.c}}
 
 
 Gestão dos botões físicos do sistema.  
@@ -22,7 +22,7 @@ Gestão dos botões físicos do sistema.
 \begin{DoxyCompactItemize}
 \item 
 void \mbox{\hyperlink{buttons_8c_acef6dd444cb6560da652897ee43ab306}{buttons\+\_\+init}} (void)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Initialize buttons and their interrupts. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -35,7 +35,15 @@ Configura os botões BTN1, BTN2 e BTN4 para operar por interrupção. Cada botã
 \item BTN4\+: Diminui a temperatura desejada.
 \end{DoxyItemize}
 
-Cada ação manipula a base de dados em tempo real (RTDB), assegurando a sincronização entre tarefas. 
+Cada ação manipula a base de dados em tempo real (RTDB), assegurando a sincronização entre tarefas. \begin{DoxyAuthor}{Author}
+Pedro Ramos, n.\+º 107348 
+
+Rafael Morgado, n.\+º 104277 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+01/06/2025 
+\end{DoxyDate}
+
 
 \doxysubsection{Macro Definition Documentation}
 \Hypertarget{buttons_8c_a96f7d37676c3ecbc7612d50eec3e54ff}\index{buttons.c@{buttons.c}!BTN1\_NODE@{BTN1\_NODE}}
@@ -44,19 +52,19 @@ Cada ação manipula a base de dados em tempo real (RTDB), assegurando a sincron
 {\footnotesize\ttfamily \label{buttons_8c_a96f7d37676c3ecbc7612d50eec3e54ff} 
 \#define BTN1\+\_\+\+NODE~DT\+\_\+\+ALIAS(sw0)}
 
-\Hypertarget{buttons_8c_ad059574f42bfa0704ad3c465e96785ad}\index{buttons.c@{buttons.c}!BTN2\_NODE@{BTN2\_NODE}}
+Devicetree alias for BTN1 \Hypertarget{buttons_8c_ad059574f42bfa0704ad3c465e96785ad}\index{buttons.c@{buttons.c}!BTN2\_NODE@{BTN2\_NODE}}
 \index{BTN2\_NODE@{BTN2\_NODE}!buttons.c@{buttons.c}}
 \doxysubsubsection{\texorpdfstring{BTN2\_NODE}{BTN2\_NODE}}
 {\footnotesize\ttfamily \label{buttons_8c_ad059574f42bfa0704ad3c465e96785ad} 
 \#define BTN2\+\_\+\+NODE~DT\+\_\+\+ALIAS(sw1)}
 
-\Hypertarget{buttons_8c_a03c1f2e5f234ed947571598bea2ec03b}\index{buttons.c@{buttons.c}!BTN4\_NODE@{BTN4\_NODE}}
+Devicetree alias for BTN2 \Hypertarget{buttons_8c_a03c1f2e5f234ed947571598bea2ec03b}\index{buttons.c@{buttons.c}!BTN4\_NODE@{BTN4\_NODE}}
 \index{BTN4\_NODE@{BTN4\_NODE}!buttons.c@{buttons.c}}
 \doxysubsubsection{\texorpdfstring{BTN4\_NODE}{BTN4\_NODE}}
 {\footnotesize\ttfamily \label{buttons_8c_a03c1f2e5f234ed947571598bea2ec03b} 
 \#define BTN4\+\_\+\+NODE~DT\+\_\+\+ALIAS(sw3)}
 
-
+Devicetree alias for BTN4 
 
 \doxysubsection{Function Documentation}
 \Hypertarget{buttons_8c_acef6dd444cb6560da652897ee43ab306}\index{buttons.c@{buttons.c}!buttons\_init@{buttons\_init}}
@@ -64,4 +72,8 @@ Cada ação manipula a base de dados em tempo real (RTDB), assegurando a sincron
 \doxysubsubsection{\texorpdfstring{buttons\_init()}{buttons\_init()}}
 {\footnotesize\ttfamily \label{buttons_8c_acef6dd444cb6560da652897ee43ab306} 
 void buttons\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
+
+
+
+Initialize buttons and their interrupts. 
 

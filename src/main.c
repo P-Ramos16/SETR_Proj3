@@ -1,3 +1,22 @@
+/**
+ * @file main.c
+ * @brief Main system controller for temperature regulation
+ *
+ * This module initializes all system components including:
+ * - LED indicators
+ * - Temperature sensor (TC74 via I2C)
+ * - Heater control (via FET)
+ * - UART communication interface
+ * - Real-Time Database (RTDB)
+ * - Button inputs
+ *
+ * The system implements a PID controller for temperature regulation
+ * with multiple threads handling different aspects of the control system.
+ * \author Pedro Ramos, n.º 107348
+ * \author Rafael Morgado, n.º 104277
+ * \date 01/06/2025
+ */
+
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/devicetree.h>
@@ -12,69 +31,54 @@
 
 #include "modules/rtdb.h"
 #include "modules/buttons.h"
+#include "modules/PID.h"
 #include "modules/cmdproc.h"
 
-#define SUCCESS 0
-#define ERR_FATAL -1
-
-/**
- * @file main.c
- * @brief Módulo principal do sistema de controlo de temperatura.
- *
- * Inicializa os LEDs e arranca a tarefa `led_update_task`, que atualiza os LEDs com base nos valores
- * armazenados na base de dados em tempo real (RTDB). Esta tarefa reflete o estado do sistema,
- * indicando se está ligado, se a temperatura está normal, ou se há desvios acima ou abaixo do desejado.
- *
- * Também chama a função `buttons_init()` para configurar os botões físicos.
- *
- * A lógica do sistema está distribuída entre múltiplas tarefas e protegida por mecanismos de sincronização.
- */
+#define SUCCESS 0     /**< Operation successful return code */
+#define ERR_FATAL -1  /**< Fatal error return code */
 
 
-/* ---------- LEDs ---------- */
-/*  - Definition  */
-#define LED0_NODE DT_ALIAS(led0)
-#define LED1_NODE DT_ALIAS(led1)
-#define LED2_NODE DT_ALIAS(led2)
-#define LED3_NODE DT_ALIAS(led3)
-/*  - Thread Properties  */
-#define led_thread_period 500
-K_TIMER_DEFINE(led_thread_timer, NULL, NULL);
-/*  - Specs  */
-static const struct gpio_dt_spec led0 = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
-static const struct gpio_dt_spec led1 = GPIO_DT_SPEC_GET(LED1_NODE, gpios);
-static const struct gpio_dt_spec led2 = GPIO_DT_SPEC_GET(LED2_NODE, gpios);
-static const struct gpio_dt_spec led3 = GPIO_DT_SPEC_GET(LED3_NODE, gpios);
+
+/* ---------- LED Configuration ---------- */
+#define LED0_NODE DT_ALIAS(led0)  /**< Devicetree alias for LED0 */
+#define LED1_NODE DT_ALIAS(led1)  /**< Devicetree alias for LED1 */
+#define LED2_NODE DT_ALIAS(led2)  /**< Devicetree alias for LED2 */
+#define LED3_NODE DT_ALIAS(led3)  /**< Devicetree alias for LED3 */
+
+#define led_thread_period 500  /**< LED update period in milliseconds */
+K_TIMER_DEFINE(led_thread_timer, NULL, NULL);  /**< Timer for LED thread */
+
+static const struct gpio_dt_spec led0 = GPIO_DT_SPEC_GET(LED0_NODE, gpios);  /**< LED0 GPIO specification */
+static const struct gpio_dt_spec led1 = GPIO_DT_SPEC_GET(LED1_NODE, gpios);  /**< LED1 GPIO specification */
+static const struct gpio_dt_spec led2 = GPIO_DT_SPEC_GET(LED2_NODE, gpios);  /**< LED2 GPIO specification */
+static const struct gpio_dt_spec led3 = GPIO_DT_SPEC_GET(LED3_NODE, gpios);  /**< LED3 GPIO specification */
 
 
-/* ---------- Temperature Sensor ---------- */
-/*  - Definition  */
-#define TC74_CMD_RTR 0x00   /* Read temperature command */
-#define TC74_CMD_RWCR 0x01  /* Read/write configuration register */
-/*  - I2C device vars  */
-#define I2C0_NID DT_NODELABEL(tc74sensor)
-static const struct i2c_dt_spec dev_i2c = I2C_DT_SPEC_GET(I2C0_NID);
-/*  - Thread Properties  */
-#define temp_read_thread_period 250
-K_TIMER_DEFINE(temp_read_thread_timer, NULL, NULL);
+/* ---------- Temperature Sensor Configuration ---------- */
+#define TC74_CMD_RTR 0x00   /**< Read temperature command */
+#define TC74_CMD_RWCR 0x01  /**< Read/write configuration register */
+
+#define I2C0_NID DT_NODELABEL(tc74sensor)  /**< Devicetree node identifier for TC74 sensor */
+static const struct i2c_dt_spec dev_i2c = I2C_DT_SPEC_GET(I2C0_NID);  /**< I2C device specification */
+
+#define temp_read_thread_period 250  /**< Temperature reading period in milliseconds */
+K_TIMER_DEFINE(temp_read_thread_timer, NULL, NULL);  /**< Timer for temperature reading thread */
 
 
-/* ---------- Heater (or LED) FET Control ---------- */
-/*  - Definition  */
-#define FET_NODE DT_ALIAS(fetpin)
-/*  - Specs  */
-static const struct gpio_dt_spec fet = GPIO_DT_SPEC_GET(FET_NODE, gpios);
+/* ---------- Heater Control Configuration ---------- */
+#define FET_NODE DT_ALIAS(fetpin)  /**< Devicetree alias for FET control pin */
+static const struct gpio_dt_spec fet = GPIO_DT_SPEC_GET(FET_NODE, gpios);  /**< FET GPIO specification */
 
 
-/* ---------- UART Reader ---------- */
-/*  - Device Setup  */
-#define UART_NODE DT_NODELABEL(uart0)   /* UART0 node ID*/
-/*  - Buffer Properties  */
-#define RXBUF_SIZE 60
-#define TXBUF_SIZE 60
-#define MSG_BUF_SIZE 100 
-#define RX_TIMEOUT 1000   /* Inactivity period after the instant when last char was received that triggers an rx event (in us) */
-/*  - UART Config  */
+/* ---------- UART Configuration ---------- */
+#define UART_NODE DT_NODELABEL(uart0)  /**< Devicetree node identifier for UART0 */
+
+#define RXBUF_SIZE 60      /**< UART receive buffer size */
+#define TXBUF_SIZE 60      /**< UART transmit buffer size */
+#define MSG_BUF_SIZE 100   /**< Complete message buffer size */
+#define RX_TIMEOUT 1000    /**< UART receive timeout in microseconds */
+
+/** UART configuration structure */
 const struct uart_config uart_cfg = {
 		.baudrate = 115200,
 		.parity = UART_CFG_PARITY_NONE,
@@ -82,10 +86,12 @@ const struct uart_config uart_cfg = {
 		.data_bits = UART_CFG_DATA_BITS_8,
 		.flow_ctrl = UART_CFG_FLOW_CTRL_NONE
 };
-const struct device *uart_dev = DEVICE_DT_GET(UART_NODE);
-static uint8_t rx_buf[RXBUF_SIZE];      /* RX buffer, to store received data */
-static uint8_t rx_chars[RXBUF_SIZE];    /* chars actually received  */
-volatile int uart_rxbuf_nchar=0;        /* Number of chars currently on the rx buffer */
+
+const struct device *uart_dev = DEVICE_DT_GET(UART_NODE);  /**< UART device instance */
+static uint8_t rx_buf[RXBUF_SIZE];      /**< UART receive buffer */
+static uint8_t rx_chars[RXBUF_SIZE];    /**< Buffer for received characters */
+volatile int uart_rxbuf_nchar = 0;      /**< Number of characters in receive buffer */
+
 /*  - Callback Setup  */
 static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data);
 /*  - Thread Properties  */
@@ -94,18 +100,21 @@ K_TIMER_DEFINE(uart_thread_timer, NULL, NULL);
 
 
 /* ---------- Semaphores ---------- */
-/*  - For executing the PID controller on the new value after a sensor read  */
-struct k_sem sensor_to_controller_sem = Z_SEM_INITIALIZER(sensor_to_controller_sem, 0, 1);
-/*  - For executing the heat control based on the on/off value from the PID  */
-struct k_sem controller_to_heater_sem = Z_SEM_INITIALIZER(controller_to_heater_sem, 0, 1);
-/*  - For executing the command processor when a complete message is received  */
-struct k_sem uart_full_message_sem = Z_SEM_INITIALIZER(uart_full_message_sem, 0, 1);
-
-
-/* ---------- Other Usefull Vars ---------- */
+struct k_sem sensor_to_controller_sem = Z_SEM_INITIALIZER(sensor_to_controller_sem, 0, 1); /**< For executing the PID controller on the new value after a sensor read  */
+struct k_sem controller_to_heater_sem = Z_SEM_INITIALIZER(controller_to_heater_sem, 0, 1); /**< For executing the heat control based on the on/off value from the PID  */
+struct k_sem uart_full_message_sem = Z_SEM_INITIALIZER(uart_full_message_sem, 0, 1); /**< For executing the command processor when a complete message is received  */
 
 
 
+/**
+ * @brief LED update task
+ *
+ * This thread periodically updates the LED indicators based on system state:
+ * - LED0: System power state (on/off)
+ * - LED1: Temperature within desired range (±2°C)
+ * - LED2: Temperature below desired range
+ * - LED3: Temperature above desired range
+ */
 void led_update_task(void) {
     k_timer_start(&led_thread_timer, K_MSEC(led_thread_period), K_MSEC(led_thread_period));
 
@@ -134,7 +143,14 @@ void led_update_task(void) {
 K_THREAD_DEFINE(led_task_id, 1024, led_update_task, NULL, NULL, NULL, 5, 0, 0);
 
 
-
+/**
+ * @brief Temperature reading task
+ *
+ * This thread periodically reads the temperature from the TC74 sensor
+ * and updates the RTDB with the current temperature value.
+ *
+ * @return int SUCCESS on success, ERR_FATAL on failure
+ */
 int read_temperature_task(void) {
     int ret = 0;
     uint8_t temp = 0; 
@@ -177,34 +193,14 @@ int read_temperature_task(void) {
 K_THREAD_DEFINE(temp_read_task_id, 1024, read_temperature_task, NULL, NULL, NULL, 5, 0, 0);
 
 
-
-float pid_calculate(float setpoint, float measured, float dt, 
-                    float *last_error, float *integral) {
-
-    float Kp, Ki, Kd;
-    //  Get the current PID parameters
-    rtdb_get_PID_params(&Kp, &Ki, &Kd);
-
-    float error = setpoint - measured;
-
-    // Proportional term
-    float Pout = Kp * error;
-
-    // Integral term with maximum and minimum values
-    *integral += error * dt;
-    if (*integral > 20.0f) *integral = 20.0f;
-    if (*integral < -20.0f) *integral = -20.0f;
-    float Iout = Ki * (*integral);
-
-    // Derivative term
-    float derivative = (error - *last_error) / dt;
-    float Dout = Kd * derivative;
-
-    *last_error = error;
-
-    return Pout + Iout + Dout;
-}
-
+/**
+ * @brief PID controller task.
+ *
+ * This thread waits for new sensor data from the temperature reading task
+ * and calculates the PID output to decide whether the heater should be on.
+ * It then signals the heat control task to work on the value saved on the
+ * rtdb.
+ */
 void pid_controller_task(void) {
     // Initialize PID
     float integral = 0.0f;
@@ -240,6 +236,13 @@ K_THREAD_DEFINE(pid_task_id, 1024, pid_controller_task, NULL, NULL, NULL, 5, 0, 
 
 
 
+/**
+ * @brief Heater control task.
+ *
+ * This thread waits for the PID controller task to signal it and then 
+ * toggles the heater state based on the PID output and system state.
+ * It ensures the heater only operates when the system is on.
+ */
 void heat_control_task(void) {
     // Initialize PID
     bool last_heat_state = false;
@@ -279,7 +282,15 @@ void heat_control_task(void) {
 K_THREAD_DEFINE(heat_task_id, 1024, heat_control_task, NULL, NULL, NULL, 5, 0, 0);
 
 
-
+/**
+ * @brief Initializes the UART peripheral.
+ *
+ * This function initializes the UART device, sets its configuration,
+ * registers the callback, enables data reception, and prints a welcome 
+ * message with instructions for the user.
+ *
+ * @return int SUCCESS on success, ERR_FATAL on failure
+ */
 int uart_init(void) {
     int err=0; /* Generic error variable */
     uint8_t welcome_mesg[] = "\n\rUART COM: Hello user! Here is the list of possible commands:\n -> M (#M+30219!):   Set desired temperature\n -> D (#D068!):      Get desired temperature\n -> C (#C067!):      Get current temperature\n -> S (#Sp1.23135!): Set PID parameters\n -> V (#V086!):      Toggle verbose mode\n\r\n\r"; 
@@ -317,8 +328,19 @@ int uart_init(void) {
     return SUCCESS;
 }
 
-bool startingMessage = false;
 
+bool startingMessage = false;
+/**
+ * @brief UART callback function.
+ *
+ * This callback handles various UART events, including TX done, RX ready, and buffer requests.
+ * It accumulates incoming characters into a message buffer when a message starts with '#'
+ * and ends with '!'. It also handles buffer overflow and restarts reception as needed.
+ *
+ * @param dev Pointer to the UART device structure.
+ * @param evt Pointer to the UART event structure.
+ * @param user_data Unused pointer to user data.
+ */
 static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data) {
     int err;
     
@@ -404,11 +426,20 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
 
 }
 
+
+/**
+ * @brief UART command processing task.
+ *
+ * This thread waits for complete UART messages, processes the command, and sends
+ * a response back via UART. It coordinates with the UART callback to handle incoming messages.
+ *
+ * @return int SUCCESS on success, ERR_FATAL on failure.
+ */
 int uart_command_task(void) {
     int err;
     uint8_t rep_mesg[MSG_BUF_SIZE];
 	int len;
-	unsigned char ans[256];
+	unsigned char ans[64];
 
     while (1) {
 		resetRxBuffer();
@@ -431,6 +462,15 @@ int uart_command_task(void) {
 }
 K_THREAD_DEFINE(uart_command_id, 1024, uart_command_task, NULL, NULL, NULL, 5, 0, 0);
 
+
+/**
+ * @brief Main function.
+ *
+ * Initializes system peripherals including LEDs, heater FET, UART, RTDB, and buttons.
+ * Configures UART receive/transmit buffers and starts the system.
+ *
+ * @return int SUCCESS on successful initialization.
+ */
 int main(void) {
     //  Setup LEDs
     gpio_pin_configure_dt(&led0, GPIO_OUTPUT_INACTIVE);

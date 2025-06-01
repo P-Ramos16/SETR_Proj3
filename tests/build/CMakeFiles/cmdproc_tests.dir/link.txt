@@ -1,0 +1,1 @@
+/usr/bin/cc -Wl,--dependency-file=CMakeFiles/cmdproc_tests.dir/link.d CMakeFiles/cmdproc_tests.dir/cmdproc_tests.c.o -o cmdproc_tests  modules/libcmdproc.a Unity/libunity.a

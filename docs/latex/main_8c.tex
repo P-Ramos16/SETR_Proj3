@@ -2,7 +2,7 @@
 \hypertarget{main_8c}{}\label{main_8c}\index{src/main.c@{src/main.c}}
 
 
-Módulo principal do sistema de controlo de temperatura.  
+Main system controller for temperature regulation.  
 
 
 {\ttfamily \#include $<$zephyr/kernel.\+h$>$}\newline
@@ -16,7 +16,7 @@ Módulo principal do sistema de controlo de temperatura.
 {\ttfamily \#include $<$stdlib.\+h$>$}\newline
 {\ttfamily \#include $<$string.\+h$>$}\newline
 {\ttfamily \#include "{}modules/rtdb.\+h"{}}\newline
-{\ttfamily \#include "{}buttons.\+h"{}}\newline
+{\ttfamily \#include "{}modules/buttons.\+h"{}}\newline
 {\ttfamily \#include "{}modules/cmdproc.\+h"{}}\newline
 \doxysubsubsection*{Macros}
 \begin{DoxyCompactItemize}
@@ -35,9 +35,9 @@ Módulo principal do sistema de controlo de temperatura.
 \item 
 \#define \mbox{\hyperlink{main_8c_a90ec00e9f145d6e45a95b8f3427bd492}{led\+\_\+thread\+\_\+period}}~500
 \item 
-\#define \mbox{\hyperlink{main_8c_a79aaa89920d05217559f07e3602af050}{TC74\+\_\+\+CMD\+\_\+\+RTR}}~0x00   /\texorpdfstring{$\ast$}{*} Read temperature command \texorpdfstring{$\ast$}{*}/
+\#define \mbox{\hyperlink{main_8c_a79aaa89920d05217559f07e3602af050}{TC74\+\_\+\+CMD\+\_\+\+RTR}}~0x00
 \item 
-\#define \mbox{\hyperlink{main_8c_a4cba5a0e57322b7316b506dc43b8c699}{TC74\+\_\+\+CMD\+\_\+\+RWCR}}~0x01  /\texorpdfstring{$\ast$}{*} Read/write configuration register \texorpdfstring{$\ast$}{*}/
+\#define \mbox{\hyperlink{main_8c_a4cba5a0e57322b7316b506dc43b8c699}{TC74\+\_\+\+CMD\+\_\+\+RWCR}}~0x01
 \item 
 \#define \mbox{\hyperlink{main_8c_a61e15cb2413134ad4873a095057ba60e}{I2\+C0\+\_\+\+NID}}~DT\+\_\+\+NODELABEL(tc74sensor)
 \item 
@@ -45,7 +45,7 @@ Módulo principal do sistema de controlo de temperatura.
 \item 
 \#define \mbox{\hyperlink{main_8c_a9d83f8872fa8151f12642f59463aa34b}{FET\+\_\+\+NODE}}~DT\+\_\+\+ALIAS(fetpin)
 \item 
-\#define \mbox{\hyperlink{main_8c_a07b40c5bd9acc44f62a9182527dbcc9b}{UART\+\_\+\+NODE}}~DT\+\_\+\+NODELABEL(uart0)   /\texorpdfstring{$\ast$}{*} UART0 node ID\texorpdfstring{$\ast$}{*}/
+\#define \mbox{\hyperlink{main_8c_a07b40c5bd9acc44f62a9182527dbcc9b}{UART\+\_\+\+NODE}}~DT\+\_\+\+NODELABEL(uart0)
 \item 
 \#define \mbox{\hyperlink{main_8c_a630686ccbe0cb17e592951055a5da582}{RXBUF\+\_\+\+SIZE}}~60
 \item 
@@ -53,7 +53,7 @@ Módulo principal do sistema de controlo de temperatura.
 \item 
 \#define \mbox{\hyperlink{main_8c_a8b8af8bedcac87c0d3c68634448b94a7}{MSG\+\_\+\+BUF\+\_\+\+SIZE}}~100
 \item 
-\#define \mbox{\hyperlink{main_8c_ab6426fc74901f4fbec94862ebb672b81}{RX\+\_\+\+TIMEOUT}}~1000   /\texorpdfstring{$\ast$}{*} Inactivity period after the instant when last char was received that triggers an rx event (in us) \texorpdfstring{$\ast$}{*}/
+\#define \mbox{\hyperlink{main_8c_ab6426fc74901f4fbec94862ebb672b81}{RX\+\_\+\+TIMEOUT}}~1000
 \item 
 \#define \mbox{\hyperlink{main_8c_adb95d593d35740b9769257d6bff7507e}{uart\+\_\+thread\+\_\+period}}~100
 \end{DoxyCompactItemize}
@@ -67,31 +67,31 @@ Módulo principal do sistema de controlo de temperatura.
 \mbox{\hyperlink{main_8c_aceb96bc02451a088298bb014448de9b8}{K\+\_\+\+TIMER\+\_\+\+DEFINE}} (uart\+\_\+thread\+\_\+timer, NULL, NULL)
 \item 
 void \mbox{\hyperlink{main_8c_a23b83f35eb770e6c215ba14af141453a}{led\+\_\+update\+\_\+task}} (void)
-\item 
+\begin{DoxyCompactList}\small\item\em LED update task. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{main_8c_a41f948b647a1b72a9c59623255c5c5ae}{K\+\_\+\+THREAD\+\_\+\+DEFINE}} (led\+\_\+task\+\_\+id, 1024, \mbox{\hyperlink{main_8c_a23b83f35eb770e6c215ba14af141453a}{led\+\_\+update\+\_\+task}}, NULL, NULL, NULL, 5, 0, 0)
 \item 
 int \mbox{\hyperlink{main_8c_ac483e8e0dcfa5da2b5c63fbd255b8d96}{read\+\_\+temperature\+\_\+task}} (void)
-\item 
+\begin{DoxyCompactList}\small\item\em Temperature reading task. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{main_8c_a23b3f2f07cc675e12d5237aee1224244}{K\+\_\+\+THREAD\+\_\+\+DEFINE}} (temp\+\_\+read\+\_\+task\+\_\+id, 1024, \mbox{\hyperlink{main_8c_ac483e8e0dcfa5da2b5c63fbd255b8d96}{read\+\_\+temperature\+\_\+task}}, NULL, NULL, NULL, 5, 0, 0)
 \item 
 float \mbox{\hyperlink{main_8c_af40ecced4a487eb7df61d8dcb9c61a93}{pid\+\_\+calculate}} (float setpoint, float measured, float dt, float \texorpdfstring{$\ast$}{*}last\+\_\+error, float \texorpdfstring{$\ast$}{*}integral)
-\item 
+\begin{DoxyCompactList}\small\item\em Calculates the PID controller output. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{main_8c_a9a4ed6d9069244aadb70f0c304d88ffa}{pid\+\_\+controller\+\_\+task}} (void)
-\item 
+\begin{DoxyCompactList}\small\item\em PID controller task. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{main_8c_a4ae66f738f9813b09b24efe29eb33a31}{K\+\_\+\+THREAD\+\_\+\+DEFINE}} (pid\+\_\+task\+\_\+id, 1024, \mbox{\hyperlink{main_8c_a9a4ed6d9069244aadb70f0c304d88ffa}{pid\+\_\+controller\+\_\+task}}, NULL, NULL, NULL, 5, 0, 0)
 \item 
 void \mbox{\hyperlink{main_8c_a2619e58b25b1bcc59e20cb1b73c7310e}{heat\+\_\+control\+\_\+task}} (void)
-\item 
+\begin{DoxyCompactList}\small\item\em Heater control task. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{main_8c_a8a5b560954b6462095818770d0e7789e}{K\+\_\+\+THREAD\+\_\+\+DEFINE}} (heat\+\_\+task\+\_\+id, 1024, \mbox{\hyperlink{main_8c_a2619e58b25b1bcc59e20cb1b73c7310e}{heat\+\_\+control\+\_\+task}}, NULL, NULL, NULL, 5, 0, 0)
 \item 
 int \mbox{\hyperlink{main_8c_af619fe0b949297d40d50ab9f41e96999}{uart\+\_\+init}} (void)
-\item 
+\begin{DoxyCompactList}\small\item\em Initializes the UART peripheral. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{main_8c_a5b8520d3a5423e6fd8cf267bd72b5aa4}{uart\+\_\+command\+\_\+task}} (void)
-\item 
+\begin{DoxyCompactList}\small\item\em UART command processing task. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{main_8c_ae1b80325be28ebb0081ca82b0e7bd70d}{K\+\_\+\+THREAD\+\_\+\+DEFINE}} (uart\+\_\+command\+\_\+id, 1024, \mbox{\hyperlink{main_8c_a5b8520d3a5423e6fd8cf267bd72b5aa4}{uart\+\_\+command\+\_\+task}}, NULL, NULL, NULL, 5, 0, 0)
 \item 
 int \mbox{\hyperlink{main_8c_a840291bc02cba5474a4cb46a9b9566fe}{main}} (void)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Main function. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
@@ -99,7 +99,7 @@ const struct uart\+\_\+config \mbox{\hyperlink{main_8c_acbbb8dc9e34f2cbd68792504
 \item 
 const struct device \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{main_8c_a660f23134aaae43c9ff2c6096fa59342}{uart\+\_\+dev}} = DEVICE\+\_\+\+DT\+\_\+\+GET(\mbox{\hyperlink{main_8c_a07b40c5bd9acc44f62a9182527dbcc9b}{UART\+\_\+\+NODE}})
 \item 
-volatile int \mbox{\hyperlink{main_8c_a7f447b32df78b68d1bd7a3581558ca3a}{uart\+\_\+rxbuf\+\_\+nchar}} =0
+volatile int \mbox{\hyperlink{main_8c_a7f447b32df78b68d1bd7a3581558ca3a}{uart\+\_\+rxbuf\+\_\+nchar}} = 0
 \item 
 struct k\+\_\+sem \mbox{\hyperlink{main_8c_a3f9de6e69e47b326696d8303de20afcb}{sensor\+\_\+to\+\_\+controller\+\_\+sem}} = Z\+\_\+\+SEM\+\_\+\+INITIALIZER(sensor\+\_\+to\+\_\+controller\+\_\+sem, 0, 1)
 \item 
@@ -112,13 +112,27 @@ bool \mbox{\hyperlink{main_8c_a488edcde5226181def32ff5e16641bca}{starting\+Messa
 
 
 \doxysubsection{Detailed Description}
-Módulo principal do sistema de controlo de temperatura. 
+Main system controller for temperature regulation. 
 
-Inicializa os LEDs e arranca a tarefa {\ttfamily led\+\_\+update\+\_\+task}, que atualiza os LEDs com base nos valores armazenados na base de dados em tempo real (RTDB). Esta tarefa reflete o estado do sistema, indicando se está ligado, se a temperatura está normal, ou se há desvios acima ou abaixo do desejado.
+This module initializes all system components including\+:
+\begin{DoxyItemize}
+\item LED indicators
+\item Temperature sensor (TC74 via I2C)
+\item Heater control (via FET)
+\item UART communication interface
+\item Real-\/\+Time Database (RTDB)
+\item Button inputs
+\end{DoxyItemize}
 
-Também chama a função {\ttfamily \doxylink{buttons_8c_acef6dd444cb6560da652897ee43ab306}{buttons\+\_\+init()}} para configurar os botões físicos.
+The system implements a PID controller for temperature regulation with multiple threads handling different aspects of the control system. \begin{DoxyAuthor}{Author}
+Pedro Ramos, n.\+º 107348 
 
-A lógica do sistema está distribuída entre múltiplas tarefas e protegida por mecanismos de sincronização. 
+Rafael Morgado, n.\+º 104277 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+01/06/2025 
+\end{DoxyDate}
+
 
 \doxysubsection{Macro Definition Documentation}
 \Hypertarget{main_8c_ae03a6d163a5dac57274d28e3d7bbf61a}\index{main.c@{main.c}!ERR\_FATAL@{ERR\_FATAL}}
@@ -127,103 +141,103 @@ A lógica do sistema está distribuída entre múltiplas tarefas e protegida por
 {\footnotesize\ttfamily \label{main_8c_ae03a6d163a5dac57274d28e3d7bbf61a} 
 \#define ERR\+\_\+\+FATAL~-\/1}
 
-\Hypertarget{main_8c_a9d83f8872fa8151f12642f59463aa34b}\index{main.c@{main.c}!FET\_NODE@{FET\_NODE}}
+Fatal error return code \Hypertarget{main_8c_a9d83f8872fa8151f12642f59463aa34b}\index{main.c@{main.c}!FET\_NODE@{FET\_NODE}}
 \index{FET\_NODE@{FET\_NODE}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{FET\_NODE}{FET\_NODE}}
 {\footnotesize\ttfamily \label{main_8c_a9d83f8872fa8151f12642f59463aa34b} 
 \#define FET\+\_\+\+NODE~DT\+\_\+\+ALIAS(fetpin)}
 
-\Hypertarget{main_8c_a61e15cb2413134ad4873a095057ba60e}\index{main.c@{main.c}!I2C0\_NID@{I2C0\_NID}}
+Devicetree alias for FET control pin \Hypertarget{main_8c_a61e15cb2413134ad4873a095057ba60e}\index{main.c@{main.c}!I2C0\_NID@{I2C0\_NID}}
 \index{I2C0\_NID@{I2C0\_NID}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{I2C0\_NID}{I2C0\_NID}}
 {\footnotesize\ttfamily \label{main_8c_a61e15cb2413134ad4873a095057ba60e} 
 \#define I2\+C0\+\_\+\+NID~DT\+\_\+\+NODELABEL(tc74sensor)}
 
-\Hypertarget{main_8c_a661852bec8ab9683d43ad02881c2f2b5}\index{main.c@{main.c}!LED0\_NODE@{LED0\_NODE}}
+Devicetree node identifier for TC74 sensor \Hypertarget{main_8c_a661852bec8ab9683d43ad02881c2f2b5}\index{main.c@{main.c}!LED0\_NODE@{LED0\_NODE}}
 \index{LED0\_NODE@{LED0\_NODE}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{LED0\_NODE}{LED0\_NODE}}
 {\footnotesize\ttfamily \label{main_8c_a661852bec8ab9683d43ad02881c2f2b5} 
 \#define LED0\+\_\+\+NODE~DT\+\_\+\+ALIAS(led0)}
 
-\Hypertarget{main_8c_ac8b7bbb65d5065e43a35775d9fc3e322}\index{main.c@{main.c}!LED1\_NODE@{LED1\_NODE}}
+Devicetree alias for LED0 \Hypertarget{main_8c_ac8b7bbb65d5065e43a35775d9fc3e322}\index{main.c@{main.c}!LED1\_NODE@{LED1\_NODE}}
 \index{LED1\_NODE@{LED1\_NODE}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{LED1\_NODE}{LED1\_NODE}}
 {\footnotesize\ttfamily \label{main_8c_ac8b7bbb65d5065e43a35775d9fc3e322} 
 \#define LED1\+\_\+\+NODE~DT\+\_\+\+ALIAS(led1)}
 
-\Hypertarget{main_8c_a9014b2cb02041c926b50b6411232ee82}\index{main.c@{main.c}!LED2\_NODE@{LED2\_NODE}}
+Devicetree alias for LED1 \Hypertarget{main_8c_a9014b2cb02041c926b50b6411232ee82}\index{main.c@{main.c}!LED2\_NODE@{LED2\_NODE}}
 \index{LED2\_NODE@{LED2\_NODE}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{LED2\_NODE}{LED2\_NODE}}
 {\footnotesize\ttfamily \label{main_8c_a9014b2cb02041c926b50b6411232ee82} 
 \#define LED2\+\_\+\+NODE~DT\+\_\+\+ALIAS(led2)}
 
-\Hypertarget{main_8c_ad5246f73682d98292ef7d7b038582700}\index{main.c@{main.c}!LED3\_NODE@{LED3\_NODE}}
+Devicetree alias for LED2 \Hypertarget{main_8c_ad5246f73682d98292ef7d7b038582700}\index{main.c@{main.c}!LED3\_NODE@{LED3\_NODE}}
 \index{LED3\_NODE@{LED3\_NODE}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{LED3\_NODE}{LED3\_NODE}}
 {\footnotesize\ttfamily \label{main_8c_ad5246f73682d98292ef7d7b038582700} 
 \#define LED3\+\_\+\+NODE~DT\+\_\+\+ALIAS(led3)}
 
-\Hypertarget{main_8c_a90ec00e9f145d6e45a95b8f3427bd492}\index{main.c@{main.c}!led\_thread\_period@{led\_thread\_period}}
+Devicetree alias for LED3 \Hypertarget{main_8c_a90ec00e9f145d6e45a95b8f3427bd492}\index{main.c@{main.c}!led\_thread\_period@{led\_thread\_period}}
 \index{led\_thread\_period@{led\_thread\_period}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{led\_thread\_period}{led\_thread\_period}}
 {\footnotesize\ttfamily \label{main_8c_a90ec00e9f145d6e45a95b8f3427bd492} 
 \#define led\+\_\+thread\+\_\+period~500}
 
-\Hypertarget{main_8c_a8b8af8bedcac87c0d3c68634448b94a7}\index{main.c@{main.c}!MSG\_BUF\_SIZE@{MSG\_BUF\_SIZE}}
+LED update period in milliseconds \Hypertarget{main_8c_a8b8af8bedcac87c0d3c68634448b94a7}\index{main.c@{main.c}!MSG\_BUF\_SIZE@{MSG\_BUF\_SIZE}}
 \index{MSG\_BUF\_SIZE@{MSG\_BUF\_SIZE}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{MSG\_BUF\_SIZE}{MSG\_BUF\_SIZE}}
 {\footnotesize\ttfamily \label{main_8c_a8b8af8bedcac87c0d3c68634448b94a7} 
 \#define MSG\+\_\+\+BUF\+\_\+\+SIZE~100}
 
-\Hypertarget{main_8c_ab6426fc74901f4fbec94862ebb672b81}\index{main.c@{main.c}!RX\_TIMEOUT@{RX\_TIMEOUT}}
+Complete message buffer size \Hypertarget{main_8c_ab6426fc74901f4fbec94862ebb672b81}\index{main.c@{main.c}!RX\_TIMEOUT@{RX\_TIMEOUT}}
 \index{RX\_TIMEOUT@{RX\_TIMEOUT}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{RX\_TIMEOUT}{RX\_TIMEOUT}}
 {\footnotesize\ttfamily \label{main_8c_ab6426fc74901f4fbec94862ebb672b81} 
-\#define RX\+\_\+\+TIMEOUT~1000   /\texorpdfstring{$\ast$}{*} Inactivity period after the instant when last char was received that triggers an rx event (in us) \texorpdfstring{$\ast$}{*}/}
+\#define RX\+\_\+\+TIMEOUT~1000}
 
-\Hypertarget{main_8c_a630686ccbe0cb17e592951055a5da582}\index{main.c@{main.c}!RXBUF\_SIZE@{RXBUF\_SIZE}}
+UART receive timeout in microseconds \Hypertarget{main_8c_a630686ccbe0cb17e592951055a5da582}\index{main.c@{main.c}!RXBUF\_SIZE@{RXBUF\_SIZE}}
 \index{RXBUF\_SIZE@{RXBUF\_SIZE}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{RXBUF\_SIZE}{RXBUF\_SIZE}}
 {\footnotesize\ttfamily \label{main_8c_a630686ccbe0cb17e592951055a5da582} 
 \#define RXBUF\+\_\+\+SIZE~60}
 
-\Hypertarget{main_8c_aa90cac659d18e8ef6294c7ae337f6b58}\index{main.c@{main.c}!SUCCESS@{SUCCESS}}
+UART receive buffer size \Hypertarget{main_8c_aa90cac659d18e8ef6294c7ae337f6b58}\index{main.c@{main.c}!SUCCESS@{SUCCESS}}
 \index{SUCCESS@{SUCCESS}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{SUCCESS}{SUCCESS}}
 {\footnotesize\ttfamily \label{main_8c_aa90cac659d18e8ef6294c7ae337f6b58} 
 \#define SUCCESS~0}
 
-\Hypertarget{main_8c_a79aaa89920d05217559f07e3602af050}\index{main.c@{main.c}!TC74\_CMD\_RTR@{TC74\_CMD\_RTR}}
+Operation successful return code \Hypertarget{main_8c_a79aaa89920d05217559f07e3602af050}\index{main.c@{main.c}!TC74\_CMD\_RTR@{TC74\_CMD\_RTR}}
 \index{TC74\_CMD\_RTR@{TC74\_CMD\_RTR}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{TC74\_CMD\_RTR}{TC74\_CMD\_RTR}}
 {\footnotesize\ttfamily \label{main_8c_a79aaa89920d05217559f07e3602af050} 
-\#define TC74\+\_\+\+CMD\+\_\+\+RTR~0x00   /\texorpdfstring{$\ast$}{*} Read temperature command \texorpdfstring{$\ast$}{*}/}
+\#define TC74\+\_\+\+CMD\+\_\+\+RTR~0x00}
 
-\Hypertarget{main_8c_a4cba5a0e57322b7316b506dc43b8c699}\index{main.c@{main.c}!TC74\_CMD\_RWCR@{TC74\_CMD\_RWCR}}
+Read temperature command \Hypertarget{main_8c_a4cba5a0e57322b7316b506dc43b8c699}\index{main.c@{main.c}!TC74\_CMD\_RWCR@{TC74\_CMD\_RWCR}}
 \index{TC74\_CMD\_RWCR@{TC74\_CMD\_RWCR}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{TC74\_CMD\_RWCR}{TC74\_CMD\_RWCR}}
 {\footnotesize\ttfamily \label{main_8c_a4cba5a0e57322b7316b506dc43b8c699} 
-\#define TC74\+\_\+\+CMD\+\_\+\+RWCR~0x01  /\texorpdfstring{$\ast$}{*} Read/write configuration register \texorpdfstring{$\ast$}{*}/}
+\#define TC74\+\_\+\+CMD\+\_\+\+RWCR~0x01}
 
-\Hypertarget{main_8c_a70fdf721e437e719d33b32d0c83c2bba}\index{main.c@{main.c}!temp\_read\_thread\_period@{temp\_read\_thread\_period}}
+Read/write configuration register \Hypertarget{main_8c_a70fdf721e437e719d33b32d0c83c2bba}\index{main.c@{main.c}!temp\_read\_thread\_period@{temp\_read\_thread\_period}}
 \index{temp\_read\_thread\_period@{temp\_read\_thread\_period}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{temp\_read\_thread\_period}{temp\_read\_thread\_period}}
 {\footnotesize\ttfamily \label{main_8c_a70fdf721e437e719d33b32d0c83c2bba} 
 \#define temp\+\_\+read\+\_\+thread\+\_\+period~250}
 
-\Hypertarget{main_8c_a923af2d146f214e75816a7f5993cee29}\index{main.c@{main.c}!TXBUF\_SIZE@{TXBUF\_SIZE}}
+Temperature reading period in milliseconds \Hypertarget{main_8c_a923af2d146f214e75816a7f5993cee29}\index{main.c@{main.c}!TXBUF\_SIZE@{TXBUF\_SIZE}}
 \index{TXBUF\_SIZE@{TXBUF\_SIZE}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{TXBUF\_SIZE}{TXBUF\_SIZE}}
 {\footnotesize\ttfamily \label{main_8c_a923af2d146f214e75816a7f5993cee29} 
 \#define TXBUF\+\_\+\+SIZE~60}
 
-\Hypertarget{main_8c_a07b40c5bd9acc44f62a9182527dbcc9b}\index{main.c@{main.c}!UART\_NODE@{UART\_NODE}}
+UART transmit buffer size \Hypertarget{main_8c_a07b40c5bd9acc44f62a9182527dbcc9b}\index{main.c@{main.c}!UART\_NODE@{UART\_NODE}}
 \index{UART\_NODE@{UART\_NODE}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{UART\_NODE}{UART\_NODE}}
 {\footnotesize\ttfamily \label{main_8c_a07b40c5bd9acc44f62a9182527dbcc9b} 
-\#define UART\+\_\+\+NODE~DT\+\_\+\+NODELABEL(uart0)   /\texorpdfstring{$\ast$}{*} UART0 node ID\texorpdfstring{$\ast$}{*}/}
+\#define UART\+\_\+\+NODE~DT\+\_\+\+NODELABEL(uart0)}
 
-\Hypertarget{main_8c_adb95d593d35740b9769257d6bff7507e}\index{main.c@{main.c}!uart\_thread\_period@{uart\_thread\_period}}
+Devicetree node identifier for UART0 \Hypertarget{main_8c_adb95d593d35740b9769257d6bff7507e}\index{main.c@{main.c}!uart\_thread\_period@{uart\_thread\_period}}
 \index{uart\_thread\_period@{uart\_thread\_period}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{uart\_thread\_period}{uart\_thread\_period}}
 {\footnotesize\ttfamily \label{main_8c_adb95d593d35740b9769257d6bff7507e} 
@@ -238,7 +252,11 @@ A lógica do sistema está distribuída entre múltiplas tarefas e protegida por
 {\footnotesize\ttfamily \label{main_8c_a2619e58b25b1bcc59e20cb1b73c7310e} 
 void heat\+\_\+control\+\_\+task (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
 
-\Hypertarget{main_8c_a8a5b560954b6462095818770d0e7789e}\index{main.c@{main.c}!K\_THREAD\_DEFINE@{K\_THREAD\_DEFINE}}
+
+
+Heater control task. 
+
+This thread waits for the PID controller task to signal it and then toggles the heater state based on the PID output and system state. It ensures the heater only operates when the system is on. \Hypertarget{main_8c_a8a5b560954b6462095818770d0e7789e}\index{main.c@{main.c}!K\_THREAD\_DEFINE@{K\_THREAD\_DEFINE}}
 \index{K\_THREAD\_DEFINE@{K\_THREAD\_DEFINE}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{K\_THREAD\_DEFINE()}{K\_THREAD\_DEFINE()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
 {\footnotesize\ttfamily \label{main_8c_a8a5b560954b6462095818770d0e7789e} 
@@ -274,13 +292,13 @@ K\+\_\+\+THREAD\+\_\+\+DEFINE (\begin{DoxyParamCaption}\item[{uart\+\_\+command\
 {\footnotesize\ttfamily \label{main_8c_af123d816789543a0b63b64f6d4dd4735} 
 K\+\_\+\+TIMER\+\_\+\+DEFINE (\begin{DoxyParamCaption}\item[{led\+\_\+thread\+\_\+timer}]{}{, }\item[{NULL}]{}{, }\item[{NULL}]{}{}\end{DoxyParamCaption})}
 
-\Hypertarget{main_8c_a47fc246ee29d0c24b2ec38c5d3da1a43}\index{main.c@{main.c}!K\_TIMER\_DEFINE@{K\_TIMER\_DEFINE}}
+Timer for LED thread \Hypertarget{main_8c_a47fc246ee29d0c24b2ec38c5d3da1a43}\index{main.c@{main.c}!K\_TIMER\_DEFINE@{K\_TIMER\_DEFINE}}
 \index{K\_TIMER\_DEFINE@{K\_TIMER\_DEFINE}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{K\_TIMER\_DEFINE()}{K\_TIMER\_DEFINE()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
 {\footnotesize\ttfamily \label{main_8c_a47fc246ee29d0c24b2ec38c5d3da1a43} 
 K\+\_\+\+TIMER\+\_\+\+DEFINE (\begin{DoxyParamCaption}\item[{temp\+\_\+read\+\_\+thread\+\_\+timer}]{}{, }\item[{NULL}]{}{, }\item[{NULL}]{}{}\end{DoxyParamCaption})}
 
-\Hypertarget{main_8c_aceb96bc02451a088298bb014448de9b8}\index{main.c@{main.c}!K\_TIMER\_DEFINE@{K\_TIMER\_DEFINE}}
+Timer for temperature reading thread \Hypertarget{main_8c_aceb96bc02451a088298bb014448de9b8}\index{main.c@{main.c}!K\_TIMER\_DEFINE@{K\_TIMER\_DEFINE}}
 \index{K\_TIMER\_DEFINE@{K\_TIMER\_DEFINE}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{K\_TIMER\_DEFINE()}{K\_TIMER\_DEFINE()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
 {\footnotesize\ttfamily \label{main_8c_aceb96bc02451a088298bb014448de9b8} 
@@ -292,42 +310,114 @@ K\+\_\+\+TIMER\+\_\+\+DEFINE (\begin{DoxyParamCaption}\item[{uart\+\_\+thread\+\
 {\footnotesize\ttfamily \label{main_8c_a23b83f35eb770e6c215ba14af141453a} 
 void led\+\_\+update\+\_\+task (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
 
-\Hypertarget{main_8c_a840291bc02cba5474a4cb46a9b9566fe}\index{main.c@{main.c}!main@{main}}
+
+
+LED update task. 
+
+This thread periodically updates the LED indicators based on system state\+:
+\begin{DoxyItemize}
+\item LED0\+: System power state (on/off)
+\item LED1\+: Temperature within desired range (±2°C)
+\item LED2\+: Temperature below desired range
+\item LED3\+: Temperature above desired range 
+\end{DoxyItemize}\Hypertarget{main_8c_a840291bc02cba5474a4cb46a9b9566fe}\index{main.c@{main.c}!main@{main}}
 \index{main@{main}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{main()}{main()}}
 {\footnotesize\ttfamily \label{main_8c_a840291bc02cba5474a4cb46a9b9566fe} 
 int main (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
 
+
+
+Main function. 
+
+Initializes system peripherals including LEDs, heater FET, UART, RTDB, and buttons. Configures UART receive/transmit buffers and starts the system.
+
+\begin{DoxyReturn}{Returns}
+int SUCCESS on successful initialization. 
+\end{DoxyReturn}
 \Hypertarget{main_8c_af40ecced4a487eb7df61d8dcb9c61a93}\index{main.c@{main.c}!pid\_calculate@{pid\_calculate}}
 \index{pid\_calculate@{pid\_calculate}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{pid\_calculate()}{pid\_calculate()}}
 {\footnotesize\ttfamily \label{main_8c_af40ecced4a487eb7df61d8dcb9c61a93} 
 float pid\+\_\+calculate (\begin{DoxyParamCaption}\item[{float}]{setpoint}{, }\item[{float}]{measured}{, }\item[{float}]{dt}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{last\+\_\+error}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{integral}{}\end{DoxyParamCaption})}
 
+
+
+Calculates the PID controller output. 
+
+This function computes the PID control value based on the given setpoint, measured value, and time delta.
+
+
+\begin{DoxyParams}{Parameters}
+{\em setpoint} & The desired value. \\
+\hline
+{\em measured} & The current measured value. \\
+\hline
+{\em dt} & Time difference in seconds since the last calculation. \\
+\hline
+{\em last\+\_\+error} & Pointer to the previous error value. \\
+\hline
+{\em integral} & Pointer to the accumulated integral value.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The calculated PID output. 
+\end{DoxyReturn}
 \Hypertarget{main_8c_a9a4ed6d9069244aadb70f0c304d88ffa}\index{main.c@{main.c}!pid\_controller\_task@{pid\_controller\_task}}
 \index{pid\_controller\_task@{pid\_controller\_task}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{pid\_controller\_task()}{pid\_controller\_task()}}
 {\footnotesize\ttfamily \label{main_8c_a9a4ed6d9069244aadb70f0c304d88ffa} 
 void pid\+\_\+controller\+\_\+task (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
 
-\Hypertarget{main_8c_ac483e8e0dcfa5da2b5c63fbd255b8d96}\index{main.c@{main.c}!read\_temperature\_task@{read\_temperature\_task}}
+
+
+PID controller task. 
+
+This thread waits for new sensor data from the temperature reading task and calculates the PID output to decide whether the heater should be on. It then signals the heat control task to work on the value saved on the rtdb. \Hypertarget{main_8c_ac483e8e0dcfa5da2b5c63fbd255b8d96}\index{main.c@{main.c}!read\_temperature\_task@{read\_temperature\_task}}
 \index{read\_temperature\_task@{read\_temperature\_task}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{read\_temperature\_task()}{read\_temperature\_task()}}
 {\footnotesize\ttfamily \label{main_8c_ac483e8e0dcfa5da2b5c63fbd255b8d96} 
 int read\+\_\+temperature\+\_\+task (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
 
+
+
+Temperature reading task. 
+
+This thread periodically reads the temperature from the TC74 sensor and updates the RTDB with the current temperature value.
+
+\begin{DoxyReturn}{Returns}
+int SUCCESS on success, ERR\+\_\+\+FATAL on failure 
+\end{DoxyReturn}
 \Hypertarget{main_8c_a5b8520d3a5423e6fd8cf267bd72b5aa4}\index{main.c@{main.c}!uart\_command\_task@{uart\_command\_task}}
 \index{uart\_command\_task@{uart\_command\_task}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{uart\_command\_task()}{uart\_command\_task()}}
 {\footnotesize\ttfamily \label{main_8c_a5b8520d3a5423e6fd8cf267bd72b5aa4} 
 int uart\+\_\+command\+\_\+task (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
 
+
+
+UART command processing task. 
+
+This thread waits for complete UART messages, processes the command, and sends a response back via UART. It coordinates with the UART callback to handle incoming messages.
+
+\begin{DoxyReturn}{Returns}
+int SUCCESS on success, ERR\+\_\+\+FATAL on failure. 
+\end{DoxyReturn}
 \Hypertarget{main_8c_af619fe0b949297d40d50ab9f41e96999}\index{main.c@{main.c}!uart\_init@{uart\_init}}
 \index{uart\_init@{uart\_init}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{uart\_init()}{uart\_init()}}
 {\footnotesize\ttfamily \label{main_8c_af619fe0b949297d40d50ab9f41e96999} 
 int uart\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCaption})}
 
+
+
+Initializes the UART peripheral. 
+
+This function initializes the UART device, sets its configuration, registers the callback, enables data reception, and prints a welcome message with instructions for the user.
+
+\begin{DoxyReturn}{Returns}
+int SUCCESS on success, ERR\+\_\+\+FATAL on failure 
+\end{DoxyReturn}
 
 
 \doxysubsection{Variable Documentation}
@@ -337,13 +427,13 @@ int uart\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{}{}\end{DoxyParamCapti
 {\footnotesize\ttfamily \label{main_8c_a1df4b86b2be1ca845e6ac8add540df7a} 
 struct k\+\_\+sem controller\+\_\+to\+\_\+heater\+\_\+sem = Z\+\_\+\+SEM\+\_\+\+INITIALIZER(controller\+\_\+to\+\_\+heater\+\_\+sem, 0, 1)}
 
-\Hypertarget{main_8c_a3f9de6e69e47b326696d8303de20afcb}\index{main.c@{main.c}!sensor\_to\_controller\_sem@{sensor\_to\_controller\_sem}}
+For executing the heat control based on the on/off value from the PID \Hypertarget{main_8c_a3f9de6e69e47b326696d8303de20afcb}\index{main.c@{main.c}!sensor\_to\_controller\_sem@{sensor\_to\_controller\_sem}}
 \index{sensor\_to\_controller\_sem@{sensor\_to\_controller\_sem}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{sensor\_to\_controller\_sem}{sensor\_to\_controller\_sem}}
 {\footnotesize\ttfamily \label{main_8c_a3f9de6e69e47b326696d8303de20afcb} 
 struct k\+\_\+sem sensor\+\_\+to\+\_\+controller\+\_\+sem = Z\+\_\+\+SEM\+\_\+\+INITIALIZER(sensor\+\_\+to\+\_\+controller\+\_\+sem, 0, 1)}
 
-\Hypertarget{main_8c_a488edcde5226181def32ff5e16641bca}\index{main.c@{main.c}!startingMessage@{startingMessage}}
+For executing the PID controller on the new value after a sensor read \Hypertarget{main_8c_a488edcde5226181def32ff5e16641bca}\index{main.c@{main.c}!startingMessage@{startingMessage}}
 \index{startingMessage@{startingMessage}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{startingMessage}{startingMessage}}
 {\footnotesize\ttfamily \label{main_8c_a488edcde5226181def32ff5e16641bca} 
@@ -366,21 +456,22 @@ const struct uart\+\_\+config uart\+\_\+cfg}
 \DoxyCodeLine{\}}
 
 \end{DoxyCode}
-\Hypertarget{main_8c_a660f23134aaae43c9ff2c6096fa59342}\index{main.c@{main.c}!uart\_dev@{uart\_dev}}
+UART configuration structure \Hypertarget{main_8c_a660f23134aaae43c9ff2c6096fa59342}\index{main.c@{main.c}!uart\_dev@{uart\_dev}}
 \index{uart\_dev@{uart\_dev}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{uart\_dev}{uart\_dev}}
 {\footnotesize\ttfamily \label{main_8c_a660f23134aaae43c9ff2c6096fa59342} 
 const struct device\texorpdfstring{$\ast$}{*} uart\+\_\+dev = DEVICE\+\_\+\+DT\+\_\+\+GET(\mbox{\hyperlink{main_8c_a07b40c5bd9acc44f62a9182527dbcc9b}{UART\+\_\+\+NODE}})}
 
-\Hypertarget{main_8c_acb968f8cb59beade3bda9ee995ecd109}\index{main.c@{main.c}!uart\_full\_message\_sem@{uart\_full\_message\_sem}}
+UART device instance \Hypertarget{main_8c_acb968f8cb59beade3bda9ee995ecd109}\index{main.c@{main.c}!uart\_full\_message\_sem@{uart\_full\_message\_sem}}
 \index{uart\_full\_message\_sem@{uart\_full\_message\_sem}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{uart\_full\_message\_sem}{uart\_full\_message\_sem}}
 {\footnotesize\ttfamily \label{main_8c_acb968f8cb59beade3bda9ee995ecd109} 
 struct k\+\_\+sem uart\+\_\+full\+\_\+message\+\_\+sem = Z\+\_\+\+SEM\+\_\+\+INITIALIZER(uart\+\_\+full\+\_\+message\+\_\+sem, 0, 1)}
 
-\Hypertarget{main_8c_a7f447b32df78b68d1bd7a3581558ca3a}\index{main.c@{main.c}!uart\_rxbuf\_nchar@{uart\_rxbuf\_nchar}}
+For executing the command processor when a complete message is received \Hypertarget{main_8c_a7f447b32df78b68d1bd7a3581558ca3a}\index{main.c@{main.c}!uart\_rxbuf\_nchar@{uart\_rxbuf\_nchar}}
 \index{uart\_rxbuf\_nchar@{uart\_rxbuf\_nchar}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{uart\_rxbuf\_nchar}{uart\_rxbuf\_nchar}}
 {\footnotesize\ttfamily \label{main_8c_a7f447b32df78b68d1bd7a3581558ca3a} 
-volatile int uart\+\_\+rxbuf\+\_\+nchar =0}
+volatile int uart\+\_\+rxbuf\+\_\+nchar = 0}
 
+Number of characters in receive buffer 

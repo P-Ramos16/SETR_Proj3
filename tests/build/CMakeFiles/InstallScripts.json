@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/pramos/Documents/Univ/SETR_Proj3/tests/build/cmake_install.cmake",
+		"/home/pramos/Documents/Univ/SETR_Proj3/tests/build/modules/cmake_install.cmake",
+		"/home/pramos/Documents/Univ/SETR_Proj3/tests/build/Unity/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

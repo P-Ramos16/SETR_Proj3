@@ -1,4 +1,0 @@
-tests:
-  proj3_tests:
-    platform_allow: nrf52840dk_nrf52840
-    tags: proj3_tests

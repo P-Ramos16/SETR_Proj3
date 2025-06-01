@@ -111,7 +111,7 @@ $(function(){initNavTree('main_8c.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 
-<p>Módulo principal do sistema de controlo de temperatura.  
+<p>Main system controller for temperature regulation.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;zephyr/kernel.h&gt;</code><br />
 <code>#include &lt;zephyr/device.h&gt;</code><br />
@@ -124,7 +124,7 @@ $(function(){initNavTree('main_8c.html',''); initResizable(true); });
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="rtdb_8h_source.html">modules/rtdb.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="buttons_8h_source.html">buttons.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="buttons_8h_source.html">modules/buttons.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="cmdproc_8h_source.html">modules/cmdproc.h</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -143,9 +143,9 @@ Macros</h2></td></tr>
 <tr class="separator:ad5246f73682d98292ef7d7b038582700"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90ec00e9f145d6e45a95b8f3427bd492" id="r_a90ec00e9f145d6e45a95b8f3427bd492"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a90ec00e9f145d6e45a95b8f3427bd492">led_thread_period</a>&#160;&#160;&#160;500</td></tr>
 <tr class="separator:a90ec00e9f145d6e45a95b8f3427bd492"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79aaa89920d05217559f07e3602af050" id="r_a79aaa89920d05217559f07e3602af050"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a79aaa89920d05217559f07e3602af050">TC74_CMD_RTR</a>&#160;&#160;&#160;0x00   /* Read temperature command */</td></tr>
+<tr class="memitem:a79aaa89920d05217559f07e3602af050" id="r_a79aaa89920d05217559f07e3602af050"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a79aaa89920d05217559f07e3602af050">TC74_CMD_RTR</a>&#160;&#160;&#160;0x00</td></tr>
 <tr class="separator:a79aaa89920d05217559f07e3602af050"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cba5a0e57322b7316b506dc43b8c699" id="r_a4cba5a0e57322b7316b506dc43b8c699"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4cba5a0e57322b7316b506dc43b8c699">TC74_CMD_RWCR</a>&#160;&#160;&#160;0x01  /* Read/write configuration register */</td></tr>
+<tr class="memitem:a4cba5a0e57322b7316b506dc43b8c699" id="r_a4cba5a0e57322b7316b506dc43b8c699"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4cba5a0e57322b7316b506dc43b8c699">TC74_CMD_RWCR</a>&#160;&#160;&#160;0x01</td></tr>
 <tr class="separator:a4cba5a0e57322b7316b506dc43b8c699"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61e15cb2413134ad4873a095057ba60e" id="r_a61e15cb2413134ad4873a095057ba60e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a61e15cb2413134ad4873a095057ba60e">I2C0_NID</a>&#160;&#160;&#160;DT_NODELABEL(tc74sensor)</td></tr>
 <tr class="separator:a61e15cb2413134ad4873a095057ba60e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,7 +153,7 @@ Macros</h2></td></tr>
 <tr class="separator:a70fdf721e437e719d33b32d0c83c2bba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d83f8872fa8151f12642f59463aa34b" id="r_a9d83f8872fa8151f12642f59463aa34b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d83f8872fa8151f12642f59463aa34b">FET_NODE</a>&#160;&#160;&#160;DT_ALIAS(fetpin)</td></tr>
 <tr class="separator:a9d83f8872fa8151f12642f59463aa34b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07b40c5bd9acc44f62a9182527dbcc9b" id="r_a07b40c5bd9acc44f62a9182527dbcc9b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a07b40c5bd9acc44f62a9182527dbcc9b">UART_NODE</a>&#160;&#160;&#160;DT_NODELABEL(uart0)   /* UART0 node ID*/</td></tr>
+<tr class="memitem:a07b40c5bd9acc44f62a9182527dbcc9b" id="r_a07b40c5bd9acc44f62a9182527dbcc9b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a07b40c5bd9acc44f62a9182527dbcc9b">UART_NODE</a>&#160;&#160;&#160;DT_NODELABEL(uart0)</td></tr>
 <tr class="separator:a07b40c5bd9acc44f62a9182527dbcc9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a630686ccbe0cb17e592951055a5da582" id="r_a630686ccbe0cb17e592951055a5da582"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a630686ccbe0cb17e592951055a5da582">RXBUF_SIZE</a>&#160;&#160;&#160;60</td></tr>
 <tr class="separator:a630686ccbe0cb17e592951055a5da582"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,7 +161,7 @@ Macros</h2></td></tr>
 <tr class="separator:a923af2d146f214e75816a7f5993cee29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b8af8bedcac87c0d3c68634448b94a7" id="r_a8b8af8bedcac87c0d3c68634448b94a7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b8af8bedcac87c0d3c68634448b94a7">MSG_BUF_SIZE</a>&#160;&#160;&#160;100</td></tr>
 <tr class="separator:a8b8af8bedcac87c0d3c68634448b94a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6426fc74901f4fbec94862ebb672b81" id="r_ab6426fc74901f4fbec94862ebb672b81"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab6426fc74901f4fbec94862ebb672b81">RX_TIMEOUT</a>&#160;&#160;&#160;1000   /* Inactivity period after the instant when last char was received that triggers an rx event (in us) */</td></tr>
+<tr class="memitem:ab6426fc74901f4fbec94862ebb672b81" id="r_ab6426fc74901f4fbec94862ebb672b81"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab6426fc74901f4fbec94862ebb672b81">RX_TIMEOUT</a>&#160;&#160;&#160;1000</td></tr>
 <tr class="separator:ab6426fc74901f4fbec94862ebb672b81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb95d593d35740b9769257d6bff7507e" id="r_adb95d593d35740b9769257d6bff7507e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adb95d593d35740b9769257d6bff7507e">uart_thread_period</a>&#160;&#160;&#160;100</td></tr>
 <tr class="separator:adb95d593d35740b9769257d6bff7507e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -175,30 +175,38 @@ Functions</h2></td></tr>
 <tr class="memitem:aceb96bc02451a088298bb014448de9b8" id="r_aceb96bc02451a088298bb014448de9b8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aceb96bc02451a088298bb014448de9b8">K_TIMER_DEFINE</a> (uart_thread_timer, NULL, NULL)</td></tr>
 <tr class="separator:aceb96bc02451a088298bb014448de9b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23b83f35eb770e6c215ba14af141453a" id="r_a23b83f35eb770e6c215ba14af141453a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a23b83f35eb770e6c215ba14af141453a">led_update_task</a> (void)</td></tr>
+<tr class="memdesc:a23b83f35eb770e6c215ba14af141453a"><td class="mdescLeft">&#160;</td><td class="mdescRight">LED update task.  <br /></td></tr>
 <tr class="separator:a23b83f35eb770e6c215ba14af141453a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41f948b647a1b72a9c59623255c5c5ae" id="r_a41f948b647a1b72a9c59623255c5c5ae"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41f948b647a1b72a9c59623255c5c5ae">K_THREAD_DEFINE</a> (led_task_id, 1024, <a class="el" href="#a23b83f35eb770e6c215ba14af141453a">led_update_task</a>, NULL, NULL, NULL, 5, 0, 0)</td></tr>
 <tr class="separator:a41f948b647a1b72a9c59623255c5c5ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac483e8e0dcfa5da2b5c63fbd255b8d96" id="r_ac483e8e0dcfa5da2b5c63fbd255b8d96"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac483e8e0dcfa5da2b5c63fbd255b8d96">read_temperature_task</a> (void)</td></tr>
+<tr class="memdesc:ac483e8e0dcfa5da2b5c63fbd255b8d96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temperature reading task.  <br /></td></tr>
 <tr class="separator:ac483e8e0dcfa5da2b5c63fbd255b8d96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23b3f2f07cc675e12d5237aee1224244" id="r_a23b3f2f07cc675e12d5237aee1224244"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a23b3f2f07cc675e12d5237aee1224244">K_THREAD_DEFINE</a> (temp_read_task_id, 1024, <a class="el" href="#ac483e8e0dcfa5da2b5c63fbd255b8d96">read_temperature_task</a>, NULL, NULL, NULL, 5, 0, 0)</td></tr>
 <tr class="separator:a23b3f2f07cc675e12d5237aee1224244"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af40ecced4a487eb7df61d8dcb9c61a93" id="r_af40ecced4a487eb7df61d8dcb9c61a93"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af40ecced4a487eb7df61d8dcb9c61a93">pid_calculate</a> (float setpoint, float measured, float dt, float *last_error, float *integral)</td></tr>
+<tr class="memdesc:af40ecced4a487eb7df61d8dcb9c61a93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the PID controller output.  <br /></td></tr>
 <tr class="separator:af40ecced4a487eb7df61d8dcb9c61a93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a4ed6d9069244aadb70f0c304d88ffa" id="r_a9a4ed6d9069244aadb70f0c304d88ffa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a4ed6d9069244aadb70f0c304d88ffa">pid_controller_task</a> (void)</td></tr>
+<tr class="memdesc:a9a4ed6d9069244aadb70f0c304d88ffa"><td class="mdescLeft">&#160;</td><td class="mdescRight">PID controller task.  <br /></td></tr>
 <tr class="separator:a9a4ed6d9069244aadb70f0c304d88ffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ae66f738f9813b09b24efe29eb33a31" id="r_a4ae66f738f9813b09b24efe29eb33a31"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4ae66f738f9813b09b24efe29eb33a31">K_THREAD_DEFINE</a> (pid_task_id, 1024, <a class="el" href="#a9a4ed6d9069244aadb70f0c304d88ffa">pid_controller_task</a>, NULL, NULL, NULL, 5, 0, 0)</td></tr>
 <tr class="separator:a4ae66f738f9813b09b24efe29eb33a31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2619e58b25b1bcc59e20cb1b73c7310e" id="r_a2619e58b25b1bcc59e20cb1b73c7310e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2619e58b25b1bcc59e20cb1b73c7310e">heat_control_task</a> (void)</td></tr>
+<tr class="memdesc:a2619e58b25b1bcc59e20cb1b73c7310e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Heater control task.  <br /></td></tr>
 <tr class="separator:a2619e58b25b1bcc59e20cb1b73c7310e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a5b560954b6462095818770d0e7789e" id="r_a8a5b560954b6462095818770d0e7789e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a5b560954b6462095818770d0e7789e">K_THREAD_DEFINE</a> (heat_task_id, 1024, <a class="el" href="#a2619e58b25b1bcc59e20cb1b73c7310e">heat_control_task</a>, NULL, NULL, NULL, 5, 0, 0)</td></tr>
 <tr class="separator:a8a5b560954b6462095818770d0e7789e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af619fe0b949297d40d50ab9f41e96999" id="r_af619fe0b949297d40d50ab9f41e96999"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af619fe0b949297d40d50ab9f41e96999">uart_init</a> (void)</td></tr>
+<tr class="memdesc:af619fe0b949297d40d50ab9f41e96999"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the UART peripheral.  <br /></td></tr>
 <tr class="separator:af619fe0b949297d40d50ab9f41e96999"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b8520d3a5423e6fd8cf267bd72b5aa4" id="r_a5b8520d3a5423e6fd8cf267bd72b5aa4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b8520d3a5423e6fd8cf267bd72b5aa4">uart_command_task</a> (void)</td></tr>
+<tr class="memdesc:a5b8520d3a5423e6fd8cf267bd72b5aa4"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART command processing task.  <br /></td></tr>
 <tr class="separator:a5b8520d3a5423e6fd8cf267bd72b5aa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1b80325be28ebb0081ca82b0e7bd70d" id="r_ae1b80325be28ebb0081ca82b0e7bd70d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1b80325be28ebb0081ca82b0e7bd70d">K_THREAD_DEFINE</a> (uart_command_id, 1024, <a class="el" href="#a5b8520d3a5423e6fd8cf267bd72b5aa4">uart_command_task</a>, NULL, NULL, NULL, 5, 0, 0)</td></tr>
 <tr class="separator:ae1b80325be28ebb0081ca82b0e7bd70d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a840291bc02cba5474a4cb46a9b9566fe" id="r_a840291bc02cba5474a4cb46a9b9566fe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a840291bc02cba5474a4cb46a9b9566fe">main</a> (void)</td></tr>
+<tr class="memdesc:a840291bc02cba5474a4cb46a9b9566fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main function.  <br /></td></tr>
 <tr class="separator:a840291bc02cba5474a4cb46a9b9566fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
@@ -207,7 +215,7 @@ Variables</h2></td></tr>
 <tr class="separator:acbbb8dc9e34f2cbd68792504dc18da81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a660f23134aaae43c9ff2c6096fa59342" id="r_a660f23134aaae43c9ff2c6096fa59342"><td class="memItemLeft" align="right" valign="top">const struct device *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a660f23134aaae43c9ff2c6096fa59342">uart_dev</a> = DEVICE_DT_GET(<a class="el" href="#a07b40c5bd9acc44f62a9182527dbcc9b">UART_NODE</a>)</td></tr>
 <tr class="separator:a660f23134aaae43c9ff2c6096fa59342"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f447b32df78b68d1bd7a3581558ca3a" id="r_a7f447b32df78b68d1bd7a3581558ca3a"><td class="memItemLeft" align="right" valign="top">volatile int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f447b32df78b68d1bd7a3581558ca3a">uart_rxbuf_nchar</a> =0</td></tr>
+<tr class="memitem:a7f447b32df78b68d1bd7a3581558ca3a" id="r_a7f447b32df78b68d1bd7a3581558ca3a"><td class="memItemLeft" align="right" valign="top">volatile int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f447b32df78b68d1bd7a3581558ca3a">uart_rxbuf_nchar</a> = 0</td></tr>
 <tr class="separator:a7f447b32df78b68d1bd7a3581558ca3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f9de6e69e47b326696d8303de20afcb" id="r_a3f9de6e69e47b326696d8303de20afcb"><td class="memItemLeft" align="right" valign="top">struct k_sem&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f9de6e69e47b326696d8303de20afcb">sensor_to_controller_sem</a> = Z_SEM_INITIALIZER(sensor_to_controller_sem, 0, 1)</td></tr>
 <tr class="separator:a3f9de6e69e47b326696d8303de20afcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -219,10 +227,19 @@ Variables</h2></td></tr>
 <tr class="separator:a488edcde5226181def32ff5e16641bca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Módulo principal do sistema de controlo de temperatura. </p>
-<p>Inicializa os LEDs e arranca a tarefa <code>led_update_task</code>, que atualiza os LEDs com base nos valores armazenados na base de dados em tempo real (RTDB). Esta tarefa reflete o estado do sistema, indicando se está ligado, se a temperatura está normal, ou se há desvios acima ou abaixo do desejado.</p>
-<p>Também chama a função <code><a class="el" href="buttons_8c.html#acef6dd444cb6560da652897ee43ab306">buttons_init()</a></code> para configurar os botões físicos.</p>
-<p>A lógica do sistema está distribuída entre múltiplas tarefas e protegida por mecanismos de sincronização. </p>
+<div class="textblock"><p>Main system controller for temperature regulation. </p>
+<p>This module initializes all system components including:</p><ul>
+<li>LED indicators</li>
+<li>Temperature sensor (TC74 via I2C)</li>
+<li>Heater control (via FET)</li>
+<li>UART communication interface</li>
+<li>Real-Time Database (RTDB)</li>
+<li>Button inputs</li>
+</ul>
+<p>The system implements a PID controller for temperature regulation with multiple threads handling different aspects of the control system. </p><dl class="section author"><dt>Author</dt><dd>Pedro Ramos, n.º 107348 </dd>
+<dd>
+Rafael Morgado, n.º 104277 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>01/06/2025 </dd></dl>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ae03a6d163a5dac57274d28e3d7bbf61a" name="ae03a6d163a5dac57274d28e3d7bbf61a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae03a6d163a5dac57274d28e3d7bbf61a">&#9670;&#160;</a></span>ERR_FATAL</h2>
@@ -235,6 +252,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Fatal error return code </p>
 
 </div>
 </div>
@@ -249,6 +267,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Devicetree alias for FET control pin </p>
 
 </div>
 </div>
@@ -263,6 +282,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Devicetree node identifier for TC74 sensor </p>
 
 </div>
 </div>
@@ -277,6 +297,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Devicetree alias for LED0 </p>
 
 </div>
 </div>
@@ -291,6 +312,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Devicetree alias for LED1 </p>
 
 </div>
 </div>
@@ -305,6 +327,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Devicetree alias for LED2 </p>
 
 </div>
 </div>
@@ -319,6 +342,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Devicetree alias for LED3 </p>
 
 </div>
 </div>
@@ -333,6 +357,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>LED update period in milliseconds </p>
 
 </div>
 </div>
@@ -347,6 +372,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Complete message buffer size </p>
 
 </div>
 </div>
@@ -357,10 +383,11 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define RX_TIMEOUT&#160;&#160;&#160;1000   /* Inactivity period after the instant when last char was received that triggers an rx event (in us) */</td>
+          <td class="memname">#define RX_TIMEOUT&#160;&#160;&#160;1000</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>UART receive timeout in microseconds </p>
 
 </div>
 </div>
@@ -375,6 +402,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>UART receive buffer size </p>
 
 </div>
 </div>
@@ -389,6 +417,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Operation successful return code </p>
 
 </div>
 </div>
@@ -399,10 +428,11 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TC74_CMD_RTR&#160;&#160;&#160;0x00   /* Read temperature command */</td>
+          <td class="memname">#define TC74_CMD_RTR&#160;&#160;&#160;0x00</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Read temperature command </p>
 
 </div>
 </div>
@@ -413,10 +443,11 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define TC74_CMD_RWCR&#160;&#160;&#160;0x01  /* Read/write configuration register */</td>
+          <td class="memname">#define TC74_CMD_RWCR&#160;&#160;&#160;0x01</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Read/write configuration register </p>
 
 </div>
 </div>
@@ -431,6 +462,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Temperature reading period in milliseconds </p>
 
 </div>
 </div>
@@ -445,6 +477,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>UART transmit buffer size </p>
 
 </div>
 </div>
@@ -455,10 +488,11 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define UART_NODE&#160;&#160;&#160;DT_NODELABEL(uart0)   /* UART0 node ID*/</td>
+          <td class="memname">#define UART_NODE&#160;&#160;&#160;DT_NODELABEL(uart0)</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Devicetree node identifier for UART0 </p>
 
 </div>
 </div>
@@ -491,6 +525,9 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Heater control task. </p>
+<p>This thread waits for the PID controller task to signal it and then toggles the heater state based on the PID output and system state. It ensures the heater only operates when the system is on. </p>
 
 </div>
 </div>
@@ -797,6 +834,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Timer for LED thread </p>
 
 </div>
 </div>
@@ -823,6 +861,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Timer for temperature reading thread </p>
 
 </div>
 </div>
@@ -867,6 +906,14 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>LED update task. </p>
+<p>This thread periodically updates the LED indicators based on system state:</p><ul>
+<li>LED0: System power state (on/off)</li>
+<li>LED1: Temperature within desired range (±2°C)</li>
+<li>LED2: Temperature below desired range</li>
+<li>LED3: Temperature above desired range </li>
+</ul>
+
 </div>
 </div>
 <a id="a840291bc02cba5474a4cb46a9b9566fe" name="a840291bc02cba5474a4cb46a9b9566fe"></a>
@@ -883,6 +930,10 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Main function. </p>
+<p>Initializes system peripherals including LEDs, heater FET, UART, RTDB, and buttons. Configures UART receive/transmit buffers and starts the system.</p>
+<dl class="section return"><dt>Returns</dt><dd>int SUCCESS on successful initialization. </dd></dl>
 
 </div>
 </div>
@@ -920,6 +971,20 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Calculates the PID controller output. </p>
+<p>This function computes the PID control value based on the given setpoint, measured value, and time delta.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">setpoint</td><td>The desired value. </td></tr>
+    <tr><td class="paramname">measured</td><td>The current measured value. </td></tr>
+    <tr><td class="paramname">dt</td><td>Time difference in seconds since the last calculation. </td></tr>
+    <tr><td class="paramname">last_error</td><td>Pointer to the previous error value. </td></tr>
+    <tr><td class="paramname">integral</td><td>Pointer to the accumulated integral value.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The calculated PID output. </dd></dl>
+
 </div>
 </div>
 <a id="a9a4ed6d9069244aadb70f0c304d88ffa" name="a9a4ed6d9069244aadb70f0c304d88ffa"></a>
@@ -936,6 +1001,9 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>PID controller task. </p>
+<p>This thread waits for new sensor data from the temperature reading task and calculates the PID output to decide whether the heater should be on. It then signals the heat control task to work on the value saved on the rtdb. </p>
 
 </div>
 </div>
@@ -954,6 +1022,10 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Temperature reading task. </p>
+<p>This thread periodically reads the temperature from the TC74 sensor and updates the RTDB with the current temperature value.</p>
+<dl class="section return"><dt>Returns</dt><dd>int SUCCESS on success, ERR_FATAL on failure </dd></dl>
+
 </div>
 </div>
 <a id="a5b8520d3a5423e6fd8cf267bd72b5aa4" name="a5b8520d3a5423e6fd8cf267bd72b5aa4"></a>
@@ -970,6 +1042,10 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>UART command processing task. </p>
+<p>This thread waits for complete UART messages, processes the command, and sends a response back via UART. It coordinates with the UART callback to handle incoming messages.</p>
+<dl class="section return"><dt>Returns</dt><dd>int SUCCESS on success, ERR_FATAL on failure. </dd></dl>
 
 </div>
 </div>
@@ -988,6 +1064,10 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Initializes the UART peripheral. </p>
+<p>This function initializes the UART device, sets its configuration, registers the callback, enables data reception, and prints a welcome message with instructions for the user.</p>
+<dl class="section return"><dt>Returns</dt><dd>int SUCCESS on success, ERR_FATAL on failure </dd></dl>
+
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
@@ -1002,6 +1082,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>For executing the heat control based on the on/off value from the PID </p>
 
 </div>
 </div>
@@ -1016,6 +1097,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>For executing the PID controller on the new value after a sensor read </p>
 
 </div>
 </div>
@@ -1051,7 +1133,8 @@ Variables</h2></td></tr>
 <div class="line">        .data_bits = UART_CFG_DATA_BITS_8,</div>
 <div class="line">        .flow_ctrl = UART_CFG_FLOW_CTRL_NONE</div>
 <div class="line">}</div>
-</div><!-- fragment -->
+</div><!-- fragment --><p>UART configuration structure </p>
+
 </div>
 </div>
 <a id="a660f23134aaae43c9ff2c6096fa59342" name="a660f23134aaae43c9ff2c6096fa59342"></a>
@@ -1065,6 +1148,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>UART device instance </p>
 
 </div>
 </div>
@@ -1079,6 +1163,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>For executing the command processor when a complete message is received </p>
 
 </div>
 </div>
@@ -1089,10 +1174,11 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">volatile int uart_rxbuf_nchar =0</td>
+          <td class="memname">volatile int uart_rxbuf_nchar = 0</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Number of characters in receive buffer </p>
 
 </div>
 </div>

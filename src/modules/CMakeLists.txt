@@ -3,6 +3,7 @@
 target_sources(app PRIVATE
     cmdproc.c
     rtdb.c
+    PID.c
     buttons.c
 )
 
