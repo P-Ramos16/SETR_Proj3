@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['heat_5fcontrol_5ftask_0',['heat_control_task',['../main_8c.html#a2619e58b25b1bcc59e20cb1b73c7310e',1,'main.c']]],
-  ['heat_5fon_1',['heat_on',['../rtdb_8c.html#a3a780bf7de95f94a51663907deadb427',1,'rtdb.c']]]
+  ['getrxbuffersize_0',['getRxBufferSize',['../cmdproc_8c.html#a257f53fb5eb850ccbf3ac26a614b152e',1,'getRxBufferSize(void):&#160;cmdproc.c'],['../cmdproc_8h.html#a257f53fb5eb850ccbf3ac26a614b152e',1,'getRxBufferSize(void):&#160;cmdproc.c']]],
+  ['gettxbuffer_1',['getTxBuffer',['../cmdproc_8c.html#a8beeddde9a644610c72724be856db6dd',1,'getTxBuffer(unsigned char *buf, int *len):&#160;cmdproc.c'],['../cmdproc_8h.html#a8beeddde9a644610c72724be856db6dd',1,'getTxBuffer(unsigned char *buf, int *len):&#160;cmdproc.c']]],
+  ['gettxbuffersize_2',['getTxBufferSize',['../cmdproc_8c.html#a2397dd1c9b60734d3afa3f3a48d47822',1,'getTxBufferSize(void):&#160;cmdproc.c'],['../cmdproc_8h.html#a2397dd1c9b60734d3afa3f3a48d47822',1,'getTxBufferSize(void):&#160;cmdproc.c']]]
 ];

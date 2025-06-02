@@ -1,15 +1,8 @@
 var searchData=
 [
-  ['led0_5fnode_0',['LED0_NODE',['../main_8c.html#a661852bec8ab9683d43ad02881c2f2b5',1,'main.c']]],
-  ['led1_5fnode_1',['LED1_NODE',['../main_8c.html#ac8b7bbb65d5065e43a35775d9fc3e322',1,'main.c']]],
-  ['led2_5fnode_2',['LED2_NODE',['../main_8c.html#a9014b2cb02041c926b50b6411232ee82',1,'main.c']]],
-  ['led3_5fnode_3',['LED3_NODE',['../main_8c.html#ad5246f73682d98292ef7d7b038582700',1,'main.c']]],
-  ['led_5fthread_5fperiod_4',['led_thread_period',['../main_8c.html#a90ec00e9f145d6e45a95b8f3427bd492',1,'main.c']]],
-  ['led_5fupdate_5ftask_5',['led_update_task',['../main_8c.html#a23b83f35eb770e6c215ba14af141453a',1,'main.c']]],
-  ['lockcurrtemp_6',['lockCurrTemp',['../rtdb_8c.html#a2f407f0ff18c39d815f954bd5cd95568',1,'rtdb.c']]],
-  ['lockdestemp_7',['lockDesTemp',['../rtdb_8c.html#a3326e779b29839fed750a4000b0719a5',1,'rtdb.c']]],
-  ['lockheaton_8',['lockHeatOn',['../rtdb_8c.html#ae9e3158307802d1f26c450ce0f92d66d',1,'rtdb.c']]],
-  ['lockpidparams_9',['lockPIDparams',['../rtdb_8c.html#a6be84f938cb46ed5d69c84390bcc6332',1,'rtdb.c']]],
-  ['locksyson_10',['lockSysOn',['../rtdb_8c.html#aed5b573b3a1ad6b2172c7473f57cf31d',1,'rtdb.c']]],
-  ['lockverbose_11',['lockVerbose',['../rtdb_8c.html#a4920fecc7e649739854dd3c368ddbfe4',1,'rtdb.c']]]
+  ['k_5fthread_5fdefine_0',['K_THREAD_DEFINE',['../main_8c.html#a41f948b647a1b72a9c59623255c5c5ae',1,'K_THREAD_DEFINE(led_task_id, 1024, led_update_task, NULL, NULL, NULL, 5, 0, 0):&#160;main.c'],['../main_8c.html#a23b3f2f07cc675e12d5237aee1224244',1,'K_THREAD_DEFINE(temp_read_task_id, 1024, read_temperature_task, NULL, NULL, NULL, 5, 0, 0):&#160;main.c'],['../main_8c.html#a4ae66f738f9813b09b24efe29eb33a31',1,'K_THREAD_DEFINE(pid_task_id, 1024, pid_controller_task, NULL, NULL, NULL, 5, 0, 0):&#160;main.c'],['../main_8c.html#a8a5b560954b6462095818770d0e7789e',1,'K_THREAD_DEFINE(heat_task_id, 1024, heat_control_task, NULL, NULL, NULL, 5, 0, 0):&#160;main.c'],['../main_8c.html#ae1b80325be28ebb0081ca82b0e7bd70d',1,'K_THREAD_DEFINE(uart_command_id, 1024, uart_command_task, NULL, NULL, NULL, 5, 0, 0):&#160;main.c']]],
+  ['k_5ftimer_5fdefine_1',['K_TIMER_DEFINE',['../main_8c.html#af123d816789543a0b63b64f6d4dd4735',1,'K_TIMER_DEFINE(led_thread_timer, NULL, NULL):&#160;main.c'],['../main_8c.html#a47fc246ee29d0c24b2ec38c5d3da1a43',1,'K_TIMER_DEFINE(temp_read_thread_timer, NULL, NULL):&#160;main.c']]],
+  ['kd_2',['kd',['../rtdb_8c.html#ae7a5c6018507bb1361fcca170e069b9c',1,'rtdb.c']]],
+  ['ki_3',['ki',['../rtdb_8c.html#a050993b7ca6c97e62c1020017f716b91',1,'rtdb.c']]],
+  ['kp_4',['kp',['../rtdb_8c.html#a1f7add0f84d583bc2eceb290d6c4cc06',1,'rtdb.c']]]
 ];

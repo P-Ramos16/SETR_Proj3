@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['pid_5fcalculate_0',['pid_calculate',['../main_8c.html#af40ecced4a487eb7df61d8dcb9c61a93',1,'main.c']]],
-  ['pid_5fcontroller_5ftask_1',['pid_controller_task',['../main_8c.html#a9a4ed6d9069244aadb70f0c304d88ffa',1,'main.c']]]
+  ['main_0',['main',['../main_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'main.c']]],
+  ['main_2ec_1',['main.c',['../main_8c.html',1,'']]],
+  ['msg_5fbuf_5fsize_2',['MSG_BUF_SIZE',['../main_8c.html#a8b8af8bedcac87c0d3c68634448b94a7',1,'main.c']]]
 ];

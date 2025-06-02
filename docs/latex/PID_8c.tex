@@ -1,0 +1,39 @@
+\doxysection{src/modules/\+PID.c File Reference}
+\hypertarget{PID_8c}{}\label{PID_8c}\index{src/modules/PID.c@{src/modules/PID.c}}
+{\ttfamily \#include "{}rtdb.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+float \mbox{\hyperlink{PID_8c_af40ecced4a487eb7df61d8dcb9c61a93}{pid\+\_\+calculate}} (float setpoint, float measured, float dt, float \texorpdfstring{$\ast$}{*}last\+\_\+error, float \texorpdfstring{$\ast$}{*}integral)
+\begin{DoxyCompactList}\small\item\em Calculates the PID controller output. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{PID_8c_af40ecced4a487eb7df61d8dcb9c61a93}\index{PID.c@{PID.c}!pid\_calculate@{pid\_calculate}}
+\index{pid\_calculate@{pid\_calculate}!PID.c@{PID.c}}
+\doxysubsubsection{\texorpdfstring{pid\_calculate()}{pid\_calculate()}}
+{\footnotesize\ttfamily \label{PID_8c_af40ecced4a487eb7df61d8dcb9c61a93} 
+float pid\+\_\+calculate (\begin{DoxyParamCaption}\item[{float}]{setpoint}{, }\item[{float}]{measured}{, }\item[{float}]{dt}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{last\+\_\+error}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{integral}{}\end{DoxyParamCaption})}
+
+
+
+Calculates the PID controller output. 
+
+This function computes the PID control value based on the given setpoint, measured value, and time delta.
+
+
+\begin{DoxyParams}{Parameters}
+{\em setpoint} & The desired value. \\
+\hline
+{\em measured} & The current measured value. \\
+\hline
+{\em dt} & Time difference in seconds since the last calculation. \\
+\hline
+{\em last\+\_\+error} & Pointer to the previous error value. \\
+\hline
+{\em integral} & Pointer to the accumulated integral value.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The calculated PID output. 
+\end{DoxyReturn}

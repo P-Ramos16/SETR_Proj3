@@ -1,4 +1,11 @@
 var searchData=
 [
-  ['desired_5ftemp_0',['desired_temp',['../rtdb_8c.html#aebe5360f981c4c7571f5449ac57f9d94',1,'rtdb.c']]]
+  ['calcchecksum_0',['calcChecksum',['../cmdproc_8c.html#a2a0e03d8d8ff0f0459f7623ffd6d39b1',1,'calcChecksum(unsigned char *buf, int nbytes):&#160;cmdproc.c'],['../cmdproc_8h.html#a2a0e03d8d8ff0f0459f7623ffd6d39b1',1,'calcChecksum(unsigned char *buf, int nbytes):&#160;cmdproc.c']]],
+  ['cmdproc_2ec_1',['cmdproc.c',['../cmdproc_8c.html',1,'']]],
+  ['cmdproc_2eh_2',['cmdproc.h',['../cmdproc_8h.html',1,'']]],
+  ['cmdprocessor_3',['cmdProcessor',['../cmdproc_8c.html#afbdfe0465dfd34a5f244fe41fa27c12a',1,'cmdProcessor(void):&#160;cmdproc.c'],['../cmdproc_8h.html#afbdfe0465dfd34a5f244fe41fa27c12a',1,'cmdProcessor(void):&#160;cmdproc.c']]],
+  ['commands_4',['UART Commands',['../index.html#autotoc_md4',1,'']]],
+  ['control_20system_5',['SETR_Proj3 - Temperature Control System',['../index.html',1,'']]],
+  ['controller_5fto_5fheater_5fsem_6',['controller_to_heater_sem',['../main_8c.html#a1df4b86b2be1ca845e6ac8add540df7a',1,'main.c']]],
+  ['current_5ftemp_7',['current_temp',['../rtdb_8c.html#a9305c9986464f98aa70af3e70a3ca5e4',1,'rtdb.c']]]
 ];

@@ -94,9 +94,6 @@ volatile int uart_rxbuf_nchar = 0;      /**< Number of characters in receive buf
 
 /*  - Callback Setup  */
 static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data);
-/*  - Thread Properties  */
-#define uart_thread_period 100
-K_TIMER_DEFINE(uart_thread_timer, NULL, NULL);
 
 
 /* ---------- Semaphores ---------- */
