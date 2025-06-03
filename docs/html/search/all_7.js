@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['i2c0_5fnid_0',['I2C0_NID',['../main_8c.html#a61e15cb2413134ad4873a095057ba60e',1,'main.c']]]
+  ['heat_5fcontrol_5ftask_0',['heat_control_task',['../main_8c.html#a2619e58b25b1bcc59e20cb1b73c7310e',1,'main.c']]],
+  ['heat_5fon_1',['heat_on',['../rtdb_8c.html#a3a780bf7de95f94a51663907deadb427',1,'rtdb.c']]]
 ];

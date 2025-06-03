@@ -25,6 +25,7 @@
 var NAVTREE =
 [
   [ "Thermal Control System - SETR", "index.html", [
+    [ "SETR_Proj3 - Temperature Control System", "index.html", "index" ],
     [ "Files", "files.html", [
       [ "File List", "files.html", "files_dup" ],
       [ "Globals", "globals.html", [
@@ -39,7 +40,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"buttons_8c.html"
+"PID_8c.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

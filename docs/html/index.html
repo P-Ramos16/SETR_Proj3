@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thermal Control System - SETR: Main Page</title>
+<title>Thermal Control System - SETR: SETR_Proj3 - Temperature Control System</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -102,10 +102,92 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">Thermal Control System - SETR Documentation</div></div>
+<div><div class="header">
+  <div class="headertitle"><div class="title">SETR_Proj3 - Temperature Control System </div></div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p><a class="anchor" id="md_README"></a></p>
+<p>Repository for the third project of the 24-25 SETR class at Universidade de Aveiro A Zephyr RTOS-based temperature regulation system with PID control, UART command interface, and LED status indicators.</p>
+<h1><a class="anchor" id="autotoc_md1"></a>
+Features</h1>
+<ul>
+<li>Real-time temperature monitoring via I2C (TC74 sensor)</li>
+<li>PID controller for precise temperature regulation</li>
+<li>Heater control via FET</li>
+<li>UART command interface for system control</li>
+<li>LED status indicators</li>
+<li>Button controls for manual operation</li>
+<li>Thread-safe RTDB (Real-Time Database) for data sharing</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md2"></a>
+Thread Architecture</h1>
+<p><img src="../architecture.png" alt="Thread Architecture" width="600" class="inline"/></p>
+<h1><a class="anchor" id="autotoc_md3"></a>
+Threads</h1>
+<ol type="1">
+<li><b>LED Update Task</b>: Updates LED indicators based on system state</li>
+<li><b>Temperature Reading Task</b>: Reads temperature from sensor</li>
+<li><b>PID Controller Task</b>: Calculates PID output</li>
+<li><b>Heat Control Task</b>: Controls heater based on PID output</li>
+<li><b>UART Command Task</b>: Processes incoming UART commands</li>
+</ol>
+<h1><a class="anchor" id="autotoc_md4"></a>
+UART Commands</h1>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Command   </th><th class="markdownTableHeadNone">Format   </th><th class="markdownTableHeadNone">Description    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Get Current Temp   </td><td class="markdownTableBodyNone"><code>#C067!</code>   </td><td class="markdownTableBodyNone">Returns current temperature    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Get Desired Temp   </td><td class="markdownTableBodyNone"><code>#D068!</code>   </td><td class="markdownTableBodyNone">Returns desired temperature    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Set Desired Temp   </td><td class="markdownTableBodyNone"><code>#M+30219!</code>   </td><td class="markdownTableBodyNone">Sets desired temperature (+30.2°C)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Set PID Params   </td><td class="markdownTableBodyNone"><code>#Sp1.23135!</code>   </td><td class="markdownTableBodyNone">Sets PID parameters (P=1.23, i and d options are also available)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Toggle Verbose   </td><td class="markdownTableBodyNone"><code>#V086!</code>   </td><td class="markdownTableBodyNone">Toggles verbose mode   </td></tr>
+</table>
+<h1><a class="anchor" id="autotoc_md5"></a>
+File Structure</h1>
+<div class="fragment"><div class="line">.</div>
+<div class="line">├── build/</div>
+<div class="line">├── docs/</div>
+<div class="line">├── examples/</div>
+<div class="line">│</div>
+<div class="line">├── nrf52840dk_nrf52840.overlay</div>
+<div class="line">├── prj.conf</div>
+<div class="line">├── README.md</div>
+<div class="line">├── CMakeLists.txt</div>
+<div class="line">├── Doxyfile</div>
+<div class="line">│</div>
+<div class="line">├── src</div>
+<div class="line">│   ├── main.c</div>
+<div class="line">│   └── modules</div>
+<div class="line">│       ├── buttons.c</div>
+<div class="line">│       ├── buttons.h</div>
+<div class="line">│       ├── CMakeLists.txt</div>
+<div class="line">│       ├── cmdproc.c</div>
+<div class="line">│       ├── cmdproc.h</div>
+<div class="line">│       ├── PID.c</div>
+<div class="line">│       ├── PID.h</div>
+<div class="line">│       ├── rtdb.c</div>
+<div class="line">│       └── rtdb.h</div>
+<div class="line">│</div>
+<div class="line">└── tests</div>
+<div class="line">    ├── build</div>
+<div class="line">    ├── Unity</div>
+<div class="line">    ├── modules</div>
+<div class="line">    │   ├── CMakeLists.txt</div>
+<div class="line">    │   ├── cmdproc.c</div>
+<div class="line">    │   ├── cmdproc.h</div>
+<div class="line">    │   ├── PID.c</div>
+<div class="line">    │   ├── PID.h</div>
+<div class="line">    │   ├── rtdb.c</div>
+<div class="line">    │   └── rtdb.h</div>
+<div class="line">    ├── PID_tests.c</div>
+<div class="line">    ├── cmdproc_tests.c</div>
+<div class="line">    └── CMakeLists.txt</div>
+</div><!-- fragment --> </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->
 </div><!-- doc-content -->

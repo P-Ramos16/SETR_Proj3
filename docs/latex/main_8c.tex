@@ -17,6 +17,7 @@ Main system controller for temperature regulation.
 {\ttfamily \#include $<$string.\+h$>$}\newline
 {\ttfamily \#include "{}modules/rtdb.\+h"{}}\newline
 {\ttfamily \#include "{}modules/buttons.\+h"{}}\newline
+{\ttfamily \#include "{}modules/\+PID.\+h"{}}\newline
 {\ttfamily \#include "{}modules/cmdproc.\+h"{}}\newline
 \doxysubsubsection*{Macros}
 \begin{DoxyCompactItemize}
@@ -54,8 +55,6 @@ Main system controller for temperature regulation.
 \#define \mbox{\hyperlink{main_8c_a8b8af8bedcac87c0d3c68634448b94a7}{MSG\+\_\+\+BUF\+\_\+\+SIZE}}~100
 \item 
 \#define \mbox{\hyperlink{main_8c_ab6426fc74901f4fbec94862ebb672b81}{RX\+\_\+\+TIMEOUT}}~1000
-\item 
-\#define \mbox{\hyperlink{main_8c_adb95d593d35740b9769257d6bff7507e}{uart\+\_\+thread\+\_\+period}}~100
 \end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -63,8 +62,6 @@ Main system controller for temperature regulation.
 \mbox{\hyperlink{main_8c_af123d816789543a0b63b64f6d4dd4735}{K\+\_\+\+TIMER\+\_\+\+DEFINE}} (led\+\_\+thread\+\_\+timer, NULL, NULL)
 \item 
 \mbox{\hyperlink{main_8c_a47fc246ee29d0c24b2ec38c5d3da1a43}{K\+\_\+\+TIMER\+\_\+\+DEFINE}} (temp\+\_\+read\+\_\+thread\+\_\+timer, NULL, NULL)
-\item 
-\mbox{\hyperlink{main_8c_aceb96bc02451a088298bb014448de9b8}{K\+\_\+\+TIMER\+\_\+\+DEFINE}} (uart\+\_\+thread\+\_\+timer, NULL, NULL)
 \item 
 void \mbox{\hyperlink{main_8c_a23b83f35eb770e6c215ba14af141453a}{led\+\_\+update\+\_\+task}} (void)
 \begin{DoxyCompactList}\small\item\em LED update task. \end{DoxyCompactList}\item 
@@ -74,8 +71,6 @@ int \mbox{\hyperlink{main_8c_ac483e8e0dcfa5da2b5c63fbd255b8d96}{read\+\_\+temper
 \begin{DoxyCompactList}\small\item\em Temperature reading task. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{main_8c_a23b3f2f07cc675e12d5237aee1224244}{K\+\_\+\+THREAD\+\_\+\+DEFINE}} (temp\+\_\+read\+\_\+task\+\_\+id, 1024, \mbox{\hyperlink{main_8c_ac483e8e0dcfa5da2b5c63fbd255b8d96}{read\+\_\+temperature\+\_\+task}}, NULL, NULL, NULL, 5, 0, 0)
 \item 
-float \mbox{\hyperlink{main_8c_af40ecced4a487eb7df61d8dcb9c61a93}{pid\+\_\+calculate}} (float setpoint, float measured, float dt, float \texorpdfstring{$\ast$}{*}last\+\_\+error, float \texorpdfstring{$\ast$}{*}integral)
-\begin{DoxyCompactList}\small\item\em Calculates the PID controller output. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{main_8c_a9a4ed6d9069244aadb70f0c304d88ffa}{pid\+\_\+controller\+\_\+task}} (void)
 \begin{DoxyCompactList}\small\item\em PID controller task. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{main_8c_a4ae66f738f9813b09b24efe29eb33a31}{K\+\_\+\+THREAD\+\_\+\+DEFINE}} (pid\+\_\+task\+\_\+id, 1024, \mbox{\hyperlink{main_8c_a9a4ed6d9069244aadb70f0c304d88ffa}{pid\+\_\+controller\+\_\+task}}, NULL, NULL, NULL, 5, 0, 0)
@@ -237,13 +232,7 @@ UART transmit buffer size \Hypertarget{main_8c_a07b40c5bd9acc44f62a9182527dbcc9b
 {\footnotesize\ttfamily \label{main_8c_a07b40c5bd9acc44f62a9182527dbcc9b} 
 \#define UART\+\_\+\+NODE~DT\+\_\+\+NODELABEL(uart0)}
 
-Devicetree node identifier for UART0 \Hypertarget{main_8c_adb95d593d35740b9769257d6bff7507e}\index{main.c@{main.c}!uart\_thread\_period@{uart\_thread\_period}}
-\index{uart\_thread\_period@{uart\_thread\_period}!main.c@{main.c}}
-\doxysubsubsection{\texorpdfstring{uart\_thread\_period}{uart\_thread\_period}}
-{\footnotesize\ttfamily \label{main_8c_adb95d593d35740b9769257d6bff7507e} 
-\#define uart\+\_\+thread\+\_\+period~100}
-
-
+Devicetree node identifier for UART0 
 
 \doxysubsection{Function Documentation}
 \Hypertarget{main_8c_a2619e58b25b1bcc59e20cb1b73c7310e}\index{main.c@{main.c}!heat\_control\_task@{heat\_control\_task}}
@@ -288,23 +277,17 @@ K\+\_\+\+THREAD\+\_\+\+DEFINE (\begin{DoxyParamCaption}\item[{uart\+\_\+command\
 
 \Hypertarget{main_8c_af123d816789543a0b63b64f6d4dd4735}\index{main.c@{main.c}!K\_TIMER\_DEFINE@{K\_TIMER\_DEFINE}}
 \index{K\_TIMER\_DEFINE@{K\_TIMER\_DEFINE}!main.c@{main.c}}
-\doxysubsubsection{\texorpdfstring{K\_TIMER\_DEFINE()}{K\_TIMER\_DEFINE()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+\doxysubsubsection{\texorpdfstring{K\_TIMER\_DEFINE()}{K\_TIMER\_DEFINE()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily \label{main_8c_af123d816789543a0b63b64f6d4dd4735} 
 K\+\_\+\+TIMER\+\_\+\+DEFINE (\begin{DoxyParamCaption}\item[{led\+\_\+thread\+\_\+timer}]{}{, }\item[{NULL}]{}{, }\item[{NULL}]{}{}\end{DoxyParamCaption})}
 
 Timer for LED thread \Hypertarget{main_8c_a47fc246ee29d0c24b2ec38c5d3da1a43}\index{main.c@{main.c}!K\_TIMER\_DEFINE@{K\_TIMER\_DEFINE}}
 \index{K\_TIMER\_DEFINE@{K\_TIMER\_DEFINE}!main.c@{main.c}}
-\doxysubsubsection{\texorpdfstring{K\_TIMER\_DEFINE()}{K\_TIMER\_DEFINE()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+\doxysubsubsection{\texorpdfstring{K\_TIMER\_DEFINE()}{K\_TIMER\_DEFINE()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily \label{main_8c_a47fc246ee29d0c24b2ec38c5d3da1a43} 
 K\+\_\+\+TIMER\+\_\+\+DEFINE (\begin{DoxyParamCaption}\item[{temp\+\_\+read\+\_\+thread\+\_\+timer}]{}{, }\item[{NULL}]{}{, }\item[{NULL}]{}{}\end{DoxyParamCaption})}
 
-Timer for temperature reading thread \Hypertarget{main_8c_aceb96bc02451a088298bb014448de9b8}\index{main.c@{main.c}!K\_TIMER\_DEFINE@{K\_TIMER\_DEFINE}}
-\index{K\_TIMER\_DEFINE@{K\_TIMER\_DEFINE}!main.c@{main.c}}
-\doxysubsubsection{\texorpdfstring{K\_TIMER\_DEFINE()}{K\_TIMER\_DEFINE()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
-{\footnotesize\ttfamily \label{main_8c_aceb96bc02451a088298bb014448de9b8} 
-K\+\_\+\+TIMER\+\_\+\+DEFINE (\begin{DoxyParamCaption}\item[{uart\+\_\+thread\+\_\+timer}]{}{, }\item[{NULL}]{}{, }\item[{NULL}]{}{}\end{DoxyParamCaption})}
-
-\Hypertarget{main_8c_a23b83f35eb770e6c215ba14af141453a}\index{main.c@{main.c}!led\_update\_task@{led\_update\_task}}
+Timer for temperature reading thread \Hypertarget{main_8c_a23b83f35eb770e6c215ba14af141453a}\index{main.c@{main.c}!led\_update\_task@{led\_update\_task}}
 \index{led\_update\_task@{led\_update\_task}!main.c@{main.c}}
 \doxysubsubsection{\texorpdfstring{led\_update\_task()}{led\_update\_task()}}
 {\footnotesize\ttfamily \label{main_8c_a23b83f35eb770e6c215ba14af141453a} 
@@ -334,34 +317,6 @@ Initializes system peripherals including LEDs, heater FET, UART, RTDB, and butto
 
 \begin{DoxyReturn}{Returns}
 int SUCCESS on successful initialization. 
-\end{DoxyReturn}
-\Hypertarget{main_8c_af40ecced4a487eb7df61d8dcb9c61a93}\index{main.c@{main.c}!pid\_calculate@{pid\_calculate}}
-\index{pid\_calculate@{pid\_calculate}!main.c@{main.c}}
-\doxysubsubsection{\texorpdfstring{pid\_calculate()}{pid\_calculate()}}
-{\footnotesize\ttfamily \label{main_8c_af40ecced4a487eb7df61d8dcb9c61a93} 
-float pid\+\_\+calculate (\begin{DoxyParamCaption}\item[{float}]{setpoint}{, }\item[{float}]{measured}{, }\item[{float}]{dt}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{last\+\_\+error}{, }\item[{float \texorpdfstring{$\ast$}{*}}]{integral}{}\end{DoxyParamCaption})}
-
-
-
-Calculates the PID controller output. 
-
-This function computes the PID control value based on the given setpoint, measured value, and time delta.
-
-
-\begin{DoxyParams}{Parameters}
-{\em setpoint} & The desired value. \\
-\hline
-{\em measured} & The current measured value. \\
-\hline
-{\em dt} & Time difference in seconds since the last calculation. \\
-\hline
-{\em last\+\_\+error} & Pointer to the previous error value. \\
-\hline
-{\em integral} & Pointer to the accumulated integral value.\\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-The calculated PID output. 
 \end{DoxyReturn}
 \Hypertarget{main_8c_a9a4ed6d9069244aadb70f0c304d88ffa}\index{main.c@{main.c}!pid\_controller\_task@{pid\_controller\_task}}
 \index{pid\_controller\_task@{pid\_controller\_task}!main.c@{main.c}}

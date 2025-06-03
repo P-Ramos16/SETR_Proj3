@@ -1,0 +1,86 @@
+\chapter{SETR\+\_\+\+Proj3 -\/ Temperature Control System}
+\hypertarget{index}{}\label{index}\index{SETR\_Proj3 -\/ Temperature Control System@{SETR\_Proj3 -\/ Temperature Control System}}
+\label{index_md_README}%
+\Hypertarget{index_md_README}%
+
+
+Repository for the third project of the 24-\/25 SETR class at Universidade de Aveiro A Zephyr RTOS-\/based temperature regulation system with PID control, UART command interface, and LED status indicators.\hypertarget{index_autotoc_md1}{}\doxysection{\texorpdfstring{Features}{Features}}\label{index_autotoc_md1}
+
+\begin{DoxyItemize}
+\item Real-\/time temperature monitoring via I2C (TC74 sensor)
+\item PID controller for precise temperature regulation
+\item Heater control via FET
+\item UART command interface for system control
+\item LED status indicators
+\item Button controls for manual operation
+\item Thread-\/safe RTDB (Real-\/\+Time Database) for data sharing
+\end{DoxyItemize}\hypertarget{index_autotoc_md2}{}\doxysection{\texorpdfstring{Thread Architecture}{Thread Architecture}}\label{index_autotoc_md2}
+\hypertarget{index_autotoc_md3}{}\doxysection{\texorpdfstring{Threads}{Threads}}\label{index_autotoc_md3}
+
+\begin{DoxyEnumerate}
+\item {\bfseries{LED Update Task}}\+: Updates LED indicators based on system state
+\item {\bfseries{Temperature Reading Task}}\+: Reads temperature from sensor
+\item {\bfseries{PID Controller Task}}\+: Calculates PID output
+\item {\bfseries{Heat Control Task}}\+: Controls heater based on PID output
+\item {\bfseries{UART Command Task}}\+: Processes incoming UART commands
+\end{DoxyEnumerate}\hypertarget{index_autotoc_md4}{}\doxysection{\texorpdfstring{UART Commands}{UART Commands}}\label{index_autotoc_md4}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Command   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Format   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Command   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Format   }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Description    }\\\cline{1-3}
+\endhead
+Get Current Temp   &{\ttfamily \#C067!}   &Returns current temperature    \\\cline{1-3}
+Get Desired Temp   &{\ttfamily \#D068!}   &Returns desired temperature    \\\cline{1-3}
+Set Desired Temp   &{\ttfamily \#M+30219!}   &Sets desired temperature (+30.\+2°C)    \\\cline{1-3}
+Set PID Params   &{\ttfamily \#Sp1.\+23135!}   &Sets PID parameters (P=1.\+23, i and d options are also available)    \\\cline{1-3}
+Toggle Verbose   &{\ttfamily \#V086!}   &Toggles verbose mode   \\\cline{1-3}
+\end{longtabu}
+\hypertarget{index_autotoc_md5}{}\doxysection{\texorpdfstring{File Structure}{File Structure}}\label{index_autotoc_md5}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{.}
+\DoxyCodeLine{├──\ build/}
+\DoxyCodeLine{├──\ docs/}
+\DoxyCodeLine{├──\ examples/}
+\DoxyCodeLine{│}
+\DoxyCodeLine{├──\ nrf52840dk\_nrf52840.overlay}
+\DoxyCodeLine{├──\ prj.conf}
+\DoxyCodeLine{├──\ README.md}
+\DoxyCodeLine{├──\ CMakeLists.txt}
+\DoxyCodeLine{├──\ Doxyfile}
+\DoxyCodeLine{│}
+\DoxyCodeLine{├──\ src}
+\DoxyCodeLine{│  \ ├──\ main.c}
+\DoxyCodeLine{│  \ └──\ modules}
+\DoxyCodeLine{│  \ \ \ \ \ ├──\ buttons.c}
+\DoxyCodeLine{│  \ \ \ \ \ ├──\ buttons.h}
+\DoxyCodeLine{│  \ \ \ \ \ ├──\ CMakeLists.txt}
+\DoxyCodeLine{│  \ \ \ \ \ ├──\ cmdproc.c}
+\DoxyCodeLine{│  \ \ \ \ \ ├──\ cmdproc.h}
+\DoxyCodeLine{│  \ \ \ \ \ ├──\ PID.c}
+\DoxyCodeLine{│  \ \ \ \ \ ├──\ PID.h}
+\DoxyCodeLine{│  \ \ \ \ \ ├──\ rtdb.c}
+\DoxyCodeLine{│  \ \ \ \ \ └──\ rtdb.h}
+\DoxyCodeLine{│}
+\DoxyCodeLine{└──\ tests}
+\DoxyCodeLine{\ \ \ \ ├──\ build}
+\DoxyCodeLine{\ \ \ \ ├──\ Unity}
+\DoxyCodeLine{\ \ \ \ ├──\ modules}
+\DoxyCodeLine{\ \ \ \ │  \ ├──\ CMakeLists.txt}
+\DoxyCodeLine{\ \ \ \ │  \ ├──\ cmdproc.c}
+\DoxyCodeLine{\ \ \ \ │  \ ├──\ cmdproc.h}
+\DoxyCodeLine{\ \ \ \ │  \ ├──\ PID.c}
+\DoxyCodeLine{\ \ \ \ │  \ ├──\ PID.h}
+\DoxyCodeLine{\ \ \ \ │  \ ├──\ rtdb.c}
+\DoxyCodeLine{\ \ \ \ │  \ └──\ rtdb.h}
+\DoxyCodeLine{\ \ \ \ ├──\ PID\_tests.c}
+\DoxyCodeLine{\ \ \ \ ├──\ cmdproc\_tests.c}
+\DoxyCodeLine{\ \ \ \ └──\ CMakeLists.txt}
+
+\end{DoxyCode}
+ 
