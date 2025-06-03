@@ -65,6 +65,7 @@ CMAKE_BINARY_DIR = /home/pramos/Documents/Univ/SETR_Proj3/tests/build
 # The main recursive "all" target.
 all: CMakeFiles/cmdproc_tests.dir/all
 all: CMakeFiles/PID_tests.dir/all
+all: CMakeFiles/rtdb_tests.dir/all
 all: modules/all
 all: Unity/all
 .PHONY : all
@@ -72,6 +73,7 @@ all: Unity/all
 # The main recursive "codegen" target.
 codegen: CMakeFiles/cmdproc_tests.dir/codegen
 codegen: CMakeFiles/PID_tests.dir/codegen
+codegen: CMakeFiles/rtdb_tests.dir/codegen
 codegen: modules/codegen
 codegen: Unity/codegen
 .PHONY : codegen
@@ -84,6 +86,7 @@ preinstall: Unity/preinstall
 # The main recursive "clean" target.
 clean: CMakeFiles/cmdproc_tests.dir/clean
 clean: CMakeFiles/PID_tests.dir/clean
+clean: CMakeFiles/rtdb_tests.dir/clean
 clean: modules/clean
 clean: Unity/clean
 .PHONY : clean
@@ -193,6 +196,39 @@ CMakeFiles/PID_tests.dir/clean:
 .PHONY : CMakeFiles/PID_tests.dir/clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/rtdb_tests.dir
+
+# All Build rule for target.
+CMakeFiles/rtdb_tests.dir/all: modules/CMakeFiles/cmdproc.dir/all
+CMakeFiles/rtdb_tests.dir/all: Unity/CMakeFiles/unity.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtdb_tests.dir/build.make CMakeFiles/rtdb_tests.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtdb_tests.dir/build.make CMakeFiles/rtdb_tests.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/pramos/Documents/Univ/SETR_Proj3/tests/build/CMakeFiles --progress-num=9,10 "Built target rtdb_tests"
+.PHONY : CMakeFiles/rtdb_tests.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/rtdb_tests.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pramos/Documents/Univ/SETR_Proj3/tests/build/CMakeFiles 8
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/rtdb_tests.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pramos/Documents/Univ/SETR_Proj3/tests/build/CMakeFiles 0
+.PHONY : CMakeFiles/rtdb_tests.dir/rule
+
+# Convenience name for target.
+rtdb_tests: CMakeFiles/rtdb_tests.dir/rule
+.PHONY : rtdb_tests
+
+# codegen rule for target.
+CMakeFiles/rtdb_tests.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtdb_tests.dir/build.make CMakeFiles/rtdb_tests.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/pramos/Documents/Univ/SETR_Proj3/tests/build/CMakeFiles --progress-num=9,10 "Finished codegen for target rtdb_tests"
+.PHONY : CMakeFiles/rtdb_tests.dir/codegen
+
+# clean rule for target.
+CMakeFiles/rtdb_tests.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtdb_tests.dir/build.make CMakeFiles/rtdb_tests.dir/clean
+.PHONY : CMakeFiles/rtdb_tests.dir/clean
+
+#=============================================================================
 # Target rules for target modules/CMakeFiles/cmdproc.dir
 
 # All Build rule for target.
@@ -231,7 +267,7 @@ modules/CMakeFiles/cmdproc.dir/clean:
 Unity/CMakeFiles/unity.dir/all:
 	$(MAKE) $(MAKESILENT) -f Unity/CMakeFiles/unity.dir/build.make Unity/CMakeFiles/unity.dir/depend
 	$(MAKE) $(MAKESILENT) -f Unity/CMakeFiles/unity.dir/build.make Unity/CMakeFiles/unity.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/pramos/Documents/Univ/SETR_Proj3/tests/build/CMakeFiles --progress-num=9,10 "Built target unity"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/pramos/Documents/Univ/SETR_Proj3/tests/build/CMakeFiles --progress-num=11,12 "Built target unity"
 .PHONY : Unity/CMakeFiles/unity.dir/all
 
 # Build rule for subdir invocation for target.
@@ -248,7 +284,7 @@ unity: Unity/CMakeFiles/unity.dir/rule
 # codegen rule for target.
 Unity/CMakeFiles/unity.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f Unity/CMakeFiles/unity.dir/build.make Unity/CMakeFiles/unity.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/pramos/Documents/Univ/SETR_Proj3/tests/build/CMakeFiles --progress-num=9,10 "Finished codegen for target unity"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/pramos/Documents/Univ/SETR_Proj3/tests/build/CMakeFiles --progress-num=11,12 "Finished codegen for target unity"
 .PHONY : Unity/CMakeFiles/unity.dir/codegen
 
 # clean rule for target.

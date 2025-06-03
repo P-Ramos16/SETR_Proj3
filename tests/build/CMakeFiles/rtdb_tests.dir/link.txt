@@ -1,0 +1,1 @@
+/usr/bin/cc -Wl,--dependency-file=CMakeFiles/rtdb_tests.dir/link.d CMakeFiles/rtdb_tests.dir/rtdb_tests.c.o -o rtdb_tests  modules/libcmdproc.a Unity/libunity.a

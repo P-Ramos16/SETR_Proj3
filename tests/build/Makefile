@@ -188,6 +188,19 @@ PID_tests/fast:
 .PHONY : PID_tests/fast
 
 #=============================================================================
+# Target rules for targets named rtdb_tests
+
+# Build rule for target.
+rtdb_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 rtdb_tests
+.PHONY : rtdb_tests
+
+# fast build rule for target.
+rtdb_tests/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtdb_tests.dir/build.make CMakeFiles/rtdb_tests.dir/build
+.PHONY : rtdb_tests/fast
+
+#=============================================================================
 # Target rules for targets named cmdproc
 
 # Build rule for target.
@@ -261,6 +274,30 @@ cmdproc_tests.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cmdproc_tests.dir/build.make CMakeFiles/cmdproc_tests.dir/cmdproc_tests.c.s
 .PHONY : cmdproc_tests.c.s
 
+rtdb_tests.o: rtdb_tests.c.o
+.PHONY : rtdb_tests.o
+
+# target to build an object file
+rtdb_tests.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtdb_tests.dir/build.make CMakeFiles/rtdb_tests.dir/rtdb_tests.c.o
+.PHONY : rtdb_tests.c.o
+
+rtdb_tests.i: rtdb_tests.c.i
+.PHONY : rtdb_tests.i
+
+# target to preprocess a source file
+rtdb_tests.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtdb_tests.dir/build.make CMakeFiles/rtdb_tests.dir/rtdb_tests.c.i
+.PHONY : rtdb_tests.c.i
+
+rtdb_tests.s: rtdb_tests.c.s
+.PHONY : rtdb_tests.s
+
+# target to generate assembly for a file
+rtdb_tests.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtdb_tests.dir/build.make CMakeFiles/rtdb_tests.dir/rtdb_tests.c.s
+.PHONY : rtdb_tests.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -276,6 +313,7 @@ help:
 	@echo "... PID_tests"
 	@echo "... cmdproc"
 	@echo "... cmdproc_tests"
+	@echo "... rtdb_tests"
 	@echo "... unity"
 	@echo "... PID_tests.o"
 	@echo "... PID_tests.i"
@@ -283,6 +321,9 @@ help:
 	@echo "... cmdproc_tests.o"
 	@echo "... cmdproc_tests.i"
 	@echo "... cmdproc_tests.s"
+	@echo "... rtdb_tests.o"
+	@echo "... rtdb_tests.i"
+	@echo "... rtdb_tests.s"
 .PHONY : help
 
 
