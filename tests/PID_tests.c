@@ -216,7 +216,7 @@ void test_PID_ZeroError(void) {
 void test_PID_ZeroParameters(void) {
     printf("\n");
     printf(" ╭─────────────────────────────────────────────╮\n");
-    printf(" │ == === Test PID with Kp, Ki, Kd == 0 === == │\n");
+    printf(" │ - == === Test PID with Kp,Ki,Kd=0  === == - │\n");
     printf(" ╰─────────────────────────────────────────────╯\n");
 
     // Setup test conditions

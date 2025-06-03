@@ -21,6 +21,12 @@ void setUp(void) {
     rtdb_init();
 }
 
+/**
+ * @brief Tear down function executed after each test.
+ */
+void tearDown(void) {
+}  
+
 
 /**
  * @brief Test the system on/off state functions.
