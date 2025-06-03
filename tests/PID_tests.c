@@ -1,8 +1,8 @@
-//gcc tests.c modules/cmdproc.c Unity/src/unity.c -o test
-#include "Unity/src/unity.h"
+#include "build/Unity/src/unity.h"
 #include "modules/cmdproc.h"
 #include "modules/rtdb.h"
 #include "modules/PID.h"
+
 
 
 /** \file tests.c
@@ -176,6 +176,78 @@ void test_PID_NegativeError(void) {
     printf("   ─> Test passed: Handled negative error correctly\n\n");
 }
 
+/**
+ * @brief Test PID with zero error (setpoint == measured)
+ */
+void test_PID_ZeroError(void) {
+    printf("\n");
+    printf(" ╭─────────────────────────────────────────────╮\n");
+    printf(" │ - == ===  Test PID with Zero Error === == - │\n");
+    printf(" ╰─────────────────────────────────────────────╯\n");
+
+    // Setup test conditions
+    float setpoint = 100.0f;
+    float measured = 100.0f;  // Error is 0
+    float dt = 0.1f;
+    float last_error = 0.0f;
+    float integral = 0.0f;
+
+    // Set PID parameters in RTDB
+    float Kp = 1.0f;
+    float Ki = 0.1f;
+    float Kd = 0.01f;
+    rtdb_set_PID_params(Kp, Ki, Kd);  // Set parameters
+
+    // Calculate PID output
+    float output = pid_calculate(setpoint, measured, dt, &last_error, &integral);
+
+    printf("   ─> Output: %.2f, Last Error: %.2f, Integral: %.2f\n", output, last_error, integral);
+    
+    // Test if output is 0 (since error is zero)
+    TEST_ASSERT_FLOAT_WITHIN(0.01f, 0.0f, output);
+    TEST_ASSERT_FLOAT_WITHIN(0.01f, 0.0f, last_error);
+    TEST_ASSERT_FLOAT_WITHIN(0.01f, 0.0f, integral);
+
+    printf("   ─> Test passed: No output, as error is zero\n\n");
+}
+
+/**
+ * @brief Test PID with Kp, Ki, and Kd equal to zero
+ */
+void test_PID_ZeroParameters(void) {
+    printf("\n");
+    printf(" ╭─────────────────────────────────────────────╮\n");
+    printf(" │ == === Test PID with Kp, Ki, Kd == 0 === == │\n");
+    printf(" ╰─────────────────────────────────────────────╯\n");
+
+    // Setup test conditions
+    float setpoint = 100.0f;
+    float measured = 80.0f;  // Error = 20.0
+    float dt = 0.1f;
+    float last_error = 0.0f;
+    float integral = 0.0f;
+
+    // Set PID parameters in RTDB
+    float Kp = 0.0f;
+    float Ki = 0.0f;
+    float Kd = 0.0f;
+    rtdb_set_PID_params(Kp, Ki, Kd);  // All parameters are zero
+
+    // Calculate PID output
+    float output = pid_calculate(setpoint, measured, dt, &last_error, &integral);
+
+    printf("   ─> Output: %.2f, Last Error: %.2f, Integral: %.2f\n", output, last_error, integral);
+    
+    // Test if output is 0 (since Kp, Ki, and Kd are all zero)
+    TEST_ASSERT_FLOAT_WITHIN(0.01f, 0.0f, output);
+    TEST_ASSERT_FLOAT_WITHIN(0.01f, 20.0f, last_error);  // Last error should be the current error (setpoint - measured)
+    TEST_ASSERT_FLOAT_WITHIN(0.01f, 2.0f, integral);  // Integral should accumulate the error (20 * dt)
+
+    printf("   ─> Test passed: No output, as all PID parameters are zero\n\n");
+}
+
+
+
 int main(void) {
     // Initialize Unity test framework
     UNITY_BEGIN();
@@ -186,6 +258,8 @@ int main(void) {
     RUN_TEST(test_PID_DerivativeTerm);
     RUN_TEST(test_PID_ZeroDeltaTime);
     RUN_TEST(test_PID_NegativeError);
+    RUN_TEST(test_PID_ZeroError);
+    RUN_TEST(test_PID_ZeroParameters);
 
     // Finalize and return test results
     return UNITY_END();
