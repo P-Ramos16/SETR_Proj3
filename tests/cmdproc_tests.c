@@ -29,8 +29,9 @@ void tearDown(void) {
 }  
 
 /**
- * @brief Test the temperature command processor.
+ * @brief Test function for reading and verifying the current temperature.
  */
+
 void test_ReadCurrentTemp(void){
 
     printf("\n");
@@ -73,7 +74,7 @@ void test_ReadCurrentTemp(void){
 }
 
 /**
- * @brief Test the humidity command processor.
+ * @brief Test function for reading and verifying the desired temperature.
  */
 void test_ReadDesiredTemp(void){
 
@@ -117,7 +118,7 @@ void test_ReadDesiredTemp(void){
 }
 
 /**
- * @brief Test the "all" command processor.
+ * @brief Test function for setting and verifying the desired temperature.
  */
 void test_SetDesiredTemp(void){
 
@@ -163,7 +164,7 @@ void test_SetDesiredTemp(void){
 }
 
 /**
- * @brief Test the history command processor.
+ * @brief Test function for setting and verifying PID parameters.
  */
 void test_SetPIDparams(void) {
 
@@ -233,7 +234,7 @@ void test_SetPIDparams(void) {
 }
 
 /**
- * @brief Test the reset command processor.
+ * @brief Test function for toggling the verbose mode.
  */
 void test_ToggleVerbose(void) {
 
@@ -317,7 +318,9 @@ void test_invalidcommand(void){
     TEST_ASSERT_EQUAL_MEMORY("#Ei174!", ans, len);
 }
 
-
+/**
+ * @brief Test function for handling invalid checksum.
+ */
 void test_invalidchecksum(void){
 
     printf("\n");
@@ -356,7 +359,9 @@ void test_invalidchecksum(void){
     TEST_ASSERT_EQUAL_MEMORY("#Es184!", ans, len);
 }
 
-
+/**
+ * @brief Test function for handling invalid frame.
+ */
 void test_invalidframe(void){
 
     printf("\n");
