@@ -3,8 +3,8 @@
 #include "modules/cmdproc.h"
 
 
-/** \file tests.c
-*   \brief Unit tests for Assignment 3
+/** \file cmdproc_tests.c
+*   \brief Unit tests for Assignment 3 - CMD Processor
 **
 *        This file tests all the funtions on the 
 *       CMD_Proc module developped for this assignment

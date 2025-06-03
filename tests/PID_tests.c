@@ -5,8 +5,8 @@
 #include "modules/PID.h"
 
 
-/** \file tests.c
-*   \brief Unit tests for Assignment 3
+/** \file PID_tests.c
+*   \brief Unit tests for Assignment 3 - PID
 **
 *        This file tests all the funtions on the 
 *       PID function developed for this assignment

@@ -18,4 +18,8 @@ add_test(cmdproc_tests cmdproc)
 
 add_executable(PID_tests PID_tests.c)
 target_link_libraries(PID_tests cmdproc unity)
-add_test(PID_tests cmdproc)
+add_test(PID_tests PID)
+
+add_executable(rtdb_tests rtdb_tests.c)
+target_link_libraries(rtdb_tests cmdproc unity)
+add_test(rtdb_tests rtdb)

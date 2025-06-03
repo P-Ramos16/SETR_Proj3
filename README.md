@@ -35,6 +35,15 @@ A Zephyr RTOS-based temperature regulation system with PID control, UART command
 | Set PID Params | `#Sp1.23135!` | Sets PID parameters (P=1.23, i and d options are also available) |
 | Toggle Verbose | `#V086!` | Toggles verbose mode |
 
+## How to execute the test program
+```bash
+    cd tests/build
+    cmake ..
+    make
+    ./cmdproc_tests
+    ./PID_tests
+```
+
 ## File Structure
 ```
 .
